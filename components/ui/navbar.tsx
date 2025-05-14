@@ -7,7 +7,13 @@ import { MoonIcon, SunIcon } from "lucide-react";
 import { CheckoutDialog } from "@/components/checkout-dialog";
 import { BuyNowButton } from "@/components/buy-now-button";
 
-export function Navbar() {
+interface NavbarProps {
+  storeUrl: string;
+  username: string;
+  productId: string;
+}
+
+export function Navbar({ storeUrl, username, productId }: NavbarProps) {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -54,6 +60,9 @@ export function Navbar() {
         open={open} 
         onOpenChange={setOpen} 
         onCheckout={handleCheckout} 
+        storeUrl={storeUrl}
+        username={username}
+        productId={productId}
       />
     </nav>
   );

@@ -23,6 +23,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { searchCustomer } from "@/actions/searchCustomer";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -34,12 +35,18 @@ interface CheckoutDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onCheckout: (email: string) => void;
+  storeUrl: string;
+  username: string;
+  productId: string;
 }
 
 export function CheckoutDialog({
   open,
   onOpenChange,
   onCheckout,
+  storeUrl,
+  username,
+  productId,
 }: CheckoutDialogProps) {
   const router = useRouter();
   
@@ -50,10 +57,15 @@ export function CheckoutDialog({
     },
   });
 
-  function onSubmit(data: CheckoutFormValues) {
+  async function onSubmit(data: CheckoutFormValues) {
+    const customer = await searchCustomer(data.email, storeUrl);
     // In a real app, we'd store this email in a global state or in localStorage
-    localStorage.setItem("customerEmail", data.email);
-    
+    localStorage.setItem("customerEmail", customer?.email || data.email);
+    localStorage.setItem("customerId", customer?.id || "");
+    localStorage.setItem("customerFullName", customer?.fullName || "");
+    localStorage.setItem("customerPhone", customer?.phone || "");
+    localStorage.setItem("customerShippingAddress", customer?.shippingAddress || "");
+    console.log(JSON.stringify(customer?.shippingAddress));
     // Call the onCheckout callback with the email
     onCheckout(data.email);
     
@@ -61,7 +73,7 @@ export function CheckoutDialog({
     onOpenChange(false);
     
     // Redirect to the checkout page
-    router.push("deafult/default/checkout");
+    router.push(`/${username}/${productId}/checkout`);
   }
 
   return (

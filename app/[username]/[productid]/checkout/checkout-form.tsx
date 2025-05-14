@@ -22,7 +22,8 @@ const formSchema = z.object({
   fullName: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
   phone: z.string().min(10, "Please enter a valid phone number"),
-  address: z.string().min(5, "Address must be at least 5 characters"),
+  addressLine1: z.string().min(5, "Address must be at least 5 characters"),
+  addressLine2: z.string().min(5, "Address must be at least 5 characters"),
   city: z.string().min(2, "City must be at least 2 characters"),
   state: z.string().min(2, "State must be at least 2 characters"),
   zipCode: z.string().min(5, "Zip code must be at least 5 characters"),
@@ -31,10 +32,23 @@ const formSchema = z.object({
 
 type CheckoutFormValues = z.infer<typeof formSchema>;
 
-// Mock order total - in a real app, this would come from a cart state or API
-const orderTotal = 299.99;
+interface CheckoutFormProps {
+  productPrice: string;
+  productName: string;
+}
 
-export function CheckoutForm() {
+interface shippingAddress {
+  addressLine1: string;
+  addressLine2: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+}
+
+
+
+export function CheckoutForm({ productPrice, productName }: CheckoutFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -44,7 +58,8 @@ export function CheckoutForm() {
       fullName: "",
       email: "",
       phone: "",
-      address: "",
+      addressLine1: "",
+      addressLine2: "",
       city: "",
       state: "",
       zipCode: "",
@@ -60,15 +75,51 @@ export function CheckoutForm() {
       if (savedEmail) {
         form.setValue("email", savedEmail);
       }
+      const savedFullName = localStorage.getItem("customerFullName");
+      if (savedFullName) {
+        form.setValue("fullName", savedFullName);
+      }
+      const savedPhone = localStorage.getItem("customerPhone");
+      if (savedPhone) {
+        form.setValue("phone", savedPhone);
+      }
+      const customerShippingAddress = localStorage.getItem("customerShippingAddress");
+      if (customerShippingAddress && customerShippingAddress !== "") {
+        try {
+          const addressData: shippingAddress = JSON.parse(customerShippingAddress);
+          form.setValue("addressLine1", addressData.addressLine1);
+          form.setValue("addressLine2", addressData.addressLine2);
+          form.setValue("city", addressData.city);
+          form.setValue("state", addressData.state);
+          form.setValue("zipCode", addressData.postalCode);
+          form.setValue("country", addressData.country);
+        } catch (error) {
+          // If it's not valid JSON, use it as a regular string
+          form.setValue("addressLine1", customerShippingAddress);
+        }
+      }
     }
   }, [form]);
 
   function onSubmit(data: CheckoutFormValues) {
     setIsSubmitting(true);
-    
+
+    // Create a complete address object
+    const addressObject = {
+      addressLine1: data.addressLine1,
+      addressLine2: data.addressLine2,
+      city: data.city,
+      state: data.state,
+      zipCode: data.zipCode,
+      country: data.country
+    };
+
+    // Save the complete address to localStorage
+    localStorage.setItem("customerShippingAddress", JSON.stringify(addressObject));
+
     // In a real application, you would send this data to your backend
     console.log("Form data:", data);
-    
+
     // Mock API call
     setTimeout(() => {
       setIsSubmitting(false);
@@ -79,7 +130,7 @@ export function CheckoutForm() {
 
   return (
     <>
-      <div className="border-2 border-t-0">
+      <div className="border-2">
         <div className="p-4">
           <h3 className="text-lg font-semibold mb-4">Customer Information</h3>
           <Form {...form}>
@@ -137,12 +188,25 @@ export function CheckoutForm() {
             <form className="space-y-4">
               <FormField
                 control={form.control}
-                name="address"
+                name="addressLine1"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Street Address</FormLabel>
                     <FormControl>
                       <Input placeholder="123 Main St" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="addressLine2"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Landmark</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Near the" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -213,9 +277,13 @@ export function CheckoutForm() {
         <div className="p-4">
           <h3 className="text-lg font-semibold mb-4">Order Summary</h3>
           <div className="space-y-4">
+          <div className="flex justify-between text-sm">
+              <span>Product</span>
+              <span>{productName}</span>
+            </div>
             <div className="flex justify-between text-sm">
               <span>Subtotal</span>
-              <span>${orderTotal.toFixed(2)}</span>
+              <span>₹{productPrice}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span>Shipping</span>
@@ -224,7 +292,7 @@ export function CheckoutForm() {
             <Separator className="my-2" />
             <div className="flex justify-between font-semibold text-lg">
               <span>Total to Pay</span>
-              <span>${orderTotal.toFixed(2)}</span>
+              <span>₹{productPrice}</span>
             </div>
           </div>
         </div>
@@ -232,7 +300,7 @@ export function CheckoutForm() {
 
       <div className="border-2 border-t-0">
         <div className="p-4">
-          <Button 
+          <Button
             onClick={form.handleSubmit(onSubmit)}
             className="w-full"
             disabled={isSubmitting}

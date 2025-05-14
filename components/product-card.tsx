@@ -16,7 +16,7 @@ export function ProductCard({ title, price, image }: ProductCardProps) {
       </div>
       <div>
         <h3 className="font-semibold text-lg">{title}</h3>
-        <p className="font-bold text-xl">${price}</p>
+        <p className="font-bold text-xl">₹{price}</p>
       </div>
     </div>
   );

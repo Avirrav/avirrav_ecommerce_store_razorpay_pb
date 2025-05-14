@@ -6,8 +6,13 @@ import { CheckoutDialog } from "./checkout-dialog";
 import { BuyNowButton } from "./buy-now-button";
 import { motion } from "framer-motion";
 import { BadgeCheck } from "lucide-react";
+import { Product } from "@/types";
 
-export function PricingInfo() {
+interface PricingInfoProps {
+  items: Product[];
+}
+
+const PricingInfo: React.FC<PricingInfoProps> = ({ items }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   // This would typically come from an API or state management
@@ -26,7 +31,7 @@ export function PricingInfo() {
         <div className="neu-card mb-8 bg-[rgb(var(--primary-rgb))] text-white">
           <h3 className="text-2xl font-bold mb-4">Pricing</h3>
           <div className="flex items-end gap-2 mb-6">
-            <span className="text-4xl font-black">₹599</span>
+            <span className="text-4xl font-black">₹{items[0].price}</span>
           </div>
           <BuyNowButton
             className="w-full mb-4"
@@ -67,4 +72,6 @@ export function PricingInfo() {
       />
     </div>
   );
-}
+};
+
+export default PricingInfo;

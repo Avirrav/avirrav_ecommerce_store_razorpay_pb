@@ -3,36 +3,16 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Image } from "@/types";
 
-const images = [
-  {
-    id: 1,
-    src: "https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg",
-    alt: "Product 1",
-  },
-  {
-    id: 2,
-    src: "https://images.pexels.com/photos/2529146/pexels-photo-2529146.jpeg",
-    alt: "Product 2",
-  },
-  {
-    id: 3,
-    src: "https://images.pexels.com/photos/2529157/pexels-photo-2529157.jpeg",
-    alt: "Product 3",
-  },
-  {
-    id: 4,
-    src: "https://images.pexels.com/photos/2529158/pexels-photo-2529158.jpeg",
-    alt: "Product 4",
-  },
-  {
-    id: 5,
-    src: "https://images.pexels.com/photos/2529168/pexels-photo-2529168.jpeg",
-    alt: "Product 5",
-  },
-];
+interface GalleryProps {
+  images: Image[];
+}
 
-export function ImageGallery() {
+
+const ImageGallery: React.FC<GalleryProps> = ({
+  images = []
+}) => {
   const [activeImage, setActiveImage] = useState(images[0]);
 
   return (
@@ -43,7 +23,7 @@ export function ImageGallery() {
           <AnimatePresence mode="wait">
             <motion.img
               key={activeImage.id}
-              src={activeImage.src}
+              src={activeImage.url}
               alt={activeImage.alt}
               className="w-full h-[300px] sm:h-[400px] md:h-[500px] object-cover"
               initial={{ opacity: 0 }}
@@ -90,7 +70,7 @@ export function ImageGallery() {
               onClick={() => setActiveImage(image)}
             >
               <img
-                src={image.src}
+                src={image.url}
                 alt={image.alt}
                 className="w-full h-20 object-cover"
               />
@@ -100,4 +80,6 @@ export function ImageGallery() {
       </div>
     </div>
   );
-}
+};
+
+export default ImageGallery;

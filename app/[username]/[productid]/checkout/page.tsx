@@ -1,18 +1,21 @@
 import { Footer } from "@/components/footer";
 import { CheckoutForm } from "./checkout-form";
 import { ContinueShoppingButton } from "./continue-shopping-button";
+import getProduct from "@/actions/getProduct";
+import getStore from "@/actions/getStore";
 
-export async function generateStaticParams() {
-  // Define your static paths here
-  return [
-    {
-      username: 'default',
-      productid: 'default'
-    }
-  ];
+interface CheckoutPageProps {
+  params: {
+    username: string;
+    productid: string;
+  };
 }
 
-export default function CheckoutPage() {
+export default async function CheckoutPage({ params }: CheckoutPageProps) {
+  const store = await getStore(params.username);
+  const product = await getProduct(params.productid, store?.apiUrl);
+  const productPrice = product?.price;
+  const productName = product?.name;
   return (
     <div className="flex flex-col min-h-screen">
       {/* Custom navbar with checkout headline and continue shopping button */}
@@ -29,7 +32,7 @@ export default function CheckoutPage() {
       <main className="flex-grow pt-20 mt-8">
         <div className="neu-container">
           {/* Client component handles all the interactive form parts */}
-          <CheckoutForm />
+          <CheckoutForm productPrice={productPrice} productName={productName} />
         </div>
       </main>
       <Footer />
