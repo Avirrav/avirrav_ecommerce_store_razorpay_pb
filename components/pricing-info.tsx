@@ -16,7 +16,7 @@ interface PricingInfoProps {
 }
 
 const PricingInfo: React.FC<PricingInfoProps> = ({ items, username, productId, storeUrl }) => {
-  const router = useRouter();
+  const router = useRouter(); 
   const [open, setOpen] = useState(false);
   // This would typically come from an API or state management
   const salesCount = 247;
@@ -42,7 +42,7 @@ const PricingInfo: React.FC<PricingInfoProps> = ({ items, username, productId, s
           />
           
           {/* Sales Count Box */}
-          <motion.div 
+          {/* <motion.div 
             className="neu-border bg-[rgb(var(--accent-rgb))] text-black p-3 flex items-center justify-center gap-2"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -51,7 +51,7 @@ const PricingInfo: React.FC<PricingInfoProps> = ({ items, username, productId, s
             <BadgeCheck size={18} />
             <span className="font-bold">{salesCount}</span>
             <span className="font-medium">Orders</span>
-          </motion.div>
+          </motion.div> */}
         </div>
       </div>
       <div className="neu-card">
@@ -63,7 +63,7 @@ const PricingInfo: React.FC<PricingInfoProps> = ({ items, username, productId, s
             <h3 className="text-xl font-bold">NOTE</h3>
           </div>
           <p>Thank you for shopping with us!
-            If you have any questions or need support, feel free to contact us at [your contact info here].
+            If you have any questions or need support, feel free to contact us.
             We're always happy to help!</p>
         </div>
       </div>

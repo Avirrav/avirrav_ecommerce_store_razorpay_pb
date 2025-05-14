@@ -1,24 +1,31 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { CheckoutDialog } from "@/components/checkout-dialog";
 import { BuyNowButton } from "@/components/buy-now-button";
 import getProduct from "@/actions/getProduct";
-
+import { Product } from "@/types";
 interface NavbarProps {
   storeUrl: string;
   username: string;
   productId: string;
 }
 
- export async function Navbar({ storeUrl, username, productId }: NavbarProps) {
+ export function Navbar({ storeUrl, username, productId }: NavbarProps) {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const product = await getProduct(productId, storeUrl);
+  const [product, setProduct] = useState<Product | null>(null);
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const product = await getProduct(productId, storeUrl);
+      setProduct(product);
+    };
+    fetchProduct();
+  }, [productId, storeUrl]);
 
   const handleCheckout = (email: string) => {
     console.log("Proceeding to checkout with email:", email);
@@ -33,11 +40,11 @@ interface NavbarProps {
             {/* Hexagonal Price */}
             <div className="relative">
               <div className="bg-[rgb(var(--primary-rgb))] text-white p-4 clip-hex neu-border">
-                <span className="font-bold">₹{product.price}</span>
+                <span className="font-bold">₹{product?.price || '---'}</span>
               </div>
             </div>
             {/* Product Name */}
-            <h1 className="text-xl font-bold">{product.name}</h1>
+            <h1 className="text-xl font-bold">{product?.name || 'Loading...'}</h1>
           </div>
 
           <div className="flex items-center gap-4">

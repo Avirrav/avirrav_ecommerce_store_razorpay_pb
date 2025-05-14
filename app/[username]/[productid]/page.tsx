@@ -20,7 +20,6 @@ interface StorePageProps {
 
 const Home = async ({params}: StorePageProps) => {
   const store = await getStore(params.username);
-  console.log(store);
   const products = await getProducts({ isFeatured: true }, store?.apiUrl);
   const product = await getProduct(params.productid, store?.apiUrl);
   const billboard = await getBillboard(store?.homeBillboardId, store?.apiUrl);
