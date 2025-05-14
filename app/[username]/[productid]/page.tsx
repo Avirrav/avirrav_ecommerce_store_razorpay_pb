@@ -42,7 +42,7 @@ const Home = async ({params}: StorePageProps) => {
               </div>
             </div>
             <div className="lg:col-span-3 p-4">
-              <PricingInfo items={[product]} />
+              <PricingInfo items={[product]} username={params.username} productId={params.productid} storeUrl={store?.apiUrl} />
             </div>
           </div>
           

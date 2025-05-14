@@ -13,6 +13,7 @@ interface CheckoutPageProps {
 
 export default async function CheckoutPage({ params }: CheckoutPageProps) {
   const store = await getStore(params.username);
+  console.log("store",store)
   const product = await getProduct(params.productid, store?.apiUrl);
   const productPrice = product?.price;
   const productName = product?.name;
@@ -32,7 +33,7 @@ export default async function CheckoutPage({ params }: CheckoutPageProps) {
       <main className="flex-grow pt-20 mt-8">
         <div className="neu-container">
           {/* Client component handles all the interactive form parts */}
-          <CheckoutForm productPrice={productPrice} productName={productName} />
+          <CheckoutForm productPrice={productPrice} productName={productName} productId={params.productid} storeUrl={store?.url} username={params.username} storeName={store?.name} />
         </div>
       </main>
       <Footer />

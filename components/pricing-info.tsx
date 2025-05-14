@@ -10,9 +10,12 @@ import { Product } from "@/types";
 
 interface PricingInfoProps {
   items: Product[];
+  username: string;
+  productId: string;
+  storeUrl: string;
 }
 
-const PricingInfo: React.FC<PricingInfoProps> = ({ items }) => {
+const PricingInfo: React.FC<PricingInfoProps> = ({ items, username, productId, storeUrl }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   // This would typically come from an API or state management
@@ -69,6 +72,9 @@ const PricingInfo: React.FC<PricingInfoProps> = ({ items }) => {
         open={open} 
         onOpenChange={setOpen} 
         onCheckout={handleCheckout} 
+        storeUrl={storeUrl}
+        username={username}
+        productId={productId}
       />
     </div>
   );

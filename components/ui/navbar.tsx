@@ -6,6 +6,7 @@ import { useTheme } from "next-themes";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { CheckoutDialog } from "@/components/checkout-dialog";
 import { BuyNowButton } from "@/components/buy-now-button";
+import getProduct from "@/actions/getProduct";
 
 interface NavbarProps {
   storeUrl: string;
@@ -13,16 +14,15 @@ interface NavbarProps {
   productId: string;
 }
 
-export function Navbar({ storeUrl, username, productId }: NavbarProps) {
+ export async function Navbar({ storeUrl, username, productId }: NavbarProps) {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const product = await getProduct(productId, storeUrl);
 
   const handleCheckout = (email: string) => {
-    // In a real application, you would save the email and redirect to checkout
     console.log("Proceeding to checkout with email:", email);
-    // Example: redirect to a checkout page
-    // router.push(`/checkout?email=${encodeURIComponent(email)}`);
+
   };
 
   return (
@@ -33,11 +33,11 @@ export function Navbar({ storeUrl, username, productId }: NavbarProps) {
             {/* Hexagonal Price */}
             <div className="relative">
               <div className="bg-[rgb(var(--primary-rgb))] text-white p-4 clip-hex neu-border">
-                <span className="font-bold">$599</span>
+                <span className="font-bold">₹{product.price}</span>
               </div>
             </div>
             {/* Product Name */}
-            <h1 className="text-xl font-bold">Brutalist Chair</h1>
+            <h1 className="text-xl font-bold">{product.name}</h1>
           </div>
 
           <div className="flex items-center gap-4">

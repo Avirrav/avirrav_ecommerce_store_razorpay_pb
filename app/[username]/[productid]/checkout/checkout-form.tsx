@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import {
   Form,
@@ -17,6 +17,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { toast } from "sonner";
+
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Name must be at least 2 characters"),
@@ -26,7 +33,7 @@ const formSchema = z.object({
   addressLine2: z.string().min(5, "Address must be at least 5 characters"),
   city: z.string().min(2, "City must be at least 2 characters"),
   state: z.string().min(2, "State must be at least 2 characters"),
-  zipCode: z.string().min(5, "Zip code must be at least 5 characters"),
+  postalCode: z.string().min(5, "Zip code must be at least 5 characters"),
   country: z.string().min(2, "Country must be at least 2 characters"),
 });
 
@@ -35,6 +42,10 @@ type CheckoutFormValues = z.infer<typeof formSchema>;
 interface CheckoutFormProps {
   productPrice: string;
   productName: string;
+  productId: string;
+  storeUrl: string;
+  username: string;
+  storeName: string;
 }
 
 interface shippingAddress {
@@ -48,9 +59,10 @@ interface shippingAddress {
 
 
 
-export function CheckoutForm({ productPrice, productName }: CheckoutFormProps) {
+export function CheckoutForm({ productPrice, productName, productId, storeUrl, username, storeName }: CheckoutFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(formSchema),
@@ -62,10 +74,12 @@ export function CheckoutForm({ productPrice, productName }: CheckoutFormProps) {
       addressLine2: "",
       city: "",
       state: "",
-      zipCode: "",
-      country: "",
+      postalCode: "",
+      country: "India",
     },
   });
+
+  const searchParams = useSearchParams();
 
   // Load customer email from localStorage if available
   useEffect(() => {
@@ -91,7 +105,7 @@ export function CheckoutForm({ productPrice, productName }: CheckoutFormProps) {
           form.setValue("addressLine2", addressData.addressLine2);
           form.setValue("city", addressData.city);
           form.setValue("state", addressData.state);
-          form.setValue("zipCode", addressData.postalCode);
+          form.setValue("postalCode", addressData.postalCode);
           form.setValue("country", addressData.country);
         } catch (error) {
           // If it's not valid JSON, use it as a regular string
@@ -101,31 +115,103 @@ export function CheckoutForm({ productPrice, productName }: CheckoutFormProps) {
     }
   }, [form]);
 
-  function onSubmit(data: CheckoutFormValues) {
-    setIsSubmitting(true);
+  useEffect(() => {
+    // Load Razorpay SDK
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.async = true;
+    document.body.appendChild(script);
 
-    // Create a complete address object
-    const addressObject = {
-      addressLine1: data.addressLine1,
-      addressLine2: data.addressLine2,
-      city: data.city,
-      state: data.state,
-      zipCode: data.zipCode,
-      country: data.country
+    if (searchParams.get('success')) {
+      toast.success('Payment completed.');
+    }
+
+    if (searchParams.get('canceled')) {
+      toast.error('Something went wrong.');
+    }
+
+    return () => {
+      document.body.removeChild(script);
     };
+  }, [searchParams]);
 
-    // Save the complete address to localStorage
-    localStorage.setItem("customerShippingAddress", JSON.stringify(addressObject));
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
-    // In a real application, you would send this data to your backend
-    console.log("Form data:", data);
-
-    // Mock API call
-    setTimeout(() => {
+ async function onSubmit(formData: CheckoutFormValues) {
+    setIsSubmitting(true);
+    try {
+      const totalPrice = parseFloat(productPrice);
+      console.log("storeUrl",storeUrl)
+      const response = await fetch(`http://localhost:3000/api/f2022c6f-df72-4aa9-aa34-437c93103742/checkout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          productIds : [productId],
+          amount: totalPrice * 100,
+          ...formData
+        })
+      });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Server error: ${response.status} - ${errorText}`);
+      }
+      
+      const responseData = await response.json();
+      
+      // Razorpay API returns order directly, not nested under data property
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: responseData.amount, 
+        currency: responseData.currency,
+        name: storeName || "Store",
+        description: "Purchase Description",
+        order_id: responseData.id, // Razorpay returns id, not orderId
+        handler: async function (response: any) {
+            // Verify payment on server
+            const verifyResponse = await fetch(`http://localhost:3000/api/f2022c6f-df72-4aa9-aa34-437c93103742/verify-payment`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_signature: response.razorpay_signature
+              }),
+            });
+            console.log("verifyResponse",verifyResponse);
+            if (verifyResponse.ok) {
+              toast.success('Payment completed.');
+              router.push(`/${username}/${productId}/payment-status?username=${username}&productId=${productId}&success=true`);
+            } else {
+              toast.error('Payment verification failed.');
+              router.push(`/${username}/${productId}/payment-status?username=${username}&productId=${productId}&failed=true`);
+            }
+          },
+        prefill: {
+          name: formData.fullName,
+          email: formData.email,
+          contact: formData.phone
+        },
+        theme: {
+          color: "#000000",
+        },
+      };
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
+    } catch (error) {
+      console.error('Checkout error:', error);
+      toast.error('Something went wrong with the checkout process.');
+      router.push(`/${username}/${productId}/payment-status?username=${username}&productId=${productId}&failed=true`);
+    } finally {
       setIsSubmitting(false);
-      // Redirect to payment page
-      router.push("/payment");
-    }, 1000);
+    }
+   
   }
 
   return (
@@ -243,7 +329,7 @@ export function CheckoutForm({ productPrice, productName }: CheckoutFormProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
-                  name="zipCode"
+                  name="postalCode"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>ZIP / Postal Code</FormLabel>
