@@ -144,7 +144,7 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
     try {
       const totalPrice = parseFloat(productPrice);
       console.log("storeUrl",storeUrl)
-      const response = await fetch(`http://admin.pugly.store/api/f2022c6f-df72-4aa9-aa34-437c93103742/checkout`, {
+      const response = await fetch(`https://admin.pugly.store/api/f2022c6f-df72-4aa9-aa34-437c93103742/checkout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
