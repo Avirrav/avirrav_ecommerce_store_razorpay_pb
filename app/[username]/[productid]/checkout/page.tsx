@@ -33,7 +33,7 @@ export default async function CheckoutPage({ params }: CheckoutPageProps) {
       <main className="flex-grow pt-20 mt-8">
         <div className="neu-container">
           {/* Client component handles all the interactive form parts */}
-          <CheckoutForm productPrice={productPrice} productName={productName} productId={params.productid} storeUrl={store?.url} username={params.username} storeName={store?.name} />
+          <CheckoutForm productPrice={productPrice} productName={productName} productId={params.productid} storeUrl={store?.apiUrl} username={params.username} storeName={store?.name} />
         </div>
       </main>
       <Footer />
