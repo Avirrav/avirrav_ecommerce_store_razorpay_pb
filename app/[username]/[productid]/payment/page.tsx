@@ -4,14 +4,18 @@ import { Navbar } from "@/components/ui/navbar";
 import { Footer } from "@/components/footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 
 export default function PaymentPage() {
   const router = useRouter();
+  const params = useParams();
+  const username = params.username as string;
+  const productId = params.productid as string;
+  const storeUrl = process.env.NEXT_PUBLIC_API_URL || '';
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
+      <Navbar storeUrl={storeUrl} username={username} productId={productId} />
       <main className="flex-grow pt-20 mt-8">
         <div className="neu-container max-w-4xl mx-auto px-4">
           <Card className="border-2">
@@ -30,10 +34,10 @@ export default function PaymentPage() {
               
               <div className="flex justify-center">
                 <Button
-                  onClick={() => router.push("/")}
+                  onClick={() => router.push(`/${username}/${productId}`)}
                   className="mt-4"
                 >
-                  Return to Home
+                  Return to Product
                 </Button>
               </div>
             </CardContent>
