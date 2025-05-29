@@ -8,6 +8,8 @@ export const searchCustomer = async (email: string, storeUrl?: string): Promise<
     console.log("Customer not found");
     return null;
   }
+
+  
   
   const data = await res.json();
   if (!data || Object.keys(data).length === 0) {

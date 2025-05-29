@@ -46,6 +46,7 @@ interface CheckoutFormProps {
   storeUrl: string;
   username: string;
   storeName: string;
+  razorpayKeyId: string;
 }
 
 interface shippingAddress {
@@ -59,7 +60,7 @@ interface shippingAddress {
 
 
 
-export function CheckoutForm({ productPrice, productName, productId, storeUrl, username, storeName }: CheckoutFormProps) {
+export function CheckoutForm({ productPrice, productName, productId, storeUrl, username, storeName, razorpayKeyId }: CheckoutFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -143,7 +144,6 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
     setIsSubmitting(true);
     try {
       const totalPrice = parseFloat(productPrice);
-      console.log("storeUrl",storeUrl)
       const response = await fetch(`${storeUrl}/checkout`, {
         method: 'POST',
         headers: {
@@ -155,7 +155,6 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
           ...formData
         })
       });
-      
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`Server error: ${response.status} - ${errorText}`);
@@ -165,7 +164,7 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
       
       // Razorpay API returns order directly, not nested under data property
       const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        key: razorpayKeyId,
         amount: responseData.amount, 
         currency: responseData.currency,
         name: storeName || "Store",
@@ -184,7 +183,6 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
                 razorpay_signature: response.razorpay_signature
               }),
             });
-            console.log("verifyResponse",verifyResponse);
             if (verifyResponse.ok) {
               toast.success('Payment completed.');
               router.push(`/${username}/${productId}/payment-status?username=${username}&productId=${productId}&success=true`);
