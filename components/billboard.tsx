@@ -14,7 +14,7 @@ const BillboardPage: React.FC<BillboardProps> = ({ data }) => {
 
   return (
     <motion.div 
-      className="neu-card sm:mx-8 mt-8 mb-8 p-0 overflow-hidden relative"
+      className="neu-card sm:mx-0 mt-0 mb-0 p-0 overflow-hidden relative"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}

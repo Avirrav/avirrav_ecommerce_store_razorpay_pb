@@ -37,7 +37,7 @@ const PricingInfo: React.FC<PricingInfoProps> = ({ items, username, productId, s
             <span className="text-4xl font-black">₹{items[0].price}</span>
           </div>
           <BuyNowButton
-            className="w-full mb-4"
+            className="w-full mb-4  text-white border-4 border-black bg-[#FF6B6B] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-black tracking-wide"
             onClick={() => setOpen(true)}
           />
           

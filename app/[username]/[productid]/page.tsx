@@ -17,43 +17,55 @@ interface StorePageProps {
   };
 }
 
-
 const Home = async ({params}: StorePageProps) => {
   const store = await getStore(params.username);
   const products = await getProducts({ isFeatured: true }, store?.apiUrl);
   const product = await getProduct(params.productid, store?.apiUrl);
   const billboard = await getBillboard(store?.homeBillboardId, store?.apiUrl);
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-[#FFFAF0]">
       <Navbar storeUrl={store?.apiUrl} username={params.username} productId={params.productid} />
       <main className="flex-grow pt-20 mt-8">
         <div className="neu-container">
-          {/* Billboard section with matching border */}
-          <div className="border-2">
-            <BillboardPage data={billboard} />
+          {/* Billboard section */}
+          <div className="transform hover: translate-x-2 transition-transform duration-300 mb-8">
+            <div className="border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+              <BillboardPage data={billboard} />
+            </div>
           </div>
           
-          {/* Main-1 section with matching border width */}
-          <div className="grid grid-cols-1 border-2 border-t-0 lg:grid-cols-10">
-            <div className="lg:col-span-7 p-2 flex items-center justify-center border-b lg:border-b-0 lg:border-r">
-              <div className="w-full h-full">
+          {/* Product section */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-8">
+            {/* Image Gallery */}
+            <div className="lg:col-span-8 transform hover:translate-x-2 transition-transform duration-300">
+              <div className="border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white p-6">
                 <ImageGallery images={product.images} />
               </div>
             </div>
-            <div className="lg:col-span-3 p-4">
-              <PricingInfo items={[product]} username={params.username} productId={params.productid} storeUrl={store?.apiUrl} />
+            
+            {/* Pricing Info */}
+            <div className="lg:col-span-4 transform hover:-translate-x-2 transition-transform duration-300">
+              <div className="border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white">
+                <PricingInfo 
+                  items={[product]} 
+                  username={params.username} 
+                  productId={params.productid} 
+                  storeUrl={store?.apiUrl} 
+                />
+              </div>
             </div>
           </div>
           
-          {/* Rest of the sections maintain the connected borders */}
-          <div className="border-2 border-t-0">
-            <div className="p-4">
+          {/* Product Info */}
+          <div className="transform hover:translate-y-2 transition-transform duration-300 mb-8">
+            <div className="border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white p-8">
               <ProductInfo product={[product]} />
             </div>
           </div>
           
-          <div className="border-2 border-t-0">
-            <div className="p-4">
+          {/* Featured Products */}
+          <div className="transform hover:-translate-y-2 transition-transform duration-300">
+            <div className="border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white p-8">
               <FeaturedProducts products={products} />
             </div>
           </div>
