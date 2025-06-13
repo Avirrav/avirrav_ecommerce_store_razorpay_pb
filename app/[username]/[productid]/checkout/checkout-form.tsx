@@ -5,6 +5,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearchParams } from "next/navigation";
+import { CreditCard, Lock, Truck } from "lucide-react";
 
 import {
   Form,
@@ -16,7 +17,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 
 declare global {
@@ -58,12 +58,10 @@ interface shippingAddress {
   country: string;
 }
 
-
-
 export function CheckoutForm({ productPrice, productName, productId, storeUrl, username, storeName, razorpayKeyId }: CheckoutFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
+  const searchParams = useSearchParams();
 
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(formSchema),
@@ -80,24 +78,18 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
     },
   });
 
-  const searchParams = useSearchParams();
-
-  // Load customer email from localStorage if available
+  // Load customer data from localStorage
   useEffect(() => {
-    // Safe access to localStorage (only available in browser)
     if (typeof window !== 'undefined') {
       const savedEmail = localStorage.getItem("customerEmail");
-      if (savedEmail) {
-        form.setValue("email", savedEmail);
-      }
+      if (savedEmail) form.setValue("email", savedEmail);
+      
       const savedFullName = localStorage.getItem("customerFullName");
-      if (savedFullName) {
-        form.setValue("fullName", savedFullName);
-      }
+      if (savedFullName) form.setValue("fullName", savedFullName);
+      
       const savedPhone = localStorage.getItem("customerPhone");
-      if (savedPhone) {
-        form.setValue("phone", savedPhone);
-      }
+      if (savedPhone) form.setValue("phone", savedPhone);
+      
       const customerShippingAddress = localStorage.getItem("customerShippingAddress");
       if (customerShippingAddress && customerShippingAddress !== "") {
         try {
@@ -109,7 +101,6 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
           form.setValue("postalCode", addressData.postalCode);
           form.setValue("country", addressData.country);
         } catch (error) {
-          // If it's not valid JSON, use it as a regular string
           form.setValue("addressLine1", customerShippingAddress);
         }
       }
@@ -136,11 +127,7 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
     };
   }, [searchParams]);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
- async function onSubmit(formData: CheckoutFormValues) {
+  async function onSubmit(formData: CheckoutFormValues) {
     setIsSubmitting(true);
     try {
       const totalPrice = parseFloat(productPrice);
@@ -150,11 +137,12 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          productIds : [productId],
+          productIds: [productId],
           amount: totalPrice * 100,
           ...formData
         })
       });
+
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`Server error: ${response.status} - ${errorText}`);
@@ -162,42 +150,40 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
       
       const responseData = await response.json();
       
-      // Razorpay API returns order directly, not nested under data property
       const options = {
         key: razorpayKeyId,
         amount: responseData.amount, 
         currency: responseData.currency,
         name: storeName || "Store",
         description: "Purchase Description",
-        order_id: responseData.id, // Razorpay returns id, not orderId
+        order_id: responseData.id,
         handler: async function (response: any) {
-            // Verify payment on server
-            const verifyResponse = await fetch(`${storeUrl}/verify-payment`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_signature: response.razorpay_signature
-              }),
-            });
-            if (verifyResponse.ok) {
-              toast.success('Payment completed.');
-              router.push(`/${username}/${productId}/payment-status?username=${username}&productId=${productId}&success=true`);
-            } else {
-              toast.error('Payment verification failed.');
-              router.push(`/${username}/${productId}/payment-status?username=${username}&productId=${productId}&failed=true`);
-            }
-          },
+          const verifyResponse = await fetch(`${storeUrl}/verify-payment`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature
+            }),
+          });
+          if (verifyResponse.ok) {
+            toast.success('Payment completed.');
+            router.push(`/${username}/${productId}/payment-status?username=${username}&productId=${productId}&success=true`);
+          } else {
+            toast.error('Payment verification failed.');
+            router.push(`/${username}/${productId}/payment-status?username=${username}&productId=${productId}&failed=true`);
+          }
+        },
         prefill: {
           name: formData.fullName,
           email: formData.email,
           contact: formData.phone
         },
         theme: {
-          color: "#000000",
+          color: "#008060",
         },
       };
       const razorpay = new window.Razorpay(options);
@@ -209,75 +195,28 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
     } finally {
       setIsSubmitting(false);
     }
-   
   }
 
   return (
-    <>
-      <div className="border-2">
-        <div className="p-4">
-          <h3 className="text-lg font-semibold mb-4">Customer Information</h3>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="fullName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Full Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="John Doe" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input placeholder="john.doe@example.com" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="phone"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Phone Number</FormLabel>
-                      <FormControl>
-                        <Input placeholder="+1 (555) 123-4567" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </form>
-          </Form>
+    <div className="max-w-4xl mx-auto space-y-8">
+      {/* Customer Information */}
+      <div className="polaris-card p-6">
+        <div className="flex items-center space-x-2 mb-6">
+          <div className="w-8 h-8 bg-[#008060] rounded-full flex items-center justify-center text-white font-semibold">1</div>
+          <h2 className="polaris-text-heading-md">Customer Information</h2>
         </div>
-      </div>
-
-      <div className="border-2 border-t-0">
-        <div className="p-4">
-          <h3 className="text-lg font-semibold mb-4">Shipping Address</h3>
-          <Form {...form}>
-            <form className="space-y-4">
+        
+        <Form {...form}>
+          <form className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
-                name="addressLine1"
+                name="fullName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Street Address</FormLabel>
+                    <FormLabel>Full Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="123 Main St" {...field} />
+                      <Input placeholder="John Doe" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -285,114 +224,177 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
               />
               <FormField
                 control={form.control}
-                name="addressLine2"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Landmark</FormLabel>
+                    <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="Near the" {...field} />
+                      <Input placeholder="john.doe@example.com" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="city"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>City</FormLabel>
-                      <FormControl>
-                        <Input placeholder="New York" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="state"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>State / Province</FormLabel>
-                      <FormControl>
-                        <Input placeholder="NY" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="postalCode"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>ZIP / Postal Code</FormLabel>
-                      <FormControl>
-                        <Input placeholder="10001" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="country"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Country</FormLabel>
-                      <FormControl>
-                        <Input placeholder="United States" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </form>
-          </Form>
-        </div>
+            </div>
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phone Number</FormLabel>
+                  <FormControl>
+                    <Input placeholder="+91 12345 67890" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
       </div>
 
-      <div className="border-2 border-t-0">
-        <div className="p-4">
-          <h3 className="text-lg font-semibold mb-4">Order Summary</h3>
-          <div className="space-y-4">
-          <div className="flex justify-between text-sm">
-              <span>Product</span>
-              <span>{productName}</span>
+      {/* Shipping Address */}
+      <div className="polaris-card p-6">
+        <div className="flex items-center space-x-2 mb-6">
+          <div className="w-8 h-8 bg-[#008060] rounded-full flex items-center justify-center text-white font-semibold">2</div>
+          <h2 className="polaris-text-heading-md">Shipping Address</h2>
+        </div>
+        
+        <Form {...form}>
+          <form className="space-y-6">
+            <FormField
+              control={form.control}
+              name="addressLine1"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Street Address</FormLabel>
+                  <FormControl>
+                    <Input placeholder="123 Main Street" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="addressLine2"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Landmark</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Near the park" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="city"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>City</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Mumbai" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="state"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>State</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Maharashtra" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            <div className="flex justify-between text-sm">
-              <span>Subtotal</span>
-              <span>₹{productPrice}</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="postalCode"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Postal Code</FormLabel>
+                    <FormControl>
+                      <Input placeholder="400001" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="country"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Country</FormLabel>
+                    <FormControl>
+                      <Input placeholder="India" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            <div className="flex justify-between text-sm">
-              <span>Shipping</span>
-              <span>Free</span>
+          </form>
+        </Form>
+      </div>
+
+      {/* Order Summary */}
+      <div className="polaris-card p-6">
+        <div className="flex items-center space-x-2 mb-6">
+          <div className="w-8 h-8 bg-[#008060] rounded-full flex items-center justify-center text-white font-semibold">3</div>
+          <h2 className="polaris-text-heading-md">Order Summary</h2>
+        </div>
+        
+        <div className="space-y-4">
+          <div className="flex justify-between items-center py-3 border-b border-gray-100">
+            <span className="polaris-text-body">{productName}</span>
+            <span className="font-medium">₹{productPrice}</span>
+          </div>
+          <div className="flex justify-between items-center py-3 border-b border-gray-100">
+            <div className="flex items-center space-x-2">
+              <Truck className="w-4 h-4 text-[#008060]" />
+              <span className="polaris-text-body">Shipping</span>
             </div>
-            <Separator className="my-2" />
-            <div className="flex justify-between font-semibold text-lg">
-              <span>Total to Pay</span>
-              <span>₹{productPrice}</span>
-            </div>
+            <span className="font-medium text-[#008060]">Free</span>
+          </div>
+          <div className="flex justify-between items-center py-3 text-lg font-semibold">
+            <span>Total</span>
+            <span>₹{productPrice}</span>
           </div>
         </div>
       </div>
 
-      <div className="border-2 border-t-0">
-        <div className="p-4">
-          <Button
-            onClick={form.handleSubmit(onSubmit)}
-            className="w-full"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "Processing..." : "Proceed to Payment"}
-          </Button>
+      {/* Payment */}
+      <div className="polaris-card p-6">
+        <div className="flex items-center space-x-2 mb-6">
+          <div className="w-8 h-8 bg-[#008060] rounded-full flex items-center justify-center text-white font-semibold">4</div>
+          <h2 className="polaris-text-heading-md">Payment</h2>
         </div>
+        
+        <div className="flex items-center space-x-2 mb-4 text-sm text-gray-600">
+          <Lock className="w-4 h-4" />
+          <span>Your payment information is secure and encrypted</span>
+        </div>
+        
+        <Button
+          onClick={form.handleSubmit(onSubmit)}
+          className="w-full polaris-button-primary py-3 text-base font-medium flex items-center justify-center space-x-2"
+          disabled={isSubmitting}
+        >
+          <CreditCard className="w-5 h-5" />
+          <span>{isSubmitting ? "Processing..." : "Complete Payment"}</span>
+        </Button>
       </div>
-    </>
+    </div>
   );
 }

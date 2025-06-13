@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { CheckCircle, XCircle } from 'lucide-react';
+import { CheckCircle, XCircle, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 export default function PaymentStatus() {
   const searchParams = useSearchParams();
@@ -12,7 +13,6 @@ export default function PaymentStatus() {
   const [productId, setProductId] = useState<string | null>(null);
 
   useEffect(() => {
-    // Get status from URL params
     const successParam = searchParams.get('success');
     const failedParam = searchParams.get('failed');
     const usernameParam = searchParams.get('username');
@@ -29,43 +29,53 @@ export default function PaymentStatus() {
   }, [searchParams]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen w-full bg-gray-100">
-      <div className="w-full max-w-md border-4 border-black p-8 space-y-6 bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <motion.div 
+        className="polaris-card p-8 max-w-md w-full text-center"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         {status === 'success' ? (
           <>
-            <div className="flex justify-center">
-              <CheckCircle className="w-20 h-20 text-green-500" />
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle className="w-8 h-8 text-green-600" />
             </div>
-            <h1 className="text-3xl font-bold text-center uppercase tracking-tight">PAYMENT SUCCESSFUL!</h1>
-            <p className="text-center font-mono border-l-4 border-black pl-4">
-              Your order has been confirmed and will be processed soon.
+            <h1 className="polaris-text-heading-lg mb-4 text-green-900">Payment Successful!</h1>
+            <p className="polaris-text-body mb-8 text-gray-600">
+              Thank you for your purchase. Your order has been confirmed and will be processed soon.
             </p>
           </>
         ) : status === 'failed' ? (
           <>
-            <div className="flex justify-center">
-              <XCircle className="w-20 h-20 text-red-500" />
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <XCircle className="w-8 h-8 text-red-600" />
             </div>
-            <h1 className="text-3xl font-bold text-center uppercase tracking-tight">PAYMENT FAILED</h1>
-            <p className="text-center font-mono border-l-4 border-black pl-4">
-              There was an issue processing your payment. Please try again.
+            <h1 className="polaris-text-heading-lg mb-4 text-red-900">Payment Failed</h1>
+            <p className="polaris-text-body mb-8 text-gray-600">
+              There was an issue processing your payment. Please try again or contact support.
             </p>
           </>
         ) : (
-          <div className="p-8 border-4 border-dashed border-black">
-            <p className="text-center font-mono text-xl">LOADING PAYMENT STATUS...</p>
-          </div>
+          <>
+            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+              <div className="w-8 h-8 bg-gray-300 rounded-full" />
+            </div>
+            <h1 className="polaris-text-heading-lg mb-4">Processing...</h1>
+            <p className="polaris-text-body mb-8 text-gray-600">
+              Please wait while we confirm your payment status.
+            </p>
+          </>
         )}
 
-        <div className="pt-6">
-          <Link 
-            href={`/${username}/${productId}`}
-            className="block w-full py-3 text-center text-white bg-black border-2 border-black transform hover:-translate-y-1 hover:translate-x-1 transition-transform font-bold uppercase"
-          >
-            Return to Product
-          </Link>
-        </div>
-      </div>
+        <Link 
+          href={`/${username}/${productId}`}
+          className="inline-flex items-center space-x-2 polaris-button-primary"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Return to Product</span>
+        </Link>
+      </motion.div>
     </div>
   );
-} 
+}

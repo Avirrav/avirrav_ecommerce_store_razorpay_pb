@@ -1,27 +1,35 @@
+'use client';
+
+import { motion } from "framer-motion";
+
 interface ProductCardProps {
   title: string;
   price: number;
   image: string;
   href: string;
-  
 }
 
 export function ProductCard({ title, price, image, href }: ProductCardProps) {
   return (
-    <a href={href} className="block group cursor-pointer transform transition-all duration-300 hover:translate-y-[-8px]">
-      <div className="border-4 border-black bg-white p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-        <div className="aspect-square relative mb-4 overflow-hidden border-2 border-black">
+    <motion.a 
+      href={href} 
+      className="block group"
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.2 }}
+    >
+      <div className="polaris-card overflow-hidden group-hover:shadow-md transition-shadow duration-200">
+        <div className="aspect-square bg-gray-50 overflow-hidden">
           <img 
             src={image} 
             alt={title}
-            className="object-cover w-full h-full transform transition-transform duration-300 group-hover:scale-110"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </div>
-        <div>
-          <h3 className="font-bold text-lg mb-2">{title}</h3>
-          <p className="text-2xl font-black text-[#FF6B6B]">₹{price}</p>
+        <div className="p-4">
+          <h3 className="font-medium text-gray-900 mb-2 line-clamp-2">{title}</h3>
+          <p className="text-lg font-semibold text-[#008060]">₹{price}</p>
         </div>
       </div>
-    </a>
+    </motion.a>
   );
 }

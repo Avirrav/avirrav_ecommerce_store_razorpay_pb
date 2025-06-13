@@ -1,8 +1,10 @@
 import { Footer } from "@/components/footer";
 import { CheckoutForm } from "./checkout-form";
-import { ContinueShoppingButton } from "./continue-shopping-button";
+import { Navbar } from "@/components/ui/navbar";
 import getProduct from "@/actions/getProduct";
 import getStore from "@/actions/getStore";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 interface CheckoutPageProps {
   params: {
@@ -16,25 +18,42 @@ export default async function CheckoutPage({ params }: CheckoutPageProps) {
   const product = await getProduct(params.productid, store?.apiUrl);
   const productPrice = product?.price;
   const productName = product?.name;
+
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Custom navbar with checkout headline and continue shopping button */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-background">
-        <div className="neu-container py-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold">Checkout</h1>
-            <ContinueShoppingButton />
+    <div className="min-h-screen bg-gray-50">
+      <Navbar storeUrl={store?.apiUrl} username={params.username} productId={params.productid} />
+      
+      <main className="pt-16">
+        {/* Header */}
+        <div className="bg-white border-b border-gray-200">
+          <div className="polaris-container py-6">
+            <div className="flex items-center space-x-4">
+              <Link 
+                href={`/${params.username}/${params.productid}`}
+                className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>Back to product</span>
+              </Link>
+              <div className="w-px h-6 bg-gray-300" />
+              <h1 className="polaris-text-heading-lg">Checkout</h1>
+            </div>
           </div>
         </div>
-        <div className="h-[3px] bg-[rgb(var(--border-rgb))]" />
-      </div>
-      
-      <main className="flex-grow pt-20 mt-8">
-        <div className="neu-container">
-          {/* Client component handles all the interactive form parts */}
-          <CheckoutForm productPrice={productPrice} productName={productName} productId={params.productid} storeUrl={store?.apiUrl} username={params.username} storeName={store?.name} razorpayKeyId={store?.razorpayKeyId} />
+        
+        <div className="polaris-container py-8">
+          <CheckoutForm 
+            productPrice={productPrice} 
+            productName={productName} 
+            productId={params.productid} 
+            storeUrl={store?.apiUrl} 
+            username={params.username} 
+            storeName={store?.name} 
+            razorpayKeyId={store?.razorpayKeyId} 
+          />
         </div>
       </main>
+      
       <Footer />
     </div>
   );

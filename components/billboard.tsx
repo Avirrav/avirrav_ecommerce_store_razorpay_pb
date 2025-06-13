@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React from "react";
 import { motion } from "framer-motion";
@@ -14,33 +14,41 @@ const BillboardPage: React.FC<BillboardProps> = ({ data }) => {
 
   return (
     <motion.div 
-      className="neu-card sm:mx-0 mt-0 mb-0 p-0 overflow-hidden relative"
+      className="polaris-card relative overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Background Image or Color */}
+      {/* Background Image or Gradient */}
       {hasImage ? (
         <div 
           className="absolute inset-0 w-full h-full bg-cover bg-center"
           style={{ backgroundImage: `url(${data.imageUrl})` }}
         />
       ) : (
-        <div className="absolute inset-0 w-full h-full bg-[rgb(var(--accent-rgb))]" />
+        <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#008060] to-[#00a47c]" />
       )}
       
-      {/* Overlay for better text visibility (only for images) */}
-      {hasImage && <div className="absolute inset-0 bg-black/50" />}
+      {/* Overlay for better text visibility */}
+      <div className="absolute inset-0 bg-black/30" />
       
-      <div className="neu-container py-28 px-4 flex flex-col items-center justify-center text-center relative z-10">
+      <div className="relative z-10 px-8 py-24 text-center">
         <motion.h1 
-          className="text-5xl md:text-7xl font-black mb-6 tracking-tighter text-white"
+          className="text-4xl md:text-6xl font-bold text-white mb-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           {hasLabel ? data.label : "Welcome to our store"}
         </motion.h1>
+        <motion.p
+          className="text-xl text-white/90 max-w-2xl mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          Discover our curated collection of premium products
+        </motion.p>
       </div>
     </motion.div>
   );

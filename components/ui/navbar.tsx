@@ -1,78 +1,101 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useTheme } from "next-themes";
-import { MoonIcon, SunIcon } from "lucide-react";
-import { CheckoutDialog } from "@/components/checkout-dialog";
-import { BuyNowButton } from "@/components/buy-now-button";
-import getProduct from "@/actions/getProduct";
-import { Product } from "@/types";
+import { useState } from 'react';
+import { Search, ShoppingBag, Menu, X } from 'lucide-react';
+import { Button } from './button';
 
 interface NavbarProps {
-  storeUrl: string;
-  username: string;
-  productId: string;
+  storeUrl?: string;
+  username?: string;
+  productId?: string;
 }
 
 export function Navbar({ storeUrl, username, productId }: NavbarProps) {
-  const { theme, setTheme } = useTheme();
-  const router = useRouter();
-  const [open, setOpen] = useState(false);
-  const [product, setProduct] = useState<Product | null>(null);
-
-  useEffect(() => {
-    const fetchProduct = async () => {
-      const product = await getProduct(productId, storeUrl);
-      setProduct(product);
-    };
-    fetchProduct();
-  }, [productId, storeUrl]);
-
-  const handleCheckout = (email: string) => {
-    console.log("Proceeding to checkout with email:", email);
-  };
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#FFFAF0] border-b-4 border-black">
-      <div className="neu-container py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            {/* Hexagonal Price */}
-            <div className="transform hover:rotate-6 transition-transform duration-300">
-              <div className="bg-[#FF6B6B] text-white p-4 clip-hex border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                <span className="font-black text-lg">₹{product?.price || '---'}</span>
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+      <div className="polaris-container">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <div className="flex items-center">
+            <a href={`/${username}`} className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-[#008060] rounded-md flex items-center justify-center">
+                <ShoppingBag className="w-5 h-5 text-white" />
               </div>
-            </div>
-            {/* Product Name */}
-            <h1 className="text-2xl font-black tracking-tight">{product?.name || 'Loading...'}</h1>
+              <span className="text-xl font-semibold text-gray-900">Store</span>
+            </a>
           </div>
 
-          <div className="flex items-center gap-6">
-            <button
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="p-3 border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[-4px] transition-transform duration-300"
-            >
-              {theme === "dark" ? <SunIcon className="w-6 h-6" /> : <MoonIcon className="w-6 h-6" />}
-            </button>
-            <div className="transform hover:translate-y-[-4px] transition-transform duration-300">
-              <BuyNowButton
-                className="px-8 py-3 text-white border-4 border-black bg-[#FF6B6B] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-black tracking-wide"
-                onClick={() => setOpen(true)}
-              />
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            <a href={`/${username}`} className="text-gray-700 hover:text-gray-900 font-medium transition-colors">
+              Home
+            </a>
+            <a href="#" className="text-gray-700 hover:text-gray-900 font-medium transition-colors">
+              Products
+            </a>
+            <a href="#" className="text-gray-700 hover:text-gray-900 font-medium transition-colors">
+              About
+            </a>
+            <a href="#" className="text-gray-700 hover:text-gray-900 font-medium transition-colors">
+              Contact
+            </a>
+          </div>
+
+          {/* Search and Actions */}
+          <div className="flex items-center space-x-4">
+            <div className="hidden md:flex items-center">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#008060] focus:border-transparent w-64"
+                />
+              </div>
             </div>
+            
+            {/* Mobile menu button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="md:hidden"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </Button>
           </div>
         </div>
+
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className="md:hidden border-t border-gray-200 py-4">
+            <div className="flex flex-col space-y-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#008060] focus:border-transparent"
+                />
+              </div>
+              <a href={`/${username}`} className="text-gray-700 hover:text-gray-900 font-medium py-2">
+                Home
+              </a>
+              <a href="#" className="text-gray-700 hover:text-gray-900 font-medium py-2">
+                Products
+              </a>
+              <a href="#" className="text-gray-700 hover:text-gray-900 font-medium py-2">
+                About
+              </a>
+              <a href="#" className="text-gray-700 hover:text-gray-900 font-medium py-2">
+                Contact
+              </a>
+            </div>
+          </div>
+        )}
       </div>
-      
-      <CheckoutDialog 
-        open={open} 
-        onOpenChange={setOpen} 
-        onCheckout={handleCheckout} 
-        storeUrl={storeUrl}
-        username={username}
-        productId={productId}
-      />
     </nav>
   );
 }
