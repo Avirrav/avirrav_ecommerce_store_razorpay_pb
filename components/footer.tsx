@@ -2,125 +2,56 @@
 
 import { Mail, Phone, MapPin, Heart } from "lucide-react";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import getStore from "@/actions/getStore";
+import { Store } from "@/types";
 
-export function Footer() {
+interface FooterProps {
+  username?: string;
+}
+
+export function Footer({ username }: FooterProps) {
+  const [store, setStore] = useState<Store | null>(null);
+
+  useEffect(() => {
+    const fetchStore = async () => {
+      if (username) {
+        const storeData = await getStore(username);
+        setStore(storeData);
+      }
+    };
+
+    fetchStore();
+  }, [username]);
+
   return (
-    <footer className="bg-white border-t border-gray-200 mt-20">
+    <footer className="bg-[#1a1a1a]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-          {/* Company Info */}
-          <motion.div 
-            className="space-y-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-[#008060] rounded-xl flex items-center justify-center">
-                <span className="text-white text-lg font-bold">S</span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900">Store</h3>
-            </div>
-            <p className="text-gray-600 leading-relaxed">
-              Your trusted destination for premium quality products with exceptional service and unmatched style.
+        {/* Thank you message and Powered by section */}
+        <div className=" pt-8">
+          <div className="text-center space-y-4">
+            <p className="text-lg font-medium text-white">
+              © 2024 {store?.name || "Store"}. Thank you for shopping.
             </p>
-            <div className="flex items-center space-x-2 text-sm text-gray-500">
-              <span>Made with</span>
-              <Heart className="w-4 h-4 text-red-500 fill-current" />
-              <span>in India</span>
-            </div>
-          </motion.div>
-
-          {/* Quick Links */}
-          <motion.div 
-            className="space-y-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            <h3 className="text-lg font-semibold text-gray-900">Quick Links</h3>
-            <div className="space-y-3">
-              {['About Us', 'Products', 'Collections', 'New Arrivals', 'Sale'].map((link) => (
-                <a 
-                  key={link}
-                  href="#" 
-                  className="block text-gray-600 hover:text-gray-900 transition-colors duration-200 hover:translate-x-1 transform"
-                >
-                  {link}
-                </a>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Customer Service */}
-          <motion.div 
-            className="space-y-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <h3 className="text-lg font-semibold text-gray-900">Customer Care</h3>
-            <div className="space-y-3">
-              {['Shipping Info', 'Returns & Exchanges', 'Size Guide', 'Track Your Order', 'Help Center'].map((link) => (
-                <a 
-                  key={link}
-                  href="#" 
-                  className="block text-gray-600 hover:text-gray-900 transition-colors duration-200 hover:translate-x-1 transform"
-                >
-                  {link}
-                </a>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Contact Info */}
-          <motion.div 
-            className="space-y-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            <h3 className="text-lg font-semibold text-gray-900">Get in Touch</h3>
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                  <Mail className="w-4 h-4 text-gray-600" />
-                </div>
-                <span className="text-gray-600">hello@store.com</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                  <Phone className="w-4 h-4 text-gray-600" />
-                </div>
-                <span className="text-gray-600">+91 12345 67890</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                  <MapPin className="w-4 h-4 text-gray-600" />
-                </div>
-                <span className="text-gray-600">Mumbai, India</span>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-
-        <div className="border-t border-gray-200 mt-12 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <p className="text-gray-600">
-              © 2024 Store. All rights reserved.
+            <p className="text-sm text-gray-400">
+              Powered by <span className="font-semibold text-[#008060]">Pugly</span>
             </p>
+          </div>
+
+          <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 mt-8">
             <div className="flex space-x-8">
               {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map((link) => (
-                <a 
+                <a
                   key={link}
-                  href="#" 
-                  className="text-gray-600 hover:text-gray-900 transition-colors duration-200 text-sm"
+                  href="#"
+                  className="text-gray-400 hover:text-white transition-colors duration-200 text-sm"
                 >
                   {link}
                 </a>
               ))}
             </div>
           </div>
+
         </div>
       </div>
     </footer>

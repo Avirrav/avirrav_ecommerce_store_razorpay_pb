@@ -20,7 +20,6 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
 
   const specifications = [
     { label: "Category", value: productData.category.name },
-    { label: "Origin", value: "Made in India" }
   ];
 
   return (

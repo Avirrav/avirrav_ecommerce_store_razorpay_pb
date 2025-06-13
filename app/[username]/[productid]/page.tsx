@@ -24,47 +24,55 @@ const Home = async ({ params }: StorePageProps) => {
   const billboard = await getBillboard(store?.homeBillboardId, store?.apiUrl);
 
   return (
-    <div className="min-h-screen bg-[#fafbfc]">
-      <Navbar storeUrl={store?.apiUrl} username={params.username} productId={params.productid} />
+    <div className="min-h-screen bg-[#1a1a1a] flex flex-col">
+      {/* Top Section - Navbar */}
+      <div className="flex-shrink-0">
+        <Navbar storeUrl={store?.apiUrl} username={params.username} productId={params.productid} />
+      </div>
       
-      <main className="pt-16">
-        {/* Billboard section */}
-        <div className="polaris-container py-8">
-          <BillboardPage data={billboard} />
-        </div>
-        
-        {/* Product section */}
-        <div className="polaris-container py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Image Gallery */}
-            <div>
-              <ImageGallery images={product.images} />
-            </div>
-            
-            {/* Product Info and Pricing */}
-            <div>
-              <PricingInfo 
-                items={[product]} 
-                username={params.username} 
-                productId={params.productid} 
-                storeUrl={store?.apiUrl} 
-              />
-            </div>
+      {/* Middle Section - Main Content */}
+      <div className="flex-grow pt-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="bg-white rounded-3xl shadow-2xl overflow-hidden min-h-[calc(100vh-8rem)]">
+            <main className="mt-8 p-8">
+              {/* Product section */}
+              <div className="mb-12">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                  {/* Image Gallery */}
+                  <div>
+                    <ImageGallery images={product.images} />
+                  </div>
+                  
+                  {/* Product Info and Pricing */}
+                  <div>
+                    <PricingInfo 
+                      items={[product]} 
+                      username={params.username} 
+                      productId={params.productid} 
+                      storeUrl={store?.apiUrl} 
+                    />
+                  </div>
+                </div>
+              </div>
+              
+              {/* Product Details */}
+              <div className="mb-12">
+                <ProductInfo product={[product]} />
+              </div>
+              
+              {/* Featured Products */}
+              <div className="mb-8">
+                <FeaturedProducts products={products} />
+              </div>
+            </main>
           </div>
         </div>
-        
-        {/* Product Details */}
-        <div className="polaris-container py-8">
-          <ProductInfo product={[product]} />
-        </div>
-        
-        {/* Featured Products */}
-        <div className="polaris-container py-8">
-          <FeaturedProducts products={products} />
-        </div>
-      </main>
+      </div>
       
-      <Footer />
+      {/* Bottom Section - Footer */}
+      <div className="flex-shrink-0">
+        <Footer username={params.username} />
+      </div>
     </div>
   );
 };

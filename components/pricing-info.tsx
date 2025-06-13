@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { CheckoutDialog } from "./checkout-dialog";
 import { motion } from "framer-motion";
-import { ShoppingBag, Shield, Truck, RefreshCw } from "lucide-react";
+import { ShoppingBag, Shield, Truck } from "lucide-react";
 import { Product } from "@/types";
 
 interface PricingInfoProps {
@@ -37,11 +37,6 @@ const PricingInfo: React.FC<PricingInfoProps> = ({ items, username, productId, s
           <span className="px-2 py-1 bg-red-100 text-red-800 text-sm font-medium rounded">20% OFF</span>
         </div>
       </div>
-
-      {/* Short Description */}
-      <p className="text-gray-600 leading-relaxed">
-        {product.description || "Premium quality product crafted with attention to detail and designed for everyday comfort and style."}
-      </p>
 
       {/* Color Selection */}
       <div>
@@ -88,34 +83,33 @@ const PricingInfo: React.FC<PricingInfoProps> = ({ items, username, productId, s
 
       {/* Buy Now Button */}
       <motion.button
-        className="w-full bg-gray-900 hover:bg-gray-800 text-white py-4 text-base font-semibold rounded-lg transition-colors flex items-center justify-center space-x-2 shadow-lg"
+        className="w-full bg-[#008060] hover:bg-[#004c3f] text-white py-4 text-base font-semibold rounded-lg transition-colors flex items-center justify-center space-x-2 shadow-lg"
         onClick={() => setOpen(true)}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
       >
         <ShoppingBag className="w-5 h-5" />
-        <span>Add to Cart</span>
+        <span>Buy Now</span>
       </motion.button>
 
-      {/* Features */}
-      <div className="space-y-4 pt-6 border-t border-gray-200">
-        <div className="flex items-center space-x-3 text-sm text-gray-600">
-          <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-            <Truck className="w-4 h-4 text-green-600" />
+      {/* Payment & Delivery Badges */}
+      <div className="flex flex-col sm:flex-row gap-3 pt-4">
+        <div className="flex items-center space-x-3 bg-green-50 px-4 py-3 rounded-lg border border-green-200 flex-1">
+          <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+            <Shield className="w-4 h-4 text-green-600" />
           </div>
-          <span>Free shipping on orders over ₹500</span>
+          <div>
+            <p className="text-sm font-medium text-green-900">Secured Payment</p>
+          </div>
         </div>
-        <div className="flex items-center space-x-3 text-sm text-gray-600">
-          <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-            <RefreshCw className="w-4 h-4 text-blue-600" />
+        
+        <div className="flex items-center space-x-3 bg-blue-50 px-4 py-3 rounded-lg border border-blue-200 flex-1">
+          <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+            <Truck className="w-4 h-4 text-blue-600" />
           </div>
-          <span>30-day return policy</span>
-        </div>
-        <div className="flex items-center space-x-3 text-sm text-gray-600">
-          <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-            <Shield className="w-4 h-4 text-purple-600" />
+          <div>
+            <p className="text-sm font-medium text-blue-900">Free Delivery</p>  
           </div>
-          <span>2-year warranty included</span>
         </div>
       </div>
 
