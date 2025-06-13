@@ -142,8 +142,6 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
           },
           body: JSON.stringify({
             productIds: [productId],
-            amount: totalPrice * 100,
-            paymentMethod: 'cod',
             ...formData
           })
         });
@@ -154,7 +152,7 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
         }
         
         toast.success('Order placed successfully!');
-        router.push(`/${username}/${productId}/payment-status?username=${username}&productId=${productId}&success=true&method=cod`);
+        router.push(`/${username}/${productId}/payment-status?username=${username}&productId=${productId}&cod=true`);
         return;
       }
 

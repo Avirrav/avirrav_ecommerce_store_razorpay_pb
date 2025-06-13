@@ -1,7 +1,6 @@
 import { Customer } from "@/types";
 
 export const searchCustomer = async (email: string, storeUrl?: string): Promise<Customer | null> => {
-    console.log(storeUrl);
   const res = await fetch(`${storeUrl || process.env.NEXT_PUBLIC_API_URL}/customers/search?email=${email}`);
   
   if (!res.ok) {
