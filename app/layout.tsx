@@ -4,8 +4,8 @@ import { spaceGrotesk } from '@/lib/fonts';
 import { ThemeProvider } from '@/components/theme-provider';
 
 export const metadata: Metadata = {
-  title: 'Neubrutalism Store',
-  description: 'A modern store with neubrutalism design',
+  title: 'Your Shopping Destination',
+  description: 'A modern store with fast checkout, secure payments, and free delivery.',
 };
 
 export default function RootLayout({

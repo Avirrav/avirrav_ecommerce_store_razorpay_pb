@@ -5,7 +5,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearchParams } from "next/navigation";
-import { CreditCard, Lock, Truck } from "lucide-react";
+import { CreditCard, Lock, Truck, Banknote } from "lucide-react";
 
 import {
   Form,
@@ -61,6 +61,7 @@ interface shippingAddress {
 export function CheckoutForm({ productPrice, productName, productId, storeUrl, username, storeName, razorpayKeyId }: CheckoutFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<'online' | 'cod'>('online');
   const searchParams = useSearchParams();
 
   const form = useForm<CheckoutFormValues>({
@@ -131,6 +132,33 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
     setIsSubmitting(true);
     try {
       const totalPrice = parseFloat(productPrice);
+      
+      if (paymentMethod === 'cod') {
+        // Handle Cash on Delivery
+        const response = await fetch(`${storeUrl}/checkout/cod`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            productIds: [productId],
+            amount: totalPrice * 100,
+            paymentMethod: 'cod',
+            ...formData
+          })
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`Server error: ${response.status} - ${errorText}`);
+        }
+        
+        toast.success('Order placed successfully!');
+        router.push(`/${username}/${productId}/payment-status?username=${username}&productId=${productId}&success=true&method=cod`);
+        return;
+      }
+
+      // Handle Online Payment
       const response = await fetch(`${storeUrl}/checkout`, {
         method: 'POST',
         headers: {
@@ -219,7 +247,7 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
                     <FormItem>
                       <FormLabel className="text-sm font-medium text-gray-900">Full Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="John Doe" className="polaris-text-field" {...field} />
+                        <Input placeholder="John Doe" className="polaris-text-field text-gray-900" {...field} />
                       </FormControl>
                       <FormMessage className="text-xs text-red-600 mt-1" />
                     </FormItem>
@@ -232,7 +260,12 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
                     <FormItem>
                       <FormLabel className="text-sm font-medium text-gray-900">Email</FormLabel>
                       <FormControl>
-                        <Input placeholder="john.doe@example.com" className="polaris-text-field" {...field} />
+                        <Input 
+                          placeholder="john.doe@example.com" 
+                          className="polaris-text-field text-gray-900 placeholder:text-gray-500" 
+                          style={{ color: '#111827' }}
+                          {...field} 
+                        />
                       </FormControl>
                       <FormMessage className="text-xs text-red-600 mt-1" />
                     </FormItem>
@@ -246,7 +279,7 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
                   <FormItem>
                     <FormLabel className="text-sm font-medium text-gray-900">Phone Number</FormLabel>
                     <FormControl>
-                      <Input placeholder="+91 12345 67890" className="polaris-text-field" {...field} />
+                      <Input placeholder="+91 12345 67890" className="polaris-text-field text-gray-900" {...field} />
                     </FormControl>
                     <FormMessage className="text-xs text-red-600 mt-1" />
                   </FormItem>
@@ -276,7 +309,7 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
                   <FormItem>
                     <FormLabel className="text-sm font-medium text-gray-900">Street Address</FormLabel>
                     <FormControl>
-                      <Input placeholder="123 Main Street" className="polaris-text-field" {...field} />
+                      <Input placeholder="123 Main Street" className="polaris-text-field text-gray-900" {...field} />
                     </FormControl>
                     <FormMessage className="text-xs text-red-600 mt-1" />
                   </FormItem>
@@ -289,7 +322,7 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
                   <FormItem>
                     <FormLabel className="text-sm font-medium text-gray-900">Landmark</FormLabel>
                     <FormControl>
-                      <Input placeholder="Near the park" className="polaris-text-field" {...field} />
+                      <Input placeholder="Near the park" className="polaris-text-field text-gray-900" {...field} />
                     </FormControl>
                     <FormMessage className="text-xs text-red-600 mt-1" />
                   </FormItem>
@@ -303,7 +336,7 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
                     <FormItem>
                       <FormLabel className="text-sm font-medium text-gray-900">City</FormLabel>
                       <FormControl>
-                        <Input placeholder="Mumbai" className="polaris-text-field" {...field} />
+                        <Input placeholder="Mumbai" className="polaris-text-field text-gray-900" {...field} />
                       </FormControl>
                       <FormMessage className="text-xs text-red-600 mt-1" />
                     </FormItem>
@@ -316,7 +349,7 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
                     <FormItem>
                       <FormLabel className="text-sm font-medium text-gray-900">State</FormLabel>
                       <FormControl>
-                        <Input placeholder="Maharashtra" className="polaris-text-field" {...field} />
+                        <Input placeholder="Maharashtra" className="polaris-text-field text-gray-900" {...field} />
                       </FormControl>
                       <FormMessage className="text-xs text-red-600 mt-1" />
                     </FormItem>
@@ -331,7 +364,7 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
                     <FormItem>
                       <FormLabel className="text-sm font-medium text-gray-900">Postal Code</FormLabel>
                       <FormControl>
-                        <Input placeholder="400001" className="polaris-text-field" {...field} />
+                        <Input placeholder="400001" className="polaris-text-field text-gray-900" {...field} />
                       </FormControl>
                       <FormMessage className="text-xs text-red-600 mt-1" />
                     </FormItem>
@@ -344,7 +377,7 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
                     <FormItem>
                       <FormLabel className="text-sm font-medium text-gray-900">Country</FormLabel>
                       <FormControl>
-                        <Input placeholder="India" className="polaris-text-field" {...field} />
+                        <Input placeholder="India" className="polaris-text-field text-gray-900" {...field} />
                       </FormControl>
                       <FormMessage className="text-xs text-red-600 mt-1" />
                     </FormItem>
@@ -386,29 +419,96 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
         </div>
       </div>
 
-      {/* Payment */}
+      {/* Payment Method Selection */}
       <div className="polaris-card">
         <div className="px-6 py-4 border-b border-gray-200 bg-[#fafbfc]">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 bg-[#008060] rounded-lg flex items-center justify-center text-white font-semibold text-sm">4</div>
-            <h2 className="text-lg font-semibold text-gray-900">Payment</h2>
+            <h2 className="text-lg font-semibold text-gray-900">Payment Method</h2>
           </div>
         </div>
         
         <div className="p-6">
+          <div className="space-y-4 mb-6">
+            {/* Online Payment Option */}
+            <div 
+              className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                paymentMethod === 'online' 
+                  ? 'border-[#008060] bg-green-50' 
+                  : 'border-gray-200 hover:border-gray-300'
+              }`}
+              onClick={() => setPaymentMethod('online')}
+            >
+              <div className="flex items-center space-x-3">
+                <div className={`w-4 h-4 rounded-full border-2 ${
+                  paymentMethod === 'online' 
+                    ? 'border-[#008060] bg-[#008060]' 
+                    : 'border-gray-300'
+                }`}>
+                  {paymentMethod === 'online' && (
+                    <div className="w-2 h-2 bg-white rounded-full mx-auto mt-0.5"></div>
+                  )}
+                </div>
+                <CreditCard className="w-5 h-5 text-gray-600" />
+                <div>
+                  <p className="font-medium text-gray-900">Online Payment</p>
+                  <p className="text-sm text-gray-600">Pay securely with Razorpay</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Cash on Delivery Option */}
+            <div 
+              className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                paymentMethod === 'cod' 
+                  ? 'border-[#008060] bg-green-50' 
+                  : 'border-gray-200 hover:border-gray-300'
+              }`}
+              onClick={() => setPaymentMethod('cod')}
+            >
+              <div className="flex items-center space-x-3">
+                <div className={`w-4 h-4 rounded-full border-2 ${
+                  paymentMethod === 'cod' 
+                    ? 'border-[#008060] bg-[#008060]' 
+                    : 'border-gray-300'
+                }`}>
+                  {paymentMethod === 'cod' && (
+                    <div className="w-2 h-2 bg-white rounded-full mx-auto mt-0.5"></div>
+                  )}
+                </div>
+                <Banknote className="w-5 h-5 text-gray-600" />
+                <div>
+                  <p className="font-medium text-gray-900">Cash on Delivery</p>
+                  <p className="text-sm text-gray-600">Pay when you receive your order</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="flex items-center space-x-2 mb-6 text-sm text-gray-600">
             <Lock className="w-4 h-4" />
-            <span>Your payment information is secure and encrypted</span>
+            <span>Your information is secure and encrypted</span>
           </div>
           
-          <button
-            onClick={form.handleSubmit(onSubmit)}
-            className="w-full polaris-button-primary h-12 text-base font-medium flex items-center justify-center space-x-2"
-            disabled={isSubmitting}
-          >
-            <CreditCard className="w-5 h-5" />
-            <span>{isSubmitting ? "Processing..." : "Complete Payment"}</span>
-          </button>
+          {paymentMethod === 'online' ? (
+            <button
+              onClick={form.handleSubmit(onSubmit)}
+              className="w-full polaris-button-primary h-12 text-base font-medium flex items-center justify-center space-x-2"
+              disabled={isSubmitting}
+            >
+              <CreditCard className="w-5 h-5" />
+              <span>{isSubmitting ? "Processing..." : "Complete Payment"}</span>
+            </button>
+          ) : (
+            <button
+              onClick={form.handleSubmit(onSubmit)}
+              className="w-full bg-orange-600 hover:bg-orange-700 text-white h-12 text-base font-medium flex items-center justify-center space-x-2 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-orange-600 focus:ring-offset-2"
+              disabled={isSubmitting}
+            >
+              <Banknote className="w-5 h-5" />
+              <span>{isSubmitting ? "Placing Order..." : "Place Order"}</span>
+            </button>
+          )}
         </div>
       </div>
     </div>

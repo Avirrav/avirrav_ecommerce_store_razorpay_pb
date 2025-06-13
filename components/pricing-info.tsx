@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { CheckoutDialog } from "./checkout-dialog";
 import { motion } from "framer-motion";
-import { ShoppingBag, Shield, Truck } from "lucide-react";
+import { ShoppingBag, Shield, Truck, Palette, Ruler } from "lucide-react";
 import { Product } from "@/types";
 
 interface PricingInfoProps {
@@ -15,103 +15,178 @@ interface PricingInfoProps {
 
 const PricingInfo: React.FC<PricingInfoProps> = ({ items, username, productId, storeUrl }) => {
   const [open, setOpen] = useState(false);
-  const [selectedSize, setSelectedSize] = useState<string>('');
-  const [selectedColor, setSelectedColor] = useState<string>('');
 
   const product = items[0];
-  const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7'];
-  const sizes = ['XS', 'S', 'M', 'L', 'XL'];
 
   const handleCheckout = (email: string) => {
     console.log("Proceeding to checkout with email:", email);
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5 }
+    }
+  };
+
   return (
-    <div className="space-y-6">
+    <motion.div 
+      className="space-y-6"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
       {/* Product Title and Price */}
-      <div>
-        <h1 className="text-3xl font-semibold text-gray-900 mb-3">{product.name}</h1>
-        <div className="flex items-center space-x-3">
+      <motion.div variants={itemVariants}>
+        <motion.h1 
+          className="text-3xl font-semibold text-gray-900 mb-3"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          {product.name}
+        </motion.h1>
+        <motion.div 
+          className="flex items-center space-x-3"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
           <span className="text-3xl font-bold text-gray-900">₹{product.price}</span>
           <span className="text-lg text-gray-500 line-through">₹{(parseFloat(product.price) * 1.2).toFixed(0)}</span>
-          <span className="px-2 py-1 bg-red-100 text-red-800 text-sm font-medium rounded">20% OFF</span>
-        </div>
-      </div>
+          <motion.span 
+            className="px-2 py-1 bg-red-100 text-red-800 text-sm font-medium rounded"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.5, type: "spring", stiffness: 200 }}
+          >
+            20% OFF
+          </motion.span>
+        </motion.div>
+      </motion.div>
 
-      {/* Color Selection */}
-      <div>
-        <h3 className="text-sm font-semibold text-gray-900 mb-3 uppercase tracking-wide">Color</h3>
-        <div className="flex space-x-3">
-          {colors.map((color, index) => (
-            <motion.button
-              key={index}
-              className={`w-10 h-10 rounded-full border-2 transition-all ${
-                selectedColor === color 
-                  ? 'border-gray-900 ring-2 ring-gray-900 ring-offset-2' 
-                  : 'border-gray-300 hover:border-gray-400'
-              }`}
-              style={{ backgroundColor: color }}
-              onClick={() => setSelectedColor(color)}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
+      {/* Color Display */}
+      {product.color && (
+        <motion.div variants={itemVariants}>
+          <div className="flex items-center space-x-3 mb-3">
+            <Palette className="w-4 h-4 text-gray-600" />
+            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Color</h3>
+          </div>
+          <motion.div 
+            className="inline-flex items-center px-4 py-3 bg-gray-50 rounded-lg border"
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}
+          >
+            <motion.div
+              className="w-8 h-8 rounded-full m-1 border-2 border-gray-300 shadow-sm"
+              style={{ backgroundColor: product.color.value }}
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ duration: 0.5, delay: 0.4, type: "spring" }}
             />
-          ))}
-        </div>
-      </div>
+            <span className="text-sm font-medium text-gray-700">{product.color.name}</span>
+          </motion.div>
+        </motion.div>
+      )}
 
-      {/* Size Selection */}
-      <div>
-        <h3 className="text-sm font-semibold text-gray-900 mb-3 uppercase tracking-wide">Size</h3>
-        <div className="grid grid-cols-5 gap-2">
-          {sizes.map((size) => (
-            <motion.button
-              key={size}
-              className={`py-3 px-4 text-sm font-medium rounded-lg border-2 transition-all ${
-                selectedSize === size
-                  ? 'border-gray-900 bg-gray-900 text-white'
-                  : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400 hover:bg-gray-50'
-              }`}
-              onClick={() => setSelectedSize(size)}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              {size}
-            </motion.button>
-          ))}
-        </div>
-      </div>
+      {/* Size Display */}
+      {product.size && (
+        <motion.div variants={itemVariants}>
+          <div className="flex items-center space-x-3 mb-3">
+            <Ruler className="w-4 h-4 text-gray-600" />
+            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Size</h3>
+          </div>
+          <motion.div 
+            className="inline-flex items-center px-4 py-3 bg-gray-50 rounded-lg border"
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.2 }}
+          >
+            <span className="text-sm font-medium text-gray-700">{product.size.name} ({product.size.value})</span>
+          </motion.div>
+        </motion.div>
+      )}
 
       {/* Buy Now Button */}
-      <motion.button
-        className="w-full bg-[#008060] hover:bg-[#004c3f] text-white py-4 text-base font-semibold rounded-lg transition-colors flex items-center justify-center space-x-2 shadow-lg"
-        onClick={() => setOpen(true)}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-      >
-        <ShoppingBag className="w-5 h-5" />
-        <span>Buy Now</span>
-      </motion.button>
+      <motion.div variants={itemVariants}>
+        <motion.button
+          className="w-full bg-[#008060] hover:bg-[#004c3f] text-white py-4 text-base font-semibold rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
+          onClick={() => setOpen(true)}
+          whileHover={{ 
+            scale: 1.02,
+            y: -2,
+            boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+          }}
+          whileTap={{ scale: 0.98 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+        >
+          <motion.div
+            initial={{ rotate: 0 }}
+            whileHover={{ rotate: 15 }}
+            transition={{ duration: 0.2 }}
+          >
+            <ShoppingBag className="w-5 h-5" />
+          </motion.div>
+          <span>Buy Now</span>
+        </motion.button>
+      </motion.div>
 
       {/* Payment & Delivery Badges */}
-      <div className="flex flex-col sm:flex-row gap-3 pt-4">
-        <div className="flex items-center space-x-3 bg-green-50 px-4 py-3 rounded-lg border border-green-200 flex-1">
-          <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+      <motion.div 
+        className="flex flex-col sm:flex-row gap-3 pt-4"
+        variants={itemVariants}
+      >
+        <motion.div 
+          className="flex items-center space-x-3 bg-green-50 px-4 py-3 rounded-lg border border-green-200 flex-1"
+          whileHover={{ scale: 1.02, y: -2 }}
+          transition={{ duration: 0.2 }}
+        >
+          <motion.div 
+            className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.7, type: "spring" }}
+          >
             <Shield className="w-4 h-4 text-green-600" />
-          </div>
+          </motion.div>
           <div>
             <p className="text-sm font-medium text-green-900">Secured Payment</p>
           </div>
-        </div>
+        </motion.div>
         
-        <div className="flex items-center space-x-3 bg-blue-50 px-4 py-3 rounded-lg border border-blue-200 flex-1">
-          <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+        <motion.div 
+          className="flex items-center space-x-3 bg-blue-50 px-4 py-3 rounded-lg border border-blue-200 flex-1"
+          whileHover={{ scale: 1.02, y: -2 }}
+          transition={{ duration: 0.2 }}
+        >
+          <motion.div 
+            className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.8, type: "spring" }}
+          >
             <Truck className="w-4 h-4 text-blue-600" />
-          </div>
+          </motion.div>
           <div>
             <p className="text-sm font-medium text-blue-900">Free Delivery</p>  
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       <CheckoutDialog 
         open={open} 
@@ -121,7 +196,7 @@ const PricingInfo: React.FC<PricingInfoProps> = ({ items, username, productId, s
         username={username}
         productId={productId}
       />
-    </div>
+    </motion.div>
   );
 };
 
