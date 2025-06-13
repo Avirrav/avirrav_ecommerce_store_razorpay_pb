@@ -29,7 +29,7 @@ export default function PaymentStatus() {
   }, [searchParams]);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#fafbfc] flex items-center justify-center p-4">
       <motion.div 
         className="polaris-card p-8 max-w-md w-full text-center"
         initial={{ opacity: 0, y: 20 }}

@@ -74,63 +74,77 @@ export function CheckoutDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md bg-white rounded-xl border-0 shadow-2xl">
-        <DialogHeader className="text-center pb-4">
-          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <User className="w-8 h-8 text-gray-600" />
-          </div>
-          <DialogTitle className="text-2xl font-semibold text-gray-900">
-            Continue to Checkout
-          </DialogTitle>
-          <DialogDescription className="text-gray-600 mt-2">
-            Enter your email address to proceed with your purchase. We'll use this to send you order updates.
-          </DialogDescription>
-        </DialogHeader>
-        
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
-                    Email Address
-                  </FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                      <Input 
-                        placeholder="your.email@example.com" 
-                        type="email"
-                        className="pl-10 py-3 border-2 border-gray-200 rounded-lg focus:border-gray-900 focus:ring-0"
-                        {...field} 
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <div className="flex space-x-3 pt-4">
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={() => onOpenChange(false)}
-                className="flex-1 py-3 border-2 border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg font-medium"
-              >
-                Cancel
-              </Button>
-              <Button 
-                type="submit" 
-                className="flex-1 py-3 bg-gray-900 hover:bg-gray-800 text-white rounded-lg font-medium"
-              >
-                Continue
-              </Button>
+      <DialogContent className="sm:max-w-lg bg-white rounded-lg border-0 shadow-xl p-0 overflow-hidden">
+        {/* Header */}
+        <div className="bg-[#fafbfc] px-6 py-4 border-b border-gray-200">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-[#008060] rounded-lg flex items-center justify-center">
+              <User className="w-5 h-5 text-white" />
             </div>
-          </form>
-        </Form>
+            <div>
+              <DialogTitle className="text-lg font-semibold text-gray-900">
+                Continue to checkout
+              </DialogTitle>
+              <DialogDescription className="text-sm text-gray-600 mt-1">
+                Enter your email to proceed with your order
+              </DialogDescription>
+            </div>
+          </div>
+        </div>
+        
+        {/* Content */}
+        <div className="px-6 py-6">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium text-gray-900">
+                      Email address
+                    </FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                        <Input 
+                          placeholder="Enter your email address" 
+                          type="email"
+                          className="polaris-text-field pl-10"
+                          {...field} 
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage className="text-xs text-red-600 mt-1" />
+                  </FormItem>
+                )}
+              />
+              
+              <div className="flex space-x-3 pt-2">
+                <button
+                  type="button" 
+                  onClick={() => onOpenChange(false)}
+                  className="flex-1 polaris-button-secondary h-11"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit" 
+                  className="flex-1 polaris-button-primary h-11"
+                >
+                  Continue
+                </button>
+              </div>
+            </form>
+          </Form>
+        </div>
+        
+        {/* Footer */}
+        <div className="bg-[#fafbfc] px-6 py-3 border-t border-gray-200">
+          <p className="text-xs text-gray-500 text-center">
+            We'll use this email to send you order updates and receipts
+          </p>
+        </div>
       </DialogContent>
     </Dialog>
   );

@@ -20,7 +20,7 @@ export default async function CheckoutPage({ params }: CheckoutPageProps) {
   const productName = product?.name;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#fafbfc]">
       <Navbar storeUrl={store?.apiUrl} username={params.username} productId={params.productid} />
       
       <main className="pt-16">

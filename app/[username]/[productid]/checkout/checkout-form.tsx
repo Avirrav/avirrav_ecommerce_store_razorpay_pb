@@ -198,202 +198,218 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
+    <div className="max-w-4xl mx-auto space-y-6">
       {/* Customer Information */}
-      <div className="polaris-card p-6">
-        <div className="flex items-center space-x-2 mb-6">
-          <div className="w-8 h-8 bg-[#008060] rounded-full flex items-center justify-center text-white font-semibold">1</div>
-          <h2 className="polaris-text-heading-md">Customer Information</h2>
+      <div className="polaris-card">
+        <div className="px-6 py-4 border-b border-gray-200 bg-[#fafbfc]">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-[#008060] rounded-lg flex items-center justify-center text-white font-semibold text-sm">1</div>
+            <h2 className="text-lg font-semibold text-gray-900">Customer Information</h2>
+          </div>
         </div>
         
-        <Form {...form}>
-          <form className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="p-6">
+          <Form {...form}>
+            <form className="space-y-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <FormField
+                  control={form.control}
+                  name="fullName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium text-gray-900">Full Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="John Doe" className="polaris-text-field" {...field} />
+                      </FormControl>
+                      <FormMessage className="text-xs text-red-600 mt-1" />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium text-gray-900">Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="john.doe@example.com" className="polaris-text-field" {...field} />
+                      </FormControl>
+                      <FormMessage className="text-xs text-red-600 mt-1" />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <FormField
                 control={form.control}
-                name="fullName"
+                name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Full Name</FormLabel>
+                    <FormLabel className="text-sm font-medium text-gray-900">Phone Number</FormLabel>
                     <FormControl>
-                      <Input placeholder="John Doe" {...field} />
+                      <Input placeholder="+91 12345 67890" className="polaris-text-field" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-xs text-red-600 mt-1" />
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="john.doe@example.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
-                  <FormControl>
-                    <Input placeholder="+91 12345 67890" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
+            </form>
+          </Form>
+        </div>
       </div>
 
       {/* Shipping Address */}
-      <div className="polaris-card p-6">
-        <div className="flex items-center space-x-2 mb-6">
-          <div className="w-8 h-8 bg-[#008060] rounded-full flex items-center justify-center text-white font-semibold">2</div>
-          <h2 className="polaris-text-heading-md">Shipping Address</h2>
+      <div className="polaris-card">
+        <div className="px-6 py-4 border-b border-gray-200 bg-[#fafbfc]">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-[#008060] rounded-lg flex items-center justify-center text-white font-semibold text-sm">2</div>
+            <h2 className="text-lg font-semibold text-gray-900">Shipping Address</h2>
+          </div>
         </div>
         
-        <Form {...form}>
-          <form className="space-y-6">
-            <FormField
-              control={form.control}
-              name="addressLine1"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Street Address</FormLabel>
-                  <FormControl>
-                    <Input placeholder="123 Main Street" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="addressLine2"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Landmark</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Near the park" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="p-6">
+          <Form {...form}>
+            <form className="space-y-5">
               <FormField
                 control={form.control}
-                name="city"
+                name="addressLine1"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>City</FormLabel>
+                    <FormLabel className="text-sm font-medium text-gray-900">Street Address</FormLabel>
                     <FormControl>
-                      <Input placeholder="Mumbai" {...field} />
+                      <Input placeholder="123 Main Street" className="polaris-text-field" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-xs text-red-600 mt-1" />
                   </FormItem>
                 )}
               />
               <FormField
                 control={form.control}
-                name="state"
+                name="addressLine2"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>State</FormLabel>
+                    <FormLabel className="text-sm font-medium text-gray-900">Landmark</FormLabel>
                     <FormControl>
-                      <Input placeholder="Maharashtra" {...field} />
+                      <Input placeholder="Near the park" className="polaris-text-field" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-xs text-red-600 mt-1" />
                   </FormItem>
                 )}
               />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormField
-                control={form.control}
-                name="postalCode"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Postal Code</FormLabel>
-                    <FormControl>
-                      <Input placeholder="400001" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="country"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Country</FormLabel>
-                    <FormControl>
-                      <Input placeholder="India" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </form>
-        </Form>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <FormField
+                  control={form.control}
+                  name="city"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium text-gray-900">City</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Mumbai" className="polaris-text-field" {...field} />
+                      </FormControl>
+                      <FormMessage className="text-xs text-red-600 mt-1" />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="state"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium text-gray-900">State</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Maharashtra" className="polaris-text-field" {...field} />
+                      </FormControl>
+                      <FormMessage className="text-xs text-red-600 mt-1" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <FormField
+                  control={form.control}
+                  name="postalCode"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium text-gray-900">Postal Code</FormLabel>
+                      <FormControl>
+                        <Input placeholder="400001" className="polaris-text-field" {...field} />
+                      </FormControl>
+                      <FormMessage className="text-xs text-red-600 mt-1" />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="country"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium text-gray-900">Country</FormLabel>
+                      <FormControl>
+                        <Input placeholder="India" className="polaris-text-field" {...field} />
+                      </FormControl>
+                      <FormMessage className="text-xs text-red-600 mt-1" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </form>
+          </Form>
+        </div>
       </div>
 
       {/* Order Summary */}
-      <div className="polaris-card p-6">
-        <div className="flex items-center space-x-2 mb-6">
-          <div className="w-8 h-8 bg-[#008060] rounded-full flex items-center justify-center text-white font-semibold">3</div>
-          <h2 className="polaris-text-heading-md">Order Summary</h2>
+      <div className="polaris-card">
+        <div className="px-6 py-4 border-b border-gray-200 bg-[#fafbfc]">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-[#008060] rounded-lg flex items-center justify-center text-white font-semibold text-sm">3</div>
+            <h2 className="text-lg font-semibold text-gray-900">Order Summary</h2>
+          </div>
         </div>
         
-        <div className="space-y-4">
-          <div className="flex justify-between items-center py-3 border-b border-gray-100">
-            <span className="polaris-text-body">{productName}</span>
-            <span className="font-medium">₹{productPrice}</span>
-          </div>
-          <div className="flex justify-between items-center py-3 border-b border-gray-100">
-            <div className="flex items-center space-x-2">
-              <Truck className="w-4 h-4 text-[#008060]" />
-              <span className="polaris-text-body">Shipping</span>
+        <div className="p-6">
+          <div className="space-y-4">
+            <div className="flex justify-between items-center py-3 border-b border-gray-100">
+              <span className="text-sm text-gray-700">{productName}</span>
+              <span className="font-medium text-gray-900">₹{productPrice}</span>
             </div>
-            <span className="font-medium text-[#008060]">Free</span>
-          </div>
-          <div className="flex justify-between items-center py-3 text-lg font-semibold">
-            <span>Total</span>
-            <span>₹{productPrice}</span>
+            <div className="flex justify-between items-center py-3 border-b border-gray-100">
+              <div className="flex items-center space-x-2">
+                <Truck className="w-4 h-4 text-[#008060]" />
+                <span className="text-sm text-gray-700">Shipping</span>
+              </div>
+              <span className="font-medium text-[#008060]">Free</span>
+            </div>
+            <div className="flex justify-between items-center py-3 text-base font-semibold text-gray-900">
+              <span>Total</span>
+              <span>₹{productPrice}</span>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Payment */}
-      <div className="polaris-card p-6">
-        <div className="flex items-center space-x-2 mb-6">
-          <div className="w-8 h-8 bg-[#008060] rounded-full flex items-center justify-center text-white font-semibold">4</div>
-          <h2 className="polaris-text-heading-md">Payment</h2>
+      <div className="polaris-card">
+        <div className="px-6 py-4 border-b border-gray-200 bg-[#fafbfc]">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-[#008060] rounded-lg flex items-center justify-center text-white font-semibold text-sm">4</div>
+            <h2 className="text-lg font-semibold text-gray-900">Payment</h2>
+          </div>
         </div>
         
-        <div className="flex items-center space-x-2 mb-4 text-sm text-gray-600">
-          <Lock className="w-4 h-4" />
-          <span>Your payment information is secure and encrypted</span>
+        <div className="p-6">
+          <div className="flex items-center space-x-2 mb-6 text-sm text-gray-600">
+            <Lock className="w-4 h-4" />
+            <span>Your payment information is secure and encrypted</span>
+          </div>
+          
+          <button
+            onClick={form.handleSubmit(onSubmit)}
+            className="w-full polaris-button-primary h-12 text-base font-medium flex items-center justify-center space-x-2"
+            disabled={isSubmitting}
+          >
+            <CreditCard className="w-5 h-5" />
+            <span>{isSubmitting ? "Processing..." : "Complete Payment"}</span>
+          </button>
         </div>
-        
-        <Button
-          onClick={form.handleSubmit(onSubmit)}
-          className="w-full polaris-button-primary py-3 text-base font-medium flex items-center justify-center space-x-2"
-          disabled={isSubmitting}
-        >
-          <CreditCard className="w-5 h-5" />
-          <span>{isSubmitting ? "Processing..." : "Complete Payment"}</span>
-        </Button>
       </div>
     </div>
   );

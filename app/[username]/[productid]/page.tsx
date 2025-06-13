@@ -24,7 +24,7 @@ const Home = async ({ params }: StorePageProps) => {
   const billboard = await getBillboard(store?.homeBillboardId, store?.apiUrl);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#fafbfc]">
       <Navbar storeUrl={store?.apiUrl} username={params.username} productId={params.productid} />
       
       <main className="pt-16">

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --p-color-bg: #ffffff;
+  --p-color-bg: #fafbfc;
   --p-color-bg-surface: #ffffff;
   --p-color-bg-surface-secondary: #f6f6f7;
   --p-color-bg-surface-tertiary: #f1f2f4;
@@ -50,7 +50,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 218 27% 98%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -102,6 +102,7 @@
   body {
     @apply bg-background text-foreground;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #fafbfc;
   }
 }
 
@@ -116,6 +117,14 @@
   
   .polaris-button-secondary {
     @apply bg-white hover:bg-gray-50 text-gray-700 font-medium px-4 py-2.5 rounded-md border border-gray-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#008060] focus:ring-offset-2;
+  }
+  
+  .polaris-text-field {
+    @apply w-full px-3 py-2.5 border border-gray-300 rounded-md text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#008060] focus:border-transparent transition-all duration-200;
+  }
+  
+  .polaris-text-field:focus {
+    @apply shadow-sm;
   }
   
   .polaris-text-heading-lg {
@@ -174,4 +183,8 @@
 
 .dark .polaris-divider {
   @apply border-gray-700;
+}
+
+.dark .polaris-text-field {
+  @apply bg-gray-800 border-gray-600 text-white placeholder-gray-400;
 }

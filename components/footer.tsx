@@ -16,7 +16,7 @@ export function Footer() {
             transition={{ duration: 0.5 }}
           >
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gray-900 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-[#008060] rounded-xl flex items-center justify-center">
                 <span className="text-white text-lg font-bold">S</span>
               </div>
               <h3 className="text-xl font-bold text-gray-900">Store</h3>
