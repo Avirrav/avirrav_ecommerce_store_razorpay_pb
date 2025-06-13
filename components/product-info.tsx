@@ -20,8 +20,6 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
 
   const specifications = [
     { label: "Category", value: productData.category.name },
-    { label: "Material", value: "Premium Cotton Blend" },
-    { label: "Care Instructions", value: "Machine wash cold" },
     { label: "Origin", value: "Made in India" }
   ];
 
@@ -67,47 +65,6 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
               <span className="polaris-text-body">{spec.value}</span>
             </div>
           ))}
-        </div>
-      </motion.div>
-
-      {/* Reviews Summary */}
-      <motion.div 
-        className="polaris-card p-6"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
-        <div className="flex items-center space-x-2 mb-4">
-          <Star className="w-5 h-5 text-[#008060]" />
-          <h2 className="polaris-text-heading-md">Customer Reviews</h2>
-        </div>
-        
-        <div className="flex items-center space-x-4 mb-4">
-          <div className="flex items-center space-x-1">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <Star key={star} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-            ))}
-          </div>
-          <span className="polaris-text-body font-medium">4.8 out of 5</span>
-          <span className="polaris-text-caption">(247 reviews)</span>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="text-center p-4 bg-gray-50 rounded-lg">
-            <Users className="w-6 h-6 text-[#008060] mx-auto mb-2" />
-            <div className="text-2xl font-semibold text-gray-900">247</div>
-            <div className="polaris-text-caption">Happy Customers</div>
-          </div>
-          <div className="text-center p-4 bg-gray-50 rounded-lg">
-            <Award className="w-6 h-6 text-[#008060] mx-auto mb-2" />
-            <div className="text-2xl font-semibold text-gray-900">98%</div>
-            <div className="polaris-text-caption">Satisfaction Rate</div>
-          </div>
-          <div className="text-center p-4 bg-gray-50 rounded-lg">
-            <Star className="w-6 h-6 text-[#008060] mx-auto mb-2" />
-            <div className="text-2xl font-semibold text-gray-900">4.8</div>
-            <div className="polaris-text-caption">Average Rating</div>
-          </div>
         </div>
       </motion.div>
     </div>
