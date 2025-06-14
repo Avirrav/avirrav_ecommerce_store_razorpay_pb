@@ -122,10 +122,10 @@ export default function LandingPage() {
         "Dashboard Access",
         "Product Management",
         "Order Management", 
-        "Waitlist Page"
+        "Razorpay Integration"
       ],
       limitations: [
-        "No API / Dedicated Store"
+        "No Dedicated Store"
       ],
       popular: false
     },
@@ -138,9 +138,9 @@ export default function LandingPage() {
         "All Starter Features",
         "API Connectivity to Custom Store",
         "Dedicated Store",
-        "Limited Setup Help"
+        "Store Setup Help",
       ],
-      limitations: [],
+      limitations: ["Custom Branding (Dashboard)", "Dedicated Hosting"],
       popular: true
     },
     {
@@ -153,9 +153,8 @@ export default function LandingPage() {
         "Custom Branding (Dashboard + Store)",
         "Advanced Analytics",
         "High-Performance Hosting Tier",
-        "Co-branded / Resell Rights",
         "White-Glove Setup",
-        "Priority Support"
+        "Priority Support",
       ],
       limitations: [],
       popular: false
