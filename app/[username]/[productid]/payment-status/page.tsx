@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { CheckCircle, XCircle, ArrowLeft, Phone, Mail, Package, CreditCard, Banknote, User, MapPin, Calendar, Hash, Download } from 'lucide-react';
+import { CheckCircle, XCircle, ArrowLeft, Phone, Mail, Package, CreditCard, Banknote, User, MapPin, Calendar, Hash, Download, Share2 } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import getProduct from '@/actions/getProduct';
@@ -18,6 +18,7 @@ export default function PaymentStatus() {
   const [store, setStore] = useState<Store | null>(null);
   const [customerData, setCustomerData] = useState<any>(null);
   const [orderId, setOrderId] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const successParam = searchParams.get('success');
@@ -25,6 +26,7 @@ export default function PaymentStatus() {
     const usernameParam = searchParams.get('username');
     const productIdParam = searchParams.get('productId');
     const codParam = searchParams.get('cod');
+    const orderIdParam = searchParams.get('orderId');
 
     setUsername(usernameParam);
     setProductId(productIdParam);
@@ -37,8 +39,13 @@ export default function PaymentStatus() {
       setStatus('cod');
     }
 
-    // Generate a mock order ID for display
-    setOrderId(`PUG${Date.now().toString().slice(-8)}`);
+    // Use real order ID from URL params or fetch from API
+    if (orderIdParam) {
+      setOrderId(orderIdParam);
+    } else {
+      // Fallback: generate a temporary ID while we fetch the real one
+      setOrderId(`PUG${Date.now().toString().slice(-8)}`);
+    }
 
     // Load customer data from localStorage
     if (typeof window !== 'undefined') {
@@ -50,10 +57,8 @@ export default function PaymentStatus() {
       let parsedAddress: ShippingAddress | string = '';
       if (shippingAddress) {
         try {
-          // Try to parse as JSON first
           parsedAddress = JSON.parse(shippingAddress);
         } catch (error) {
-          // If parsing fails, use as string
           parsedAddress = shippingAddress;
         }
       }
@@ -71,15 +76,23 @@ export default function PaymentStatus() {
     const fetchData = async () => {
       if (username && productId) {
         try {
+          setIsLoading(true);
           const storeData = await getStore(username);
           setStore(storeData);
           
           if (storeData) {
             const productData = await getProduct(productId, storeData.apiUrl);
             setProduct(productData);
+
+            // Fetch real order ID from the order API
+            if (!searchParams.get('orderId')) {
+              await fetchRealOrderId(storeData.apiUrl);
+            }
           }
         } catch (error) {
           console.error('Error fetching data:', error);
+        } finally {
+          setIsLoading(false);
         }
       }
     };
@@ -87,33 +100,24 @@ export default function PaymentStatus() {
     fetchData();
   }, [username, productId]);
 
-  // Auto-download screenshot after page loads
-  useEffect(() => {
-    const downloadScreenshot = async () => {
-      // Wait for page to fully render
-      setTimeout(async () => {
-        try {
-          // Use html2canvas if available, otherwise use browser's built-in screenshot API
-          if (typeof window !== 'undefined') {
-            // Trigger browser's print dialog which can save as PDF
-            // Or use the Web Share API to share the page
-            console.log('Payment status page loaded - screenshot functionality would be implemented here');
-            
-            // For now, we'll just log that the screenshot would be taken
-            // In a real implementation, you'd use html2canvas or similar library
-            const pageTitle = `Order_${orderId}_Payment_Status`;
-            console.log(`Screenshot would be saved as: ${pageTitle}.png`);
+  const fetchRealOrderId = async (storeUrl: string) => {
+    try {
+      // Try to get the latest order for this customer
+      const customerEmail = localStorage.getItem("customerEmail");
+      if (customerEmail && storeUrl) {
+        const response = await fetch(`${storeUrl}/orders/latest?email=${encodeURIComponent(customerEmail)}`);
+        if (response.ok) {
+          const orderData = await response.json();
+          if (orderData && orderData.id) {
+            setOrderId(orderData.id);
           }
-        } catch (error) {
-          console.error('Screenshot functionality not available:', error);
         }
-      }, 2000); // Wait 2 seconds for animations to complete
-    };
-
-    if (status && product && customerData) {
-      downloadScreenshot();
+      }
+    } catch (error) {
+      console.error('Error fetching real order ID:', error);
+      // Keep the fallback ID if API call fails
     }
-  }, [status, product, customerData, orderId]);
+  };
 
   const formatShippingAddress = (address: ShippingAddress | string): string => {
     if (typeof address === 'string') {
@@ -128,7 +132,7 @@ export default function PaymentStatus() {
         address.state,
         address.postalCode,
         address.country
-      ].filter(Boolean); // Remove empty values
+      ].filter(Boolean);
       
       return parts.join(', ');
     }
@@ -138,23 +142,73 @@ export default function PaymentStatus() {
 
   const downloadPageAsImage = async () => {
     try {
-      // This would require html2canvas library in a real implementation
-      // For now, we'll use the browser's built-in functionality
+      // Check if Web Share API is available
       if (navigator.share) {
-        await navigator.share({
+        const shareData = {
           title: `Order ${orderId} - Payment Status`,
-          text: `Order confirmation for ${product?.name}`,
+          text: `Order confirmation for ${product?.name || 'your purchase'}`,
           url: window.location.href,
-        });
-      } else {
-        // Fallback: Open print dialog
-        window.print();
+        };
+
+        await navigator.share(shareData);
+        return;
       }
+
+      // Fallback 1: Try to use html2canvas if available
+      if (typeof window !== 'undefined' && (window as any).html2canvas) {
+        const element = document.getElementById('payment-status-content');
+        if (element) {
+          const canvas = await (window as any).html2canvas(element, {
+            backgroundColor: '#fafbfc',
+            scale: 2,
+            useCORS: true,
+            allowTaint: true
+          });
+          
+          // Convert canvas to blob and download
+          canvas.toBlob((blob: Blob) => {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Order_${orderId}_Status.png`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          }, 'image/png');
+          return;
+        }
+      }
+
+      // Fallback 2: Copy order details to clipboard
+      const orderDetails = `
+Order Details:
+Order ID: ${orderId}
+Product: ${product?.name || 'N/A'}
+Price: ₹${product?.price || 'N/A'}
+Status: ${getStatusConfig().paymentStatus}
+Customer: ${customerData?.fullName || 'N/A'}
+Email: ${customerData?.email || 'N/A'}
+Date: ${new Date().toLocaleDateString('en-IN')}
+      `.trim();
+
+      await navigator.clipboard.writeText(orderDetails);
+      
+      // Show success message
+      const toast = document.createElement('div');
+      toast.className = 'fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+      toast.textContent = 'Order details copied to clipboard!';
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        document.body.removeChild(toast);
+      }, 3000);
+
     } catch (error) {
-      console.error('Error sharing/downloading:', error);
-      // Fallback: Copy URL to clipboard
-      navigator.clipboard.writeText(window.location.href);
-      alert('Page URL copied to clipboard!');
+      console.error('Error saving order details:', error);
+      
+      // Final fallback: Open print dialog
+      window.print();
     }
   };
 
@@ -231,9 +285,28 @@ export default function PaymentStatus() {
   const statusConfig = getStatusConfig();
   const StatusIcon = statusConfig.icon;
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#fafbfc] flex items-center justify-center">
+        <div className="text-center">
+          <motion.div
+            className="w-16 h-16 border-4 border-[#008060] border-t-transparent rounded-full mx-auto mb-4"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          />
+          <p className="text-gray-600 text-lg font-medium">Loading order details...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#fafbfc] py-8 px-4">
+      {/* Load html2canvas library */}
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+      
       <motion.div
+        id="payment-status-content"
         className="max-w-4xl mx-auto"
         variants={containerVariants}
         initial="hidden"
@@ -266,16 +339,43 @@ export default function PaymentStatus() {
               {statusConfig.description}
             </motion.p>
             
-            {/* Download Screenshot Button */}
-            <motion.button
-              onClick={downloadPageAsImage}
-              className="mt-6 inline-flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium transition-colors"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Download className="w-4 h-4" />
-              <span>Save Order Details</span>
-            </motion.button>
+            {/* Save Order Details Button */}
+            <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
+              <motion.button
+                onClick={downloadPageAsImage}
+                className="inline-flex items-center space-x-2 bg-[#008060] hover:bg-[#004c3f] text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Download className="w-4 h-4" />
+                <span>Save Order Details</span>
+              </motion.button>
+              
+              <motion.button
+                onClick={() => {
+                  if (navigator.share) {
+                    navigator.share({
+                      title: `Order ${orderId}`,
+                      text: `Order confirmation for ${product?.name}`,
+                      url: window.location.href,
+                    });
+                  } else {
+                    navigator.clipboard.writeText(window.location.href);
+                    const toast = document.createElement('div');
+                    toast.className = 'fixed top-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+                    toast.textContent = 'Link copied to clipboard!';
+                    document.body.appendChild(toast);
+                    setTimeout(() => document.body.removeChild(toast), 3000);
+                  }
+                }}
+                className="inline-flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-medium transition-colors"
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Share2 className="w-4 h-4" />
+                <span>Share</span>
+              </motion.button>
+            </div>
           </div>
         </motion.div>
 
@@ -299,7 +399,9 @@ export default function PaymentStatus() {
                   <Hash className="w-4 h-4 text-gray-500" />
                   <span className="text-sm font-medium text-gray-700">Order ID</span>
                 </div>
-                <span className="font-mono text-sm font-semibold text-gray-900">{orderId}</span>
+                <span className="font-mono text-sm font-semibold text-gray-900 bg-gray-100 px-2 py-1 rounded">
+                  {orderId}
+                </span>
               </div>
 
               {/* Order Date */}
@@ -311,7 +413,9 @@ export default function PaymentStatus() {
                 <span className="text-sm text-gray-900">{new Date().toLocaleDateString('en-IN', { 
                   year: 'numeric', 
                   month: 'long', 
-                  day: 'numeric' 
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit'
                 })}</span>
               </div>
 

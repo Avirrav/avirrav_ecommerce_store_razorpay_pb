@@ -151,8 +151,11 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
           throw new Error(`Server error: ${response.status} - ${errorText}`);
         }
         
+        const orderData = await response.json();
+        const realOrderId = orderData.orderId || orderData.id || `COD${Date.now()}`;
+        
         toast.success('Order placed successfully!');
-        router.push(`/${username}/${productId}/payment-status?username=${username}&productId=${productId}&cod=true`);
+        router.push(`/${username}/${productId}/payment-status?username=${username}&productId=${productId}&cod=true&orderId=${realOrderId}`);
         return;
       }
 
@@ -195,9 +198,13 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
               razorpay_signature: response.razorpay_signature
             }),
           });
+          
           if (verifyResponse.ok) {
+            const verifyData = await verifyResponse.json();
+            const realOrderId = verifyData.orderId || response.razorpay_order_id || `PAY${Date.now()}`;
+            
             toast.success('Payment completed.');
-            router.push(`/${username}/${productId}/payment-status?username=${username}&productId=${productId}&success=true`);
+            router.push(`/${username}/${productId}/payment-status?username=${username}&productId=${productId}&success=true&orderId=${realOrderId}`);
           } else {
             toast.error('Payment verification failed.');
             router.push(`/${username}/${productId}/payment-status?username=${username}&productId=${productId}&failed=true`);
