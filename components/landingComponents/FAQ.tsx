@@ -68,7 +68,7 @@ export default function FAQ() {
             >
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full py-8 text-left flex items-center justify-between hover:bg-silver-lake-100 transition-colors px-6 rounded-xl"
+                className="w-full py-8 text-left flex items-center justify-between hover:bg-seasalt transition-colors px-6 rounded-xl"
               >
                 <h3 className="text-lg font-medium text-gunmetal pr-8 tracking-tight">
                   {faq.question}

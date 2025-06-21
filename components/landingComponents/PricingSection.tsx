@@ -162,7 +162,7 @@ export default function PricingSection() {
               <button
                 className={`w-full py-4 rounded-xl font-medium text-sm tracking-wide transition-all duration-300 transform group-hover:scale-105 ${
                   plan.popular
-                    ? 'bg-seasalt text-gunmetal hover:bg-silver-lake-100 hover:shadow-lg'
+                    ? 'bg-seasalt text-gunmetal hover:bg-silver-lake-100 hover:text-white hover:shadow-lg'
                     : 'border-2 border-gunmetal text-gunmetal hover:bg-gunmetal hover:text-seasalt hover:shadow-lg'
                 }`}
               >

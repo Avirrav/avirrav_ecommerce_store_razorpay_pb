@@ -1,139 +1,150 @@
 "use client"
 import React from 'react';
-import { Instagram, Play } from 'lucide-react';
+import { Play, ArrowUpRight } from 'lucide-react';
 
 const reels = [
   {
     id: 1,
     thumbnail: "https://images.pexels.com/photos/607812/pexels-photo-607812.jpeg?auto=compress&cs=tinysrgb&w=400",
-    title: "Store Setup in 2 Minutes"
+    title: "Store Setup",
+    duration: "2:15"
   },
   {
     id: 2,
     thumbnail: "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=400",
-    title: "API Integration Demo"
+    title: "API Integration",
+    duration: "1:45"
   },
   {
     id: 3,
     thumbnail: "https://images.pexels.com/photos/590022/pexels-photo-590022.jpg?auto=compress&cs=tinysrgb&w=400",
-    title: "Dashboard Overview"
+    title: "Dashboard Tour",
+    duration: "3:20"
   },
   {
     id: 4,
     thumbnail: "https://images.pexels.com/photos/374820/pexels-photo-374820.jpg?auto=compress&cs=tinysrgb&w=400",
-    title: "Order Management"
+    title: "Order Management",
+    duration: "2:30"
   }
 ];
 
 const stats = [
-  { value: "+120h", description: "Reclaimed per employee per year" },
-  { value: "3x", description: "Faster RFP/RFI process" },
-  { value: "1.5x", description: "The number of AEs each human SE can support" },
-  { value: "<15s", description: "From question to detailed answer" }
+  { value: "120h+", label: "Time saved per year" },
+  { value: "3x", label: "Faster setup process" },
+  { value: "1.5x", label: "More efficient workflow" },
+  { value: "<15s", label: "Response time" }
 ];
 
 export default function SocialProofSection() {
   return (
-    <section className="py-32 bg-silver-lake-900">
+    <section className="py-32 bg-seasalt">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-24">
-          <p className="text-xs font-medium text-yinmn-blue-600 tracking-[0.2em] uppercase mb-8">
-            Social Proof
-          </p>
+        {/* Header */}
+        <div className="text-center mb-20">
+          <div className="inline-flex items-center gap-2 bg-gunmetal/5 border border-gunmetal/10 rounded-full px-4 py-2 mb-8">
+            <div className="w-2 h-2 bg-gunmetal rounded-full animate-pulse"></div>
+            <span className="text-xs font-medium text-gunmetal tracking-wide uppercase">Live Demos</span>
+          </div>
           
-          <h2 className="mb-8">
-            <span className="block text-5xl lg:text-6xl font-black text-gunmetal leading-tight mb-4">
-              See Pugly
-            </span>
-            <span className="block text-lg font-light text-yinmn-blue-600 tracking-wide">
-              in Action
-            </span>
+          <h2 className="text-4xl lg:text-5xl font-black text-gunmetal mb-6 tracking-tight">
+            See It In Action
           </h2>
           
-          <div className="max-w-2xl mx-auto">
-            <p className="text-base text-yinmn-blue-600 leading-relaxed font-light">
-              Watch real entrepreneurs showcase their success with Pugly Dashboard
-            </p>
-          </div>
+          <p className="text-lg text-yinmn-blue-600 font-light max-w-2xl mx-auto leading-relaxed">
+            Watch real setups and see how Pugly transforms e-commerce management
+          </p>
         </div>
 
-        {/* Stats Section - Realm Style */}
-        <div className="mb-24">
-          <div className="text-center mb-16">
-            <div className="inline-block bg-seasalt border border-silver-lake-300 rounded-xl px-4 py-2 mb-8">
-              <span className="text-xs font-medium text-yinmn-blue-600 tracking-wide uppercase">Impact</span>
-            </div>
-            <h3 className="text-3xl lg:text-4xl font-black text-gunmetal mb-4">
-              Pugly gives your revenue team
-            </h3>
-            <p className="text-lg font-light text-yinmn-blue-600">
-              an unfair advantage
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="bg-delft-blue-100 rounded-2xl p-8 text-center">
-                <div className="text-4xl lg:text-5xl font-black text-gunmetal mb-4">
+        {/* Stats Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+          {stats.map((stat, index) => (
+            <div key={index} className="text-center group">
+              <div className="bg-white border border-silver-lake-200 rounded-2xl p-6 hover:border-gunmetal/20 hover:shadow-lg transition-all duration-300">
+                <div className="text-3xl lg:text-4xl font-black text-gunmetal mb-2 group-hover:text-delft-blue transition-colors">
                   {stat.value}
                 </div>
-                <p className="text-sm text-yinmn-blue-600 font-light leading-relaxed">
-                  {stat.description}
+                <p className="text-sm text-yinmn-blue-600 font-medium">
+                  {stat.label}
                 </p>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
 
-        {/* Reels Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
-          {reels.map((reel) => (
+        {/* Video Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+          {reels.map((reel, index) => (
             <div
               key={reel.id}
-              className="relative bg-seasalt border border-silver-lake-300 rounded-2xl overflow-hidden hover:border-gunmetal transition-all duration-300 group cursor-pointer hover:shadow-xl"
+              className="group cursor-pointer"
             >
-              <div className="aspect-[9/16] relative overflow-hidden">
-                <img
-                  src={reel.thumbnail}
-                  alt={reel.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                
-                {/* Play Button Overlay */}
-                <div className="absolute inset-0 bg-gunmetal/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="w-16 h-16 bg-seasalt rounded-2xl flex items-center justify-center">
-                    <Play size={20} className="text-gunmetal ml-1" />
+              <div className="relative bg-white border border-silver-lake-200 rounded-2xl overflow-hidden hover:border-gunmetal/20 hover:shadow-xl transition-all duration-500">
+                <div className="aspect-[4/5] relative overflow-hidden">
+                  <img
+                    src={reel.thumbnail}
+                    alt={reel.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-gunmetal/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  
+                  {/* Play Button */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+                    <div className="w-14 h-14 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      <Play size={18} className="text-gunmetal ml-0.5" fill="currentColor" />
+                    </div>
+                  </div>
+
+                  {/* Duration Badge */}
+                  <div className="absolute top-3 right-3 bg-gunmetal/80 backdrop-blur-sm text-white text-xs font-medium px-2 py-1 rounded-lg">
+                    {reel.duration}
                   </div>
                 </div>
-
-                {/* Instagram Icon */}
-                <div className="absolute top-4 right-4">
-                  <Instagram size={16} className="text-seasalt" />
+                
+                <div className="p-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold text-gunmetal text-sm group-hover:text-delft-blue transition-colors">
+                      {reel.title}
+                    </h3>
+                    <ArrowUpRight size={14} className="text-yinmn-blue-500 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </div>
                 </div>
-              </div>
-              
-              <div className="p-6">
-                <h3 className="font-medium text-gunmetal text-sm tracking-wide">{reel.title}</h3>
               </div>
             </div>
           ))}
         </div>
 
         {/* Testimonial */}
-        <div className="text-center max-w-4xl mx-auto">
-          <blockquote className="text-xl lg:text-2xl text-yinmn-blue-600 font-light italic mb-8 leading-relaxed">
-            "Pugly transformed how I manage my dropshipping business. What used to take hours 
-            now takes minutes. The API integration is seamless and the interface is incredibly intuitive."
-          </blockquote>
-          <div className="flex items-center justify-center gap-6">
-            <img
-              src="https://images.pexels.com/photos/2381069/pexels-photo-2381069.jpeg?auto=compress&cs=tinysrgb&w=100"
-              alt="Customer"
-              className="w-16 h-16 rounded-2xl border border-silver-lake-300"
-            />
-            <div className="text-left">
-              <div className="font-medium text-gunmetal">Sarah Chen</div>
-              <div className="text-xs text-yinmn-blue-600 font-light tracking-wide">E-commerce Entrepreneur</div>
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white border border-silver-lake-200 rounded-3xl p-8 lg:p-12 text-center hover:border-gunmetal/20 hover:shadow-lg transition-all duration-300">
+            <div className="mb-8">
+              <div className="flex justify-center mb-6">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="w-5 h-5 text-gunmetal">
+                    <svg fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  </div>
+                ))}
+              </div>
+              
+              <blockquote className="text-xl lg:text-2xl text-gunmetal font-light leading-relaxed mb-8">
+                "Pugly transformed how I manage my dropshipping business. What used to take hours now takes minutes."
+              </blockquote>
+            </div>
+            
+            <div className="flex items-center justify-center gap-4">
+              <img
+                src="https://images.pexels.com/photos/2381069/pexels-photo-2381069.jpeg?auto=compress&cs=tinysrgb&w=100"
+                alt="Sarah Chen"
+                className="w-12 h-12 rounded-full border-2 border-silver-lake-200"
+              />
+              <div className="text-left">
+                <div className="font-semibold text-gunmetal text-sm">Sarah Chen</div>
+                <div className="text-xs text-yinmn-blue-600 font-medium">E-commerce Entrepreneur</div>
+              </div>
             </div>
           </div>
         </div>

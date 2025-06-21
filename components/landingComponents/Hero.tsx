@@ -1,6 +1,6 @@
 "use client"
 import React from 'react';
-import { ArrowRight, Play, Mail } from 'lucide-react';
+import { ArrowRight, Play } from 'lucide-react';
 
 export default function Hero() {
   return (
@@ -24,25 +24,23 @@ export default function Hero() {
               </p>
             </div>
 
-            {/* Email Input & CTA */}
+            {/* CTA Buttons */}
             <div className="space-y-6">
               <div className="flex flex-col sm:flex-row gap-4 max-w-md">
-                <div className="relative flex-1">
-                  <Mail size={20} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-silver-lake-500" />
-                  <input
-                    type="email"
-                    placeholder="Work Email"
-                    className="w-full pl-12 pr-4 py-4 bg-seasalt border border-silver-lake-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-delft-blue focus:border-transparent text-gunmetal placeholder-silver-lake-500"
-                  />
-                </div>
-                <button className="bg-gunmetal text-seasalt px-8 py-4 rounded-xl hover:bg-delft-blue transition-all duration-300 font-medium text-sm tracking-wide flex items-center gap-3 group whitespace-nowrap">
-                  Request a trial
+                <button className="bg-seasalt text-gunmetal px-8 py-4 rounded-xl hover:text-white hover:bg-silver-lake-200 transition-all duration-300 font-medium text-sm tracking-wide flex items-center justify-center gap-3 group whitespace-nowrap shadow-lg hover:shadow-xl">
+                  Get Started for ₹5/month
                   <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                </button>
+                
+                <button className="border-2 border-silver-lake-500 text-silver-lake-500 px-8 py-4 rounded-xl hover:border-gunmetal hover:text-gunmetal transition-all duration-300 font-medium text-sm tracking-wide whitespace-nowrap">
+                  See How It Works
                 </button>
               </div>
               
               <button className="flex items-center gap-3 text-yinmn-blue-600 hover:text-gunmetal transition-colors font-medium">
-                <Play size={16} />
+                <div className="w-10 h-10 bg-seasalt/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-seasalt/20">
+                  <Play size={14} className="ml-0.5" />
+                </div>
                 Watch Demo
               </button>
             </div>
