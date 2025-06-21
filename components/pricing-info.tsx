@@ -53,7 +53,7 @@ const PricingInfo: React.FC<PricingInfoProps> = ({ items, username, productId, s
       {/* Product Title and Price */}
       <motion.div variants={itemVariants}>
         <motion.h1 
-          className="text-3xl font-semibold text-gray-900 mb-3"
+          className="text-3xl font-bold text-gunmetal mb-3"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -66,8 +66,8 @@ const PricingInfo: React.FC<PricingInfoProps> = ({ items, username, productId, s
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <span className="text-3xl font-bold text-gray-900">₹{product.price}</span>
-          <span className="text-lg text-gray-500 line-through">₹{(parseFloat(product.price) * 1.2).toFixed(0)}</span>
+          <span className="text-3xl font-bold text-gunmetal">₹{product.price}</span>
+          <span className="text-lg text-silver-lake-600 line-through">₹{(parseFloat(product.price) * 1.2).toFixed(0)}</span>
           <motion.span 
             className="px-2 py-1 bg-red-100 text-red-800 text-sm font-medium rounded"
             initial={{ scale: 0 }}
@@ -83,22 +83,22 @@ const PricingInfo: React.FC<PricingInfoProps> = ({ items, username, productId, s
       {product.color && (
         <motion.div variants={itemVariants}>
           <div className="flex items-center space-x-3 mb-3">
-            <Palette className="w-4 h-4 text-gray-600" />
-            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Color</h3>
+            <Palette className="w-4 h-4 text-gunmetal" />
+            <h3 className="text-sm font-semibold text-gunmetal uppercase tracking-wide">Color</h3>
           </div>
           <motion.div 
-            className="inline-flex items-center px-4 py-3 bg-gray-50 rounded-lg border"
+            className="inline-flex items-center px-4 py-3 bg-silver-lake-50 rounded-lg border border-silver-lake-200"
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.2 }}
           >
             <motion.div
-              className="w-8 h-8 rounded-full m-1 border-2 border-gray-300 shadow-sm"
+              className="w-8 h-8 rounded-full m-1 border-2 border-silver-lake-300 shadow-sm"
               style={{ backgroundColor: product.color.value }}
               initial={{ scale: 0, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
               transition={{ duration: 0.5, delay: 0.4, type: "spring" }}
             />
-            <span className="text-sm font-medium text-gray-700">{product.color.name}</span>
+            <span className="text-sm font-medium text-gunmetal">{product.color.name}</span>
           </motion.div>
         </motion.div>
       )}
@@ -107,15 +107,15 @@ const PricingInfo: React.FC<PricingInfoProps> = ({ items, username, productId, s
       {product.size && (
         <motion.div variants={itemVariants}>
           <div className="flex items-center space-x-3 mb-3">
-            <Ruler className="w-4 h-4 text-gray-600" />
-            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Size</h3>
+            <Ruler className="w-4 h-4 text-gunmetal" />
+            <h3 className="text-sm font-semibold text-gunmetal uppercase tracking-wide">Size</h3>
           </div>
           <motion.div 
-            className="inline-flex items-center px-4 py-3 bg-gray-50 rounded-lg border"
+            className="inline-flex items-center px-4 py-3 bg-silver-lake-50 rounded-lg border border-silver-lake-200"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.2 }}
           >
-            <span className="text-sm font-medium text-gray-700">{product.size.name} ({product.size.value})</span>
+            <span className="text-sm font-medium text-gunmetal">{product.size.name} ({product.size.value})</span>
           </motion.div>
         </motion.div>
       )}
@@ -123,7 +123,7 @@ const PricingInfo: React.FC<PricingInfoProps> = ({ items, username, productId, s
       {/* Buy Now Button */}
       <motion.div variants={itemVariants}>
         <motion.button
-          className="w-full bg-[#008060] hover:bg-[#004c3f] text-white py-4 text-base font-semibold rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
+          className="w-full bg-gunmetal hover:bg-delft-blue text-seasalt py-4 text-base font-semibold rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
           onClick={() => setOpen(true)}
           whileHover={{ 
             scale: 1.02,

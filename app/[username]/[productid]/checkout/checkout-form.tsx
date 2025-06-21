@@ -216,7 +216,7 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
           contact: formData.phone
         },
         theme: {
-          color: "#008060",
+          color: "#212b36",
         },
       };
       const razorpay = new window.Razorpay(options);
@@ -233,11 +233,11 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Customer Information */}
-      <div className="polaris-card">
-        <div className="px-6 py-4 border-b border-gray-200 bg-[#fafbfc]">
+      <div className="bg-seasalt border border-silver-lake-200 rounded-lg shadow-sm overflow-hidden">
+        <div className="px-6 py-4 border-b border-silver-lake-200 bg-silver-lake-50">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-[#008060] rounded-lg flex items-center justify-center text-white font-semibold text-sm">1</div>
-            <h2 className="text-lg font-semibold text-gray-900">Customer Information</h2>
+            <div className="w-8 h-8 bg-gunmetal rounded-lg flex items-center justify-center text-seasalt font-semibold text-sm">1</div>
+            <h2 className="text-lg font-bold text-gunmetal">Customer Information</h2>
           </div>
         </div>
         
@@ -250,9 +250,9 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
                   name="fullName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium text-gray-900">Full Name</FormLabel>
+                      <FormLabel className="text-sm font-semibold text-gunmetal">Full Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="John Doe" className="polaris-text-field text-gray-900" {...field} />
+                        <Input placeholder="John Doe" className="w-full px-3 py-2.5 border border-silver-lake-200 rounded-md text-sm placeholder-silver-lake-500 focus:outline-none focus:ring-2 focus:ring-gunmetal focus:border-transparent transition-all duration-200 text-gunmetal" {...field} />
                       </FormControl>
                       <FormMessage className="text-xs text-red-600 mt-1" />
                     </FormItem>
@@ -263,12 +263,11 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium text-gray-900">Email</FormLabel>
+                      <FormLabel className="text-sm font-semibold text-gunmetal">Email</FormLabel>
                       <FormControl>
                         <Input 
                           placeholder="john.doe@example.com" 
-                          className="polaris-text-field text-gray-900 placeholder:text-gray-500" 
-                          style={{ color: '#111827' }}
+                          className="w-full px-3 py-2.5 border border-silver-lake-200 rounded-md text-sm placeholder-silver-lake-500 focus:outline-none focus:ring-2 focus:ring-gunmetal focus:border-transparent transition-all duration-200 text-gunmetal"
                           {...field} 
                         />
                       </FormControl>
@@ -282,9 +281,9 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium text-gray-900">Phone Number</FormLabel>
+                    <FormLabel className="text-sm font-semibold text-gunmetal">Phone Number</FormLabel>
                     <FormControl>
-                      <Input placeholder="+91 12345 67890" className="polaris-text-field text-gray-900" {...field} />
+                      <Input placeholder="+91 12345 67890" className="w-full px-3 py-2.5 border border-silver-lake-200 rounded-md text-sm placeholder-silver-lake-500 focus:outline-none focus:ring-2 focus:ring-gunmetal focus:border-transparent transition-all duration-200 text-gunmetal" {...field} />
                     </FormControl>
                     <FormMessage className="text-xs text-red-600 mt-1" />
                   </FormItem>
@@ -296,11 +295,11 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
       </div>
 
       {/* Shipping Address */}
-      <div className="polaris-card">
-        <div className="px-6 py-4 border-b border-gray-200 bg-[#fafbfc]">
+      <div className="bg-seasalt border border-silver-lake-200 rounded-lg shadow-sm overflow-hidden">
+        <div className="px-6 py-4 border-b border-silver-lake-200 bg-silver-lake-50">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-[#008060] rounded-lg flex items-center justify-center text-white font-semibold text-sm">2</div>
-            <h2 className="text-lg font-semibold text-gray-900">Shipping Address</h2>
+            <div className="w-8 h-8 bg-gunmetal rounded-lg flex items-center justify-center text-seasalt font-semibold text-sm">2</div>
+            <h2 className="text-lg font-bold text-gunmetal">Shipping Address</h2>
           </div>
         </div>
         
@@ -312,9 +311,9 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
                 name="addressLine1"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium text-gray-900">Street Address</FormLabel>
+                    <FormLabel className="text-sm font-semibold text-gunmetal">Street Address</FormLabel>
                     <FormControl>
-                      <Input placeholder="123 Main Street" className="polaris-text-field text-gray-900" {...field} />
+                      <Input placeholder="123 Main Street" className="w-full px-3 py-2.5 border border-silver-lake-200 rounded-md text-sm placeholder-silver-lake-500 focus:outline-none focus:ring-2 focus:ring-gunmetal focus:border-transparent transition-all duration-200 text-gunmetal" {...field} />
                     </FormControl>
                     <FormMessage className="text-xs text-red-600 mt-1" />
                   </FormItem>
@@ -325,9 +324,9 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
                 name="addressLine2"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium text-gray-900">Landmark</FormLabel>
+                    <FormLabel className="text-sm font-semibold text-gunmetal">Landmark</FormLabel>
                     <FormControl>
-                      <Input placeholder="Near the park" className="polaris-text-field text-gray-900" {...field} />
+                      <Input placeholder="Near the park" className="w-full px-3 py-2.5 border border-silver-lake-200 rounded-md text-sm placeholder-silver-lake-500 focus:outline-none focus:ring-2 focus:ring-gunmetal focus:border-transparent transition-all duration-200 text-gunmetal" {...field} />
                     </FormControl>
                     <FormMessage className="text-xs text-red-600 mt-1" />
                   </FormItem>
@@ -339,9 +338,9 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
                   name="city"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium text-gray-900">City</FormLabel>
+                      <FormLabel className="text-sm font-semibold text-gunmetal">City</FormLabel>
                       <FormControl>
-                        <Input placeholder="Mumbai" className="polaris-text-field text-gray-900" {...field} />
+                        <Input placeholder="Mumbai" className="w-full px-3 py-2.5 border border-silver-lake-200 rounded-md text-sm placeholder-silver-lake-500 focus:outline-none focus:ring-2 focus:ring-gunmetal focus:border-transparent transition-all duration-200 text-gunmetal" {...field} />
                       </FormControl>
                       <FormMessage className="text-xs text-red-600 mt-1" />
                     </FormItem>
@@ -352,9 +351,9 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
                   name="state"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium text-gray-900">State</FormLabel>
+                      <FormLabel className="text-sm font-semibold text-gunmetal">State</FormLabel>
                       <FormControl>
-                        <Input placeholder="Maharashtra" className="polaris-text-field text-gray-900" {...field} />
+                        <Input placeholder="Maharashtra" className="w-full px-3 py-2.5 border border-silver-lake-200 rounded-md text-sm placeholder-silver-lake-500 focus:outline-none focus:ring-2 focus:ring-gunmetal focus:border-transparent transition-all duration-200 text-gunmetal" {...field} />
                       </FormControl>
                       <FormMessage className="text-xs text-red-600 mt-1" />
                     </FormItem>
@@ -367,9 +366,9 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
                   name="postalCode"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium text-gray-900">Postal Code</FormLabel>
+                      <FormLabel className="text-sm font-semibold text-gunmetal">Postal Code</FormLabel>
                       <FormControl>
-                        <Input placeholder="400001" className="polaris-text-field text-gray-900" {...field} />
+                        <Input placeholder="400001" className="w-full px-3 py-2.5 border border-silver-lake-200 rounded-md text-sm placeholder-silver-lake-500 focus:outline-none focus:ring-2 focus:ring-gunmetal focus:border-transparent transition-all duration-200 text-gunmetal" {...field} />
                       </FormControl>
                       <FormMessage className="text-xs text-red-600 mt-1" />
                     </FormItem>
@@ -380,9 +379,9 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
                   name="country"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium text-gray-900">Country</FormLabel>
+                      <FormLabel className="text-sm font-semibold text-gunmetal">Country</FormLabel>
                       <FormControl>
-                        <Input placeholder="India" className="polaris-text-field text-gray-900" {...field} />
+                        <Input placeholder="India" className="w-full px-3 py-2.5 border border-silver-lake-200 rounded-md text-sm placeholder-silver-lake-500 focus:outline-none focus:ring-2 focus:ring-gunmetal focus:border-transparent transition-all duration-200 text-gunmetal" {...field} />
                       </FormControl>
                       <FormMessage className="text-xs text-red-600 mt-1" />
                     </FormItem>
@@ -395,28 +394,28 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
       </div>
 
       {/* Order Summary */}
-      <div className="polaris-card">
-        <div className="px-6 py-4 border-b border-gray-200 bg-[#fafbfc]">
+      <div className="bg-seasalt border border-silver-lake-200 rounded-lg shadow-sm overflow-hidden">
+        <div className="px-6 py-4 border-b border-silver-lake-200 bg-silver-lake-50">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-[#008060] rounded-lg flex items-center justify-center text-white font-semibold text-sm">3</div>
-            <h2 className="text-lg font-semibold text-gray-900">Order Summary</h2>
+            <div className="w-8 h-8 bg-gunmetal rounded-lg flex items-center justify-center text-seasalt font-semibold text-sm">3</div>
+            <h2 className="text-lg font-bold text-gunmetal">Order Summary</h2>
           </div>
         </div>
         
         <div className="p-6">
           <div className="space-y-4">
-            <div className="flex justify-between items-center py-3 border-b border-gray-100">
-              <span className="text-sm text-gray-700">{productName}</span>
-              <span className="font-medium text-gray-900">₹{productPrice}</span>
+            <div className="flex justify-between items-center py-3 border-b border-silver-lake-200">
+              <span className="text-sm text-gunmetal font-medium">{productName}</span>
+              <span className="font-bold text-gunmetal">₹{productPrice}</span>
             </div>
-            <div className="flex justify-between items-center py-3 border-b border-gray-100">
+            <div className="flex justify-between items-center py-3 border-b border-silver-lake-200">
               <div className="flex items-center space-x-2">
-                <Truck className="w-4 h-4 text-[#008060]" />
-                <span className="text-sm text-gray-700">Shipping</span>
+                <Truck className="w-4 h-4 text-gunmetal" />
+                <span className="text-sm text-gunmetal font-medium">Shipping</span>
               </div>
-              <span className="font-medium text-[#008060]">Free</span>
+              <span className="font-bold text-green-600">Free</span>
             </div>
-            <div className="flex justify-between items-center py-3 text-base font-semibold text-gray-900">
+            <div className="flex justify-between items-center py-3 text-base font-bold text-gunmetal">
               <span>Total</span>
               <span>₹{productPrice}</span>
             </div>
@@ -425,11 +424,11 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
       </div>
 
       {/* Payment Method Selection */}
-      <div className="polaris-card">
-        <div className="px-6 py-4 border-b border-gray-200 bg-[#fafbfc]">
+      <div className="bg-seasalt border border-silver-lake-200 rounded-lg shadow-sm overflow-hidden">
+        <div className="px-6 py-4 border-b border-silver-lake-200 bg-silver-lake-50">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-[#008060] rounded-lg flex items-center justify-center text-white font-semibold text-sm">4</div>
-            <h2 className="text-lg font-semibold text-gray-900">Payment Method</h2>
+            <div className="w-8 h-8 bg-gunmetal rounded-lg flex items-center justify-center text-seasalt font-semibold text-sm">4</div>
+            <h2 className="text-lg font-bold text-gunmetal">Payment Method</h2>
           </div>
         </div>
         
@@ -439,25 +438,25 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
             <div 
               className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
                 paymentMethod === 'online' 
-                  ? 'border-[#008060] bg-green-50' 
-                  : 'border-gray-200 hover:border-gray-300'
+                  ? 'border-gunmetal bg-gunmetal/5' 
+                  : 'border-silver-lake-200 hover:border-silver-lake-300'
               }`}
               onClick={() => setPaymentMethod('online')}
             >
               <div className="flex items-center space-x-3">
                 <div className={`w-4 h-4 rounded-full border-2 ${
                   paymentMethod === 'online' 
-                    ? 'border-[#008060] bg-[#008060]' 
-                    : 'border-gray-300'
+                    ? 'border-gunmetal bg-gunmetal' 
+                    : 'border-silver-lake-400'
                 }`}>
                   {paymentMethod === 'online' && (
-                    <div className="w-2 h-2 bg-white rounded-full mx-auto mt-0.5"></div>
+                    <div className="w-2 h-2 bg-seasalt rounded-full mx-auto mt-0.5"></div>
                   )}
                 </div>
-                <CreditCard className="w-5 h-5 text-gray-600" />
+                <CreditCard className="w-5 h-5 text-gunmetal" />
                 <div>
-                  <p className="font-medium text-gray-900">Online Payment</p>
-                  <p className="text-sm text-gray-600">Pay securely with Razorpay</p>
+                  <p className="font-bold text-gunmetal">Online Payment</p>
+                  <p className="text-sm text-gunmetal">Pay securely with Razorpay</p>
                 </div>
               </div>
             </div>
@@ -466,39 +465,39 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
             <div 
               className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
                 paymentMethod === 'cod' 
-                  ? 'border-[#008060] bg-green-50' 
-                  : 'border-gray-200 hover:border-gray-300'
+                  ? 'border-gunmetal bg-gunmetal/5' 
+                  : 'border-silver-lake-200 hover:border-silver-lake-300'
               }`}
               onClick={() => setPaymentMethod('cod')}
             >
               <div className="flex items-center space-x-3">
                 <div className={`w-4 h-4 rounded-full border-2 ${
                   paymentMethod === 'cod' 
-                    ? 'border-[#008060] bg-[#008060]' 
-                    : 'border-gray-300'
+                    ? 'border-gunmetal bg-gunmetal' 
+                    : 'border-silver-lake-400'
                 }`}>
                   {paymentMethod === 'cod' && (
-                    <div className="w-2 h-2 bg-white rounded-full mx-auto mt-0.5"></div>
+                    <div className="w-2 h-2 bg-seasalt rounded-full mx-auto mt-0.5"></div>
                   )}
                 </div>
-                <Banknote className="w-5 h-5 text-gray-600" />
+                <Banknote className="w-5 h-5 text-gunmetal" />
                 <div>
-                  <p className="font-medium text-gray-900">Cash on Delivery</p>
-                  <p className="text-sm text-gray-600">Pay when you receive your order</p>
+                  <p className="font-bold text-gunmetal">Cash on Delivery</p>
+                  <p className="text-sm text-gunmetal">Pay when you receive your order</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center space-x-2 mb-6 text-sm text-gray-600">
+          <div className="flex items-center space-x-2 mb-6 text-sm text-gunmetal">
             <Lock className="w-4 h-4" />
-            <span>Your information is secure and encrypted</span>
+            <span className="font-medium">Your information is secure and encrypted</span>
           </div>
           
           {paymentMethod === 'online' ? (
             <button
               onClick={form.handleSubmit(onSubmit)}
-              className="w-full polaris-button-primary h-12 text-base font-medium flex items-center justify-center space-x-2"
+              className="w-full bg-gunmetal hover:bg-delft-blue text-seasalt font-bold px-4 py-3 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gunmetal focus:ring-offset-2 h-12 text-base flex items-center justify-center space-x-2"
               disabled={isSubmitting}
             >
               <CreditCard className="w-5 h-5" />
@@ -507,7 +506,7 @@ export function CheckoutForm({ productPrice, productName, productId, storeUrl, u
           ) : (
             <button
               onClick={form.handleSubmit(onSubmit)}
-              className="w-full bg-orange-600 hover:bg-orange-700 text-white h-12 text-base font-medium flex items-center justify-center space-x-2 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-orange-600 focus:ring-offset-2"
+              className="w-full bg-delft-blue hover:bg-yinmn-blue text-seasalt h-12 text-base font-bold flex items-center justify-center space-x-2 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-delft-blue focus:ring-offset-2"
               disabled={isSubmitting}
             >
               <Banknote className="w-5 h-5" />

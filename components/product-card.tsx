@@ -18,10 +18,10 @@ export function ProductCard({ title, price, image, href }: ProductCardProps) {
       transition={{ duration: 0.3, type: "spring", stiffness: 200 }}
     >
       <motion.div 
-        className="polaris-card overflow-hidden group-hover:shadow-lg transition-all duration-300"
+        className="bg-seasalt border border-silver-lake-200 rounded-lg shadow-sm overflow-hidden group-hover:shadow-lg transition-all duration-300"
         whileHover={{ boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" }}
       >
-        <div className="aspect-square bg-gray-50 overflow-hidden relative">
+        <div className="aspect-square bg-silver-lake-50 overflow-hidden relative">
           <motion.img 
             src={image} 
             alt={title}
@@ -42,14 +42,14 @@ export function ProductCard({ title, price, image, href }: ProductCardProps) {
           transition={{ duration: 0.3 }}
         >
           <motion.h3 
-            className="font-medium text-gray-900 mb-2 line-clamp-2"
-            whileHover={{ color: "#008060" }}
+            className="font-semibold text-gunmetal mb-2 line-clamp-2"
+            whileHover={{ color: "#273654" }}
             transition={{ duration: 0.2 }}
           >
             {title}
           </motion.h3>
           <motion.p 
-            className="text-lg font-semibold text-[#008060]"
+            className="text-lg font-bold text-gunmetal"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.2 }}
           >

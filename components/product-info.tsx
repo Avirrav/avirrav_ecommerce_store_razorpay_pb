@@ -61,7 +61,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
     >
       {/* Product Details Section */}
       <motion.div 
-        className="polaris-card p-6"
+        className="bg-seasalt border border-silver-lake-200 rounded-lg shadow-sm overflow-hidden p-6"
         variants={itemVariants}
         whileHover={{ y: -4, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
         transition={{ duration: 0.3 }}
@@ -77,13 +77,13 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
             animate={{ rotate: 0, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.3, type: "spring" }}
           >
-            <Package className="w-5 h-5 text-[#008060]" />
+            <Package className="w-5 h-5 text-gunmetal" />
           </motion.div>
-          <h2 className="polaris-text-heading-md">Product Details</h2>
+          <h2 className="text-xl font-bold text-gunmetal leading-tight">Product Details</h2>
         </motion.div>
         
         <motion.p 
-          className="polaris-text-body mb-6"
+          className="text-base text-gunmetal leading-relaxed mb-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
@@ -102,12 +102,12 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
               transition={{ delay: 0.5 + index * 0.1 }}
             >
               <motion.div 
-                className="w-1.5 h-1.5 bg-[#008060] rounded-full mt-2 flex-shrink-0"
+                className="w-1.5 h-1.5 bg-gunmetal rounded-full mt-2 flex-shrink-0"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.3, delay: 0.6 + index * 0.1, type: "spring" }}
               />
-              <span className="polaris-text-body">{feature}</span>
+              <span className="text-base text-gunmetal leading-relaxed">{feature}</span>
             </motion.div>
           ))}
         </div>
@@ -115,13 +115,13 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
 
       {/* Specifications */}
       <motion.div 
-        className="polaris-card p-6"
+        className="bg-seasalt border border-silver-lake-200 rounded-lg shadow-sm overflow-hidden p-6"
         variants={itemVariants}
         whileHover={{ y: -4, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
         transition={{ duration: 0.3 }}
       >
         <motion.h2 
-          className="polaris-text-heading-md mb-4"
+          className="text-xl font-bold text-gunmetal leading-tight mb-4"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -132,14 +132,14 @@ const ProductInfo: React.FC<ProductInfoProps> = ({ product }) => {
           {specifications.map((spec, index) => (
             <motion.div 
               key={index} 
-              className="flex justify-between py-2 border-b border-gray-100 last:border-b-0"
+              className="flex justify-between py-2 border-b border-silver-lake-200 last:border-b-0"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
               whileHover={{ x: 4 }}
             >
-              <span className="polaris-text-caption font-medium">{spec.label}</span>
-              <span className="polaris-text-body">{spec.value}</span>
+              <span className="text-sm text-gunmetal font-medium">{spec.label}</span>
+              <span className="text-base text-gunmetal leading-relaxed font-semibold">{spec.value}</span>
             </motion.div>
           ))}
         </div>

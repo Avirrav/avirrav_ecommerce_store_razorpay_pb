@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { CheckCircle, XCircle, ArrowLeft, Phone, Mail, Package, CreditCard, Banknote, User, MapPin, Calendar, Hash, Download, Share2 } from 'lucide-react';
+import { CheckCircle, XCircle, ArrowLeft, Phone, Mail, Package, CreditCard, Banknote, User, MapPin, Calendar, Hash, FileText, Share2 } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import getProduct from '@/actions/getProduct';
@@ -140,64 +140,171 @@ export default function PaymentStatus() {
     return 'Address not provided';
   };
 
-  const downloadPageAsImage = async () => {
+  const generateInvoice = async () => {
     try {
-      // Check if Web Share API is available
-      if (navigator.share) {
-        const shareData = {
-          title: `Order ${orderId} - Payment Status`,
-          text: `Order confirmation for ${product?.name || 'your purchase'}`,
-          url: window.location.href,
-        };
+      // Create invoice content
+      const invoiceData = {
+        invoiceNumber: `INV-${orderId}`,
+        orderNumber: orderId,
+        date: new Date().toLocaleDateString('en-IN', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        }),
+        dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-IN', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        }),
+        customer: {
+          name: customerData?.fullName || 'N/A',
+          email: customerData?.email || 'N/A',
+          phone: customerData?.phone || 'N/A',
+          address: formatShippingAddress(customerData?.shippingAddress || '')
+        },
+        store: {
+          name: store?.name || 'Store',
+          address: 'Business Address Line 1\nBusiness Address Line 2\nCity, State - PIN'
+        },
+        items: [{
+          description: product?.name || 'Product',
+          quantity: 1,
+          unitPrice: parseFloat(product?.price || '0'),
+          total: parseFloat(product?.price || '0')
+        }],
+        subtotal: parseFloat(product?.price || '0'),
+        tax: 0,
+        shipping: 0,
+        total: parseFloat(product?.price || '0'),
+        paymentMethod: getStatusConfig().paymentMethod,
+        paymentStatus: getStatusConfig().paymentStatus
+      };
 
-        await navigator.share(shareData);
-        return;
-      }
+      // Create HTML invoice content
+      const invoiceHTML = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <title>Invoice ${invoiceData.invoiceNumber}</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 0; padding: 20px; color: #212b36; }
+            .invoice-header { display: flex; justify-content: space-between; margin-bottom: 30px; }
+            .invoice-title { font-size: 28px; font-weight: bold; color: #212b36; }
+            .invoice-number { font-size: 16px; color: #415a77; }
+            .company-info { text-align: right; }
+            .customer-info { margin-bottom: 30px; }
+            .invoice-details { display: flex; justify-content: space-between; margin-bottom: 30px; }
+            .table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+            .table th, .table td { padding: 12px; text-align: left; border-bottom: 1px solid #e1e3e5; }
+            .table th { background-color: #f6f6f7; font-weight: bold; }
+            .totals { text-align: right; margin-top: 20px; }
+            .total-row { display: flex; justify-content: space-between; margin: 5px 0; }
+            .total-final { font-weight: bold; font-size: 18px; border-top: 2px solid #212b36; padding-top: 10px; }
+            .payment-info { margin-top: 30px; padding: 15px; background-color: #f6f6f7; border-radius: 8px; }
+            .footer { margin-top: 40px; text-align: center; color: #778da9; font-size: 12px; }
+          </style>
+        </head>
+        <body>
+          <div class="invoice-header">
+            <div>
+              <div class="invoice-title">INVOICE</div>
+              <div class="invoice-number">${invoiceData.invoiceNumber}</div>
+            </div>
+            <div class="company-info">
+              <strong>${invoiceData.store.name}</strong><br>
+              ${invoiceData.store.address.replace(/\n/g, '<br>')}
+            </div>
+          </div>
 
-      // Fallback 1: Try to use html2canvas if available
-      if (typeof window !== 'undefined' && (window as any).html2canvas) {
-        const element = document.getElementById('payment-status-content');
-        if (element) {
-          const canvas = await (window as any).html2canvas(element, {
-            backgroundColor: '#fafbfc',
-            scale: 2,
-            useCORS: true,
-            allowTaint: true
-          });
-          
-          // Convert canvas to blob and download
-          canvas.toBlob((blob: Blob) => {
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Order_${orderId}_Status.png`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-          }, 'image/png');
-          return;
-        }
-      }
+          <div class="customer-info">
+            <strong>Bill To:</strong><br>
+            ${invoiceData.customer.name}<br>
+            ${invoiceData.customer.email}<br>
+            ${invoiceData.customer.phone}<br>
+            ${invoiceData.customer.address}
+          </div>
 
-      // Fallback 2: Copy order details to clipboard
-      const orderDetails = `
-Order Details:
-Order ID: ${orderId}
-Product: ${product?.name || 'N/A'}
-Price: ₹${product?.price || 'N/A'}
-Status: ${getStatusConfig().paymentStatus}
-Customer: ${customerData?.fullName || 'N/A'}
-Email: ${customerData?.email || 'N/A'}
-Date: ${new Date().toLocaleDateString('en-IN')}
-      `.trim();
+          <div class="invoice-details">
+            <div>
+              <strong>Invoice Date:</strong> ${invoiceData.date}<br>
+              <strong>Order Number:</strong> ${invoiceData.orderNumber}
+            </div>
+            <div>
+              <strong>Due Date:</strong> ${invoiceData.dueDate}<br>
+              <strong>Payment Status:</strong> ${invoiceData.paymentStatus}
+            </div>
+          </div>
 
-      await navigator.clipboard.writeText(orderDetails);
-      
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${invoiceData.items.map(item => `
+                <tr>
+                  <td>${item.description}</td>
+                  <td>${item.quantity}</td>
+                  <td>₹${item.unitPrice.toFixed(2)}</td>
+                  <td>₹${item.total.toFixed(2)}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+
+          <div class="totals">
+            <div class="total-row">
+              <span>Subtotal:</span>
+              <span>₹${invoiceData.subtotal.toFixed(2)}</span>
+            </div>
+            <div class="total-row">
+              <span>Shipping:</span>
+              <span>₹${invoiceData.shipping.toFixed(2)}</span>
+            </div>
+            <div class="total-row">
+              <span>Tax:</span>
+              <span>₹${invoiceData.tax.toFixed(2)}</span>
+            </div>
+            <div class="total-row total-final">
+              <span>Total:</span>
+              <span>₹${invoiceData.total.toFixed(2)}</span>
+            </div>
+          </div>
+
+          <div class="payment-info">
+            <strong>Payment Information:</strong><br>
+            Payment Method: ${invoiceData.paymentMethod}<br>
+            Payment Status: ${invoiceData.paymentStatus}
+          </div>
+
+          <div class="footer">
+            <p>Thank you for your business!</p>
+            <p>Powered by Pugly</p>
+          </div>
+        </body>
+        </html>
+      `;
+
+      // Create and download the invoice
+      const blob = new Blob([invoiceHTML], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `Invoice_${invoiceData.invoiceNumber}.html`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
       // Show success message
       const toast = document.createElement('div');
       toast.className = 'fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg z-50';
-      toast.textContent = 'Order details copied to clipboard!';
+      toast.textContent = 'Invoice generated successfully!';
       document.body.appendChild(toast);
       
       setTimeout(() => {
@@ -205,10 +312,17 @@ Date: ${new Date().toLocaleDateString('en-IN')}
       }, 3000);
 
     } catch (error) {
-      console.error('Error saving order details:', error);
+      console.error('Error generating invoice:', error);
       
-      // Final fallback: Open print dialog
-      window.print();
+      // Show error message
+      const toast = document.createElement('div');
+      toast.className = 'fixed top-4 right-4 bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+      toast.textContent = 'Error generating invoice. Please try again.';
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        document.body.removeChild(toast);
+      }, 3000);
     }
   };
 
@@ -260,10 +374,10 @@ Date: ${new Date().toLocaleDateString('en-IN')}
       case 'cod':
         return {
           icon: CheckCircle,
-          iconColor: 'text-orange-600',
-          bgColor: 'bg-orange-100',
+          iconColor: 'text-delft-blue',
+          bgColor: 'bg-delft-blue/10',
           title: 'Order Placed Successfully',
-          titleColor: 'text-orange-900',
+          titleColor: 'text-delft-blue',
           description: 'Your order will be delivered soon. Please have the cash ready for payment upon delivery.',
           paymentStatus: 'To be paid on delivery',
           paymentMethod: 'Cash on Delivery'
@@ -271,10 +385,10 @@ Date: ${new Date().toLocaleDateString('en-IN')}
       default:
         return {
           icon: Package,
-          iconColor: 'text-gray-600',
-          bgColor: 'bg-gray-100',
+          iconColor: 'text-gunmetal',
+          bgColor: 'bg-gunmetal/10',
           title: 'Processing...',
-          titleColor: 'text-gray-900',
+          titleColor: 'text-gunmetal',
           description: 'Please wait while we confirm your payment status.',
           paymentStatus: 'Processing',
           paymentMethod: 'Unknown'
@@ -287,24 +401,21 @@ Date: ${new Date().toLocaleDateString('en-IN')}
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#fafbfc] flex items-center justify-center">
+      <div className="min-h-screen bg-silver-lake-50 flex items-center justify-center">
         <div className="text-center">
           <motion.div
-            className="w-16 h-16 border-4 border-[#008060] border-t-transparent rounded-full mx-auto mb-4"
+            className="w-16 h-16 border-4 border-gunmetal border-t-transparent rounded-full mx-auto mb-4"
             animate={{ rotate: 360 }}
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
           />
-          <p className="text-gray-600 text-lg font-medium">Loading order details...</p>
+          <p className="text-gunmetal text-lg font-bold">Loading order details...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#fafbfc] py-8 px-4">
-      {/* Load html2canvas library */}
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-      
+    <div className="min-h-screen bg-white py-8 px-4">
       <motion.div
         id="payment-status-content"
         className="max-w-4xl mx-auto"
@@ -314,7 +425,7 @@ Date: ${new Date().toLocaleDateString('en-IN')}
       >
         {/* Header */}
         <motion.div 
-          className="polaris-card mb-8"
+          className="bg-seasalt border border-silver-lake-200 rounded-lg shadow-sm overflow-hidden mb-8"
           variants={itemVariants}
         >
           <div className="p-8 text-center">
@@ -333,22 +444,22 @@ Date: ${new Date().toLocaleDateString('en-IN')}
               {statusConfig.title}
             </motion.h1>
             <motion.p 
-              className="text-lg text-gray-600 max-w-2xl mx-auto"
+              className="text-lg text-gunmetal max-w-2xl mx-auto"
               variants={itemVariants}
             >
               {statusConfig.description}
             </motion.p>
             
-            {/* Save Order Details Button */}
+            {/* Generate Invoice and Share Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
               <motion.button
-                onClick={downloadPageAsImage}
-                className="inline-flex items-center space-x-2 bg-[#008060] hover:bg-[#004c3f] text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                onClick={generateInvoice}
+                className="inline-flex items-center space-x-2 bg-gunmetal hover:bg-delft-blue text-seasalt px-6 py-3 rounded-lg font-bold transition-colors"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Download className="w-4 h-4" />
-                <span>Save Order Details</span>
+                <FileText className="w-4 h-4" />
+                <span>Generate Invoice</span>
               </motion.button>
               
               <motion.button
@@ -368,7 +479,7 @@ Date: ${new Date().toLocaleDateString('en-IN')}
                     setTimeout(() => document.body.removeChild(toast), 3000);
                   }
                 }}
-                className="inline-flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-medium transition-colors"
+                className="inline-flex items-center space-x-2 bg-silver-lake-200 hover:bg-silver-lake-300 text-gunmetal px-6 py-3 rounded-lg font-bold transition-colors"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -382,35 +493,35 @@ Date: ${new Date().toLocaleDateString('en-IN')}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Order Details */}
           <motion.div 
-            className="polaris-card"
+            className="bg-seasalt border border-silver-lake-200 rounded-lg shadow-sm overflow-hidden"
             variants={itemVariants}
           >
-            <div className="px-6 py-4 border-b border-gray-200 bg-[#fafbfc]">
+            <div className="px-6 py-4 border-b border-silver-lake-200 bg-silver-lake-50">
               <div className="flex items-center space-x-3">
-                <Package className="w-5 h-5 text-[#008060]" />
-                <h2 className="text-lg font-semibold text-gray-900">Order Details</h2>
+                <Package className="w-5 h-5 text-gunmetal" />
+                <h2 className="text-lg font-bold text-gunmetal">Order Details</h2>
               </div>
             </div>
             
             <div className="p-6 space-y-6">
               {/* Order ID */}
-              <div className="flex items-center justify-between py-3 border-b border-gray-100">
+              <div className="flex items-center justify-between py-3 border-b border-silver-lake-200">
                 <div className="flex items-center space-x-2">
-                  <Hash className="w-4 h-4 text-gray-500" />
-                  <span className="text-sm font-medium text-gray-700">Order ID</span>
+                  <Hash className="w-4 h-4 text-gunmetal" />
+                  <span className="text-sm font-bold text-gunmetal">Order ID</span>
                 </div>
-                <span className="font-mono text-sm font-semibold text-gray-900 bg-gray-100 px-2 py-1 rounded">
+                <span className="font-mono text-sm font-bold text-gunmetal bg-silver-lake-100 px-2 py-1 rounded">
                   {orderId}
                 </span>
               </div>
 
               {/* Order Date */}
-              <div className="flex items-center justify-between py-3 border-b border-gray-100">
+              <div className="flex items-center justify-between py-3 border-b border-silver-lake-200">
                 <div className="flex items-center space-x-2">
-                  <Calendar className="w-4 h-4 text-gray-500" />
-                  <span className="text-sm font-medium text-gray-700">Order Date</span>
+                  <Calendar className="w-4 h-4 text-gunmetal" />
+                  <span className="text-sm font-bold text-gunmetal">Order Date</span>
                 </div>
-                <span className="text-sm text-gray-900">{new Date().toLocaleDateString('en-IN', { 
+                <span className="text-sm text-gunmetal font-semibold">{new Date().toLocaleDateString('en-IN', { 
                   year: 'numeric', 
                   month: 'long', 
                   day: 'numeric',
@@ -421,7 +532,7 @@ Date: ${new Date().toLocaleDateString('en-IN')}
 
               {/* Product Details */}
               {product && (
-                <div className="border border-gray-200 rounded-lg p-4">
+                <div className="border border-silver-lake-200 rounded-lg p-4">
                   <div className="flex space-x-4">
                     {product.images && product.images[0] && (
                       <img 
@@ -431,11 +542,11 @@ Date: ${new Date().toLocaleDateString('en-IN')}
                       />
                     )}
                     <div className="flex-1">
-                      <h3 className="font-medium text-gray-900 mb-1">{product.name}</h3>
-                      <p className="text-sm text-gray-600 mb-2">{product.category?.name}</p>
+                      <h3 className="font-bold text-gunmetal mb-1">{product.name}</h3>
+                      <p className="text-sm text-gunmetal mb-2">{product.category?.name}</p>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-500">Quantity: 1</span>
-                        <span className="font-semibold text-gray-900">₹{product.price}</span>
+                        <span className="text-sm text-gunmetal font-medium">Quantity: 1</span>
+                        <span className="font-bold text-gunmetal">₹{product.price}</span>
                       </div>
                     </div>
                   </div>
@@ -443,35 +554,35 @@ Date: ${new Date().toLocaleDateString('en-IN')}
               )}
 
               {/* Payment Information */}
-              <div className="bg-gray-50 rounded-lg p-4">
+              <div className="bg-silver-lake-50 rounded-lg p-4">
                 <div className="flex items-center space-x-2 mb-3">
                   {status === 'cod' ? (
-                    <Banknote className="w-4 h-4 text-orange-600" />
+                    <Banknote className="w-4 h-4 text-delft-blue" />
                   ) : (
-                    <CreditCard className="w-4 h-4 text-[#008060]" />
+                    <CreditCard className="w-4 h-4 text-gunmetal" />
                   )}
-                  <span className="text-sm font-medium text-gray-700">Payment Details</span>
+                  <span className="text-sm font-bold text-gunmetal">Payment Details</span>
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-600">Method</span>
-                    <span className="text-sm font-medium text-gray-900">{statusConfig.paymentMethod}</span>
+                    <span className="text-sm text-gunmetal font-medium">Method</span>
+                    <span className="text-sm font-bold text-gunmetal">{statusConfig.paymentMethod}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-600">Status</span>
-                    <span className={`text-sm font-medium ${
+                    <span className="text-sm text-gunmetal font-medium">Status</span>
+                    <span className={`text-sm font-bold ${
                       status === 'success' ? 'text-green-600' : 
                       status === 'failed' ? 'text-red-600' : 
-                      'text-orange-600'
+                      'text-delft-blue'
                     }`}>
                       {statusConfig.paymentStatus}
                     </span>
                   </div>
-                  <div className="flex justify-between pt-2 border-t border-gray-200">
-                    <span className="text-sm font-medium text-gray-700">
+                  <div className="flex justify-between pt-2 border-t border-silver-lake-200">
+                    <span className="text-sm font-bold text-gunmetal">
                       {status === 'cod' ? 'Amount to Pay' : 'Total Paid'}
                     </span>
-                    <span className="text-lg font-bold text-gray-900">₹{product?.price || '0'}</span>
+                    <span className="text-lg font-bold text-gunmetal">₹{product?.price || '0'}</span>
                   </div>
                 </div>
               </div>
@@ -484,51 +595,51 @@ Date: ${new Date().toLocaleDateString('en-IN')}
             variants={itemVariants}
           >
             {/* Customer Information */}
-            <div className="polaris-card">
-              <div className="px-6 py-4 border-b border-gray-200 bg-[#fafbfc]">
+            <div className="bg-seasalt border border-silver-lake-200 rounded-lg shadow-sm overflow-hidden">
+              <div className="px-6 py-4 border-b border-silver-lake-200 bg-silver-lake-50">
                 <div className="flex items-center space-x-3">
-                  <User className="w-5 h-5 text-[#008060]" />
-                  <h2 className="text-lg font-semibold text-gray-900">Customer Information</h2>
+                  <User className="w-5 h-5 text-gunmetal" />
+                  <h2 className="text-lg font-bold text-gunmetal">Customer Information</h2>
                 </div>
               </div>
               
               <div className="p-6 space-y-4">
                 {customerData?.fullName && (
                   <div className="flex items-center space-x-3">
-                    <User className="w-4 h-4 text-gray-500" />
+                    <User className="w-4 h-4 text-gunmetal" />
                     <div>
-                      <p className="text-sm text-gray-600">Name</p>
-                      <p className="font-medium text-gray-900">{customerData.fullName}</p>
+                      <p className="text-sm text-gunmetal font-medium">Name</p>
+                      <p className="font-bold text-gunmetal">{customerData.fullName}</p>
                     </div>
                   </div>
                 )}
                 
                 {customerData?.email && (
                   <div className="flex items-center space-x-3">
-                    <Mail className="w-4 h-4 text-gray-500" />
+                    <Mail className="w-4 h-4 text-gunmetal" />
                     <div>
-                      <p className="text-sm text-gray-600">Email</p>
-                      <p className="font-medium text-gray-900">{customerData.email}</p>
+                      <p className="text-sm text-gunmetal font-medium">Email</p>
+                      <p className="font-bold text-gunmetal">{customerData.email}</p>
                     </div>
                   </div>
                 )}
                 
                 {customerData?.phone && (
                   <div className="flex items-center space-x-3">
-                    <Phone className="w-4 h-4 text-gray-500" />
+                    <Phone className="w-4 h-4 text-gunmetal" />
                     <div>
-                      <p className="text-sm text-gray-600">Phone</p>
-                      <p className="font-medium text-gray-900">{customerData.phone}</p>
+                      <p className="text-sm text-gunmetal font-medium">Phone</p>
+                      <p className="font-bold text-gunmetal">{customerData.phone}</p>
                     </div>
                   </div>
                 )}
                 
                 {customerData?.shippingAddress && (
                   <div className="flex items-start space-x-3">
-                    <MapPin className="w-4 h-4 text-gray-500 mt-1" />
+                    <MapPin className="w-4 h-4 text-gunmetal mt-1" />
                     <div>
-                      <p className="text-sm text-gray-600">Shipping Address</p>
-                      <p className="font-medium text-gray-900 leading-relaxed">
+                      <p className="text-sm text-gunmetal font-medium">Shipping Address</p>
+                      <p className="font-bold text-gunmetal leading-relaxed">
                         {formatShippingAddress(customerData.shippingAddress)}
                       </p>
                     </div>
@@ -538,23 +649,23 @@ Date: ${new Date().toLocaleDateString('en-IN')}
             </div>
 
             {/* Support Information */}
-            <div className="polaris-card">
-              <div className="px-6 py-4 border-b border-gray-200 bg-[#fafbfc]">
+            <div className="bg-seasalt border border-silver-lake-200 rounded-lg shadow-sm overflow-hidden">
+              <div className="px-6 py-4 border-b border-silver-lake-200 bg-silver-lake-50">
                 <div className="flex items-center space-x-3">
-                  <Phone className="w-5 h-5 text-[#008060]" />
-                  <h2 className="text-lg font-semibold text-gray-900">Need Help?</h2>
+                  <Phone className="w-5 h-5 text-gunmetal" />
+                  <h2 className="text-lg font-bold text-gunmetal">Need Help?</h2>
                 </div>
               </div>
               
               <div className="p-6">
                 <div className="text-center space-y-4">
-                  <p className="text-gray-600">
+                  <p className="text-gunmetal font-medium">
                     If you have any questions about your order, please contact Pugly support:
                   </p>
                   
                   <motion.a
                     href="tel:+918319876678"
-                    className="inline-flex items-center space-x-2 bg-[#008060] hover:bg-[#004c3f] text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                    className="inline-flex items-center space-x-2 bg-gunmetal hover:bg-delft-blue text-seasalt px-6 py-3 rounded-lg font-bold transition-colors"
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -562,7 +673,7 @@ Date: ${new Date().toLocaleDateString('en-IN')}
                     <span>+91 8319876678</span>
                   </motion.a>
                   
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gunmetal font-medium">
                     Available Monday to Saturday, 9 AM - 6 PM IST
                   </p>
                 </div>
@@ -578,7 +689,7 @@ Date: ${new Date().toLocaleDateString('en-IN')}
         >
           <Link
             href={`/${username}/${productId}`}
-            className="inline-flex items-center justify-center space-x-2 polaris-button-secondary px-6 py-3"
+            className="inline-flex items-center justify-center space-x-2 bg-seasalt hover:bg-silver-lake-50 text-gunmetal font-bold px-4 py-2.5 rounded-md border border-silver-lake-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gunmetal focus:ring-offset-2 px-6 py-3"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Return to Product</span>
@@ -586,7 +697,7 @@ Date: ${new Date().toLocaleDateString('en-IN')}
           
           <Link
             href={`/${username}`}
-            className="inline-flex items-center justify-center space-x-2 polaris-button-primary px-6 py-3"
+            className="inline-flex items-center justify-center space-x-2 bg-gunmetal hover:bg-delft-blue text-seasalt font-bold px-4 py-2.5 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gunmetal focus:ring-offset-2 px-6 py-3"
           >
             <Package className="w-4 h-4" />
             <span>Continue Shopping</span>
@@ -595,11 +706,11 @@ Date: ${new Date().toLocaleDateString('en-IN')}
 
         {/* Footer Note */}
         <motion.div 
-          className="text-center mt-8 pt-8 border-t border-gray-200"
+          className="text-center mt-8 pt-8 border-t border-silver-lake-200"
           variants={itemVariants}
         >
-          <p className="text-xs text-gray-400 mt-2">
-            Powered by <span className="font-semibold text-[#008060]">Pugly</span>
+          <p className="text-xs text-gunmetal mt-2 font-medium">
+            Powered by <span className="font-bold text-gunmetal">Pugly</span>
           </p>
         </motion.div>
       </motion.div>

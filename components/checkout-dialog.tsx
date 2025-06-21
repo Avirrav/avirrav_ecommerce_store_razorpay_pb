@@ -74,18 +74,18 @@ export function CheckoutDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg bg-white rounded-lg border-0 shadow-xl p-0 overflow-hidden">
+      <DialogContent className="sm:max-w-lg bg-seasalt rounded-lg border-0 shadow-xl p-0 overflow-hidden">
         {/* Header */}
-        <div className="bg-[#fafbfc] px-6 py-4 border-b border-gray-200">
+        <div className="bg-silver-lake-50 px-6 py-4 border-b border-silver-lake-200">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-[#008060] rounded-lg flex items-center justify-center">
-              <User className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 bg-gunmetal rounded-lg flex items-center justify-center">
+              <User className="w-5 h-5 text-seasalt" />
             </div>
             <div>
-              <DialogTitle className="text-lg font-semibold text-gray-900">
+              <DialogTitle className="text-lg font-bold text-gunmetal">
                 Continue to checkout
               </DialogTitle>
-              <DialogDescription className="text-sm text-gray-600 mt-1">
+              <DialogDescription className="text-sm text-gunmetal mt-1">
                 Enter your email to proceed with your order
               </DialogDescription>
             </div>
@@ -101,16 +101,16 @@ export function CheckoutDialog({
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium text-gray-900">
+                    <FormLabel className="text-sm font-semibold text-gunmetal">
                       Email address
                     </FormLabel>
                     <FormControl>
                       <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                        <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gunmetal" />
                         <Input 
                           placeholder="Enter your email address" 
                           type="email"
-                          className="polaris-text-field pl-10"
+                          className="w-full px-3 py-2.5 border border-silver-lake-200 rounded-md text-sm placeholder-silver-lake-500 focus:outline-none focus:ring-2 focus:ring-gunmetal focus:border-transparent transition-all duration-200 text-gunmetal pl-10"
                           {...field} 
                         />
                       </div>
@@ -124,13 +124,13 @@ export function CheckoutDialog({
                 <button
                   type="button" 
                   onClick={() => onOpenChange(false)}
-                  className="flex-1 polaris-button-secondary h-11"
+                  className="flex-1 bg-seasalt hover:bg-silver-lake-50 text-gunmetal font-medium px-4 py-2.5 rounded-md border border-silver-lake-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gunmetal focus:ring-offset-2 h-11"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit" 
-                  className="flex-1 polaris-button-primary h-11"
+                  className="flex-1 bg-gunmetal hover:bg-delft-blue text-seasalt font-medium px-4 py-2.5 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gunmetal focus:ring-offset-2 h-11"
                 >
                   Continue
                 </button>
@@ -140,8 +140,8 @@ export function CheckoutDialog({
         </div>
         
         {/* Footer */}
-        <div className="bg-[#fafbfc] px-6 py-3 border-t border-gray-200">
-          <p className="text-xs text-gray-500 text-center">
+        <div className="bg-silver-lake-50 px-6 py-3 border-t border-silver-lake-200">
+          <p className="text-xs text-gunmetal text-center">
             We'll use this email to send you order updates and receipts
           </p>
         </div>

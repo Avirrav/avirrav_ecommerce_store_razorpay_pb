@@ -27,7 +27,7 @@ const Home = async ({ params }: StorePageProps) => {
 
   return (
     <Suspense fallback={<PageLoader />}>
-      <div className="min-h-screen bg-[#1a1a1a] flex flex-col">
+      <div className="min-h-screen bg-silver-lake-900 flex flex-col">
         {/* Top Section - Navbar */}
         <div className="flex-shrink-0">
           <Navbar storeUrl={store?.apiUrl} username={params.username} productId={params.productid} />
@@ -36,7 +36,7 @@ const Home = async ({ params }: StorePageProps) => {
         {/* Middle Section - Main Content */}
         <div className="flex-grow pt-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
-            <div className="bg-white rounded-3xl shadow-2xl overflow-hidden min-h-[calc(100vh-8rem)]">
+            <div className="bg-seasalt rounded-3xl shadow-2xl overflow-hidden min-h-[calc(100vh-8rem)]">
               <main className="mt-8 p-8">
                 {/* Product section */}
                 <div className="mb-12">

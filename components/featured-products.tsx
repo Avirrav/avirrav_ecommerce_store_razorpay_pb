@@ -33,7 +33,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products }) => {
 
   return (
     <motion.div 
-      className="polaris-card p-8"
+      className="bg-seasalt border border-silver-lake-200 rounded-lg shadow-sm overflow-hidden p-8"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -51,9 +51,9 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products }) => {
           animate={{ rotate: 0, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.3, type: "spring" }}
         >
-          <Sparkles className="w-6 h-6 text-[#008060]" />
+          <Sparkles className="w-6 h-6 text-gunmetal" />
         </motion.div>
-        <h2 className="polaris-text-heading-md">Featured Products</h2>
+        <h2 className="text-xl font-bold text-gunmetal leading-tight">Featured Products</h2>
       </motion.div>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
