@@ -479,7 +479,7 @@ export default function PaymentStatus() {
                     setTimeout(() => document.body.removeChild(toast), 3000);
                   }
                 }}
-                className="inline-flex items-center space-x-2 bg-silver-lake-200 hover:bg-silver-lake-300 text-gunmetal px-6 py-3 rounded-lg font-bold transition-colors"
+                className="inline-flex items-center space-x-2 bg-white hover:bg-silver-lake-50 text-gunmetal border-2 border-silver-lake-300 hover:border-gunmetal px-6 py-3 rounded-lg font-bold transition-all duration-200 shadow-sm hover:shadow-md"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -510,8 +510,8 @@ export default function PaymentStatus() {
                   <Hash className="w-4 h-4 text-gunmetal" />
                   <span className="text-sm font-bold text-gunmetal">Order ID</span>
                 </div>
-                <span className="font-mono text-sm font-bold text-gunmetal bg-silver-lake-100 px-2 py-1 rounded">
-                  <span className="text-gunmetal">{orderId}</span>
+                <span className="font-mono text-sm font-bold text-white bg-gunmetal px-3 py-2 rounded-lg shadow-sm">
+                  {orderId}
                 </span>
               </div>
 
