@@ -511,7 +511,7 @@ export default function PaymentStatus() {
                   <span className="text-sm font-bold text-gunmetal">Order ID</span>
                 </div>
                 <span className="font-mono text-sm font-bold text-gunmetal bg-silver-lake-100 px-2 py-1 rounded">
-                  {orderId}
+                  <span className="text-gunmetal">{orderId}</span>
                 </span>
               </div>
 
@@ -521,7 +521,7 @@ export default function PaymentStatus() {
                   <Calendar className="w-4 h-4 text-gunmetal" />
                   <span className="text-sm font-bold text-gunmetal">Order Date</span>
                 </div>
-                <span className="text-sm text-gunmetal font-semibold">{new Date().toLocaleDateString('en-IN', { 
+                <span className="text-sm text-gunmetal font-bold">{new Date().toLocaleDateString('en-IN', { 
                   year: 'numeric', 
                   month: 'long', 
                   day: 'numeric',
@@ -543,9 +543,9 @@ export default function PaymentStatus() {
                     )}
                     <div className="flex-1">
                       <h3 className="font-bold text-gunmetal mb-1">{product.name}</h3>
-                      <p className="text-sm text-gunmetal mb-2">{product.category?.name}</p>
+                      <p className="text-sm text-silver-lake-600 mb-2">{product.category?.name}</p>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-gunmetal font-medium">Quantity: 1</span>
+                        <span className="text-sm text-silver-lake-600 font-medium">Quantity: 1</span>
                         <span className="font-bold text-gunmetal">₹{product.price}</span>
                       </div>
                     </div>
@@ -565,11 +565,11 @@ export default function PaymentStatus() {
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-sm text-gunmetal font-medium">Method</span>
+                    <span className="text-sm text-silver-lake-600 font-medium">Method</span>
                     <span className="text-sm font-bold text-gunmetal">{statusConfig.paymentMethod}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-gunmetal font-medium">Status</span>
+                    <span className="text-sm text-silver-lake-600 font-medium">Status</span>
                     <span className={`text-sm font-bold ${
                       status === 'success' ? 'text-green-600' : 
                       status === 'failed' ? 'text-red-600' : 
@@ -579,10 +579,10 @@ export default function PaymentStatus() {
                     </span>
                   </div>
                   <div className="flex justify-between pt-2 border-t border-silver-lake-200">
-                    <span className="text-sm font-bold text-gunmetal">
+                    <span className="text-base font-bold text-gunmetal">
                       {status === 'cod' ? 'Amount to Pay' : 'Total Paid'}
                     </span>
-                    <span className="text-lg font-bold text-gunmetal">₹{product?.price || '0'}</span>
+                    <span className="text-xl font-bold text-gunmetal">₹{product?.price || '0'}</span>
                   </div>
                 </div>
               </div>
@@ -608,7 +608,7 @@ export default function PaymentStatus() {
                   <div className="flex items-center space-x-3">
                     <User className="w-4 h-4 text-gunmetal" />
                     <div>
-                      <p className="text-sm text-gunmetal font-medium">Name</p>
+                      <p className="text-sm text-silver-lake-600 font-medium">Name</p>
                       <p className="font-bold text-gunmetal">{customerData.fullName}</p>
                     </div>
                   </div>
@@ -618,7 +618,7 @@ export default function PaymentStatus() {
                   <div className="flex items-center space-x-3">
                     <Mail className="w-4 h-4 text-gunmetal" />
                     <div>
-                      <p className="text-sm text-gunmetal font-medium">Email</p>
+                      <p className="text-sm text-silver-lake-600 font-medium">Email</p>
                       <p className="font-bold text-gunmetal">{customerData.email}</p>
                     </div>
                   </div>
@@ -628,7 +628,7 @@ export default function PaymentStatus() {
                   <div className="flex items-center space-x-3">
                     <Phone className="w-4 h-4 text-gunmetal" />
                     <div>
-                      <p className="text-sm text-gunmetal font-medium">Phone</p>
+                      <p className="text-sm text-silver-lake-600 font-medium">Phone</p>
                       <p className="font-bold text-gunmetal">{customerData.phone}</p>
                     </div>
                   </div>
@@ -638,7 +638,7 @@ export default function PaymentStatus() {
                   <div className="flex items-start space-x-3">
                     <MapPin className="w-4 h-4 text-gunmetal mt-1" />
                     <div>
-                      <p className="text-sm text-gunmetal font-medium">Shipping Address</p>
+                      <p className="text-sm text-silver-lake-600 font-medium">Shipping Address</p>
                       <p className="font-bold text-gunmetal leading-relaxed">
                         {formatShippingAddress(customerData.shippingAddress)}
                       </p>
@@ -659,7 +659,7 @@ export default function PaymentStatus() {
               
               <div className="p-6">
                 <div className="text-center space-y-4">
-                  <p className="text-gunmetal font-medium">
+                  <p className="text-silver-lake-700 font-medium">
                     If you have any questions about your order, please contact Pugly support:
                   </p>
                   
@@ -673,7 +673,7 @@ export default function PaymentStatus() {
                     <span>+91 8319876678</span>
                   </motion.a>
                   
-                  <p className="text-sm text-gunmetal font-medium">
+                  <p className="text-sm text-silver-lake-600 font-medium">
                     Available Monday to Saturday, 9 AM - 6 PM IST
                   </p>
                 </div>
@@ -689,7 +689,7 @@ export default function PaymentStatus() {
         >
           <Link
             href={`/${username}/${productId}`}
-            className="inline-flex items-center justify-center space-x-2 bg-seasalt hover:bg-silver-lake-50 text-gunmetal font-bold px-4 py-2.5 rounded-md border border-silver-lake-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gunmetal focus:ring-offset-2 px-6 py-3"
+            className="inline-flex items-center justify-center space-x-2 bg-white hover:bg-silver-lake-50 text-gunmetal font-bold px-6 py-3 rounded-lg border-2 border-silver-lake-300 hover:border-gunmetal transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gunmetal focus:ring-offset-2"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Return to Product</span>
@@ -697,7 +697,7 @@ export default function PaymentStatus() {
           
           <Link
             href={`/${username}`}
-            className="inline-flex items-center justify-center space-x-2 bg-gunmetal hover:bg-delft-blue text-seasalt font-bold px-4 py-2.5 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gunmetal focus:ring-offset-2 px-6 py-3"
+            className="inline-flex items-center justify-center space-x-2 bg-gunmetal hover:bg-delft-blue text-white font-bold px-6 py-3 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gunmetal focus:ring-offset-2 shadow-lg hover:shadow-xl"
           >
             <Package className="w-4 h-4" />
             <span>Continue Shopping</span>
@@ -709,7 +709,7 @@ export default function PaymentStatus() {
           className="text-center mt-8 pt-8 border-t border-silver-lake-200"
           variants={itemVariants}
         >
-          <p className="text-xs text-gunmetal mt-2 font-medium">
+          <p className="text-sm text-silver-lake-600 mt-2 font-medium text-center">
             Powered by <span className="font-bold text-gunmetal">Pugly</span>
           </p>
         </motion.div>
