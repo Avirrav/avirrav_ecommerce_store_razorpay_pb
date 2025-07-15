@@ -61,80 +61,80 @@ const plans = [
 
 export default function PricingSection() {
   return (
-    <section className="min-h-screen bg-silver-lake-50 flex items-center justify-center">
-      <div className="max-w-7xl mx-auto px-8 py-16">
+    <section className="min-h-screen bg-silver-lake-50 flex items-center justify-center px-4">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-8 md:py-16">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-8 md:mb-16">
           <div className="inline-flex items-center gap-2 bg-gunmetal/5 border border-gunmetal/10 rounded-full px-4 py-2 mb-6">
             <Star className="w-4 h-4 text-gunmetal" />
             <span className="text-sm font-medium text-gunmetal">Pricing Plans</span>
           </div>
           
-          <h2 className="text-4xl lg:text-5xl font-black text-gunmetal mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-gunmetal mb-4 md:mb-6">
             Simple, Transparent Pricing
           </h2>
           
-          <p className="text-lg text-yinmn-blue-600 max-w-2xl mx-auto leading-relaxed mb-8">
+          <p className="text-base md:text-lg text-yinmn-blue-600 max-w-2xl mx-auto leading-relaxed mb-6 md:mb-8">
             Choose the perfect plan for your business. No commission on transactions - just straightforward pricing.
           </p>
 
           {/* Billing Toggle */}
-          <div className="inline-flex items-center bg-white border border-silver-lake-200 rounded-xl p-1">
-            <button className="px-4 py-2 rounded-lg bg-gunmetal text-seasalt text-sm font-medium">
+          <div className="inline-flex items-center bg-white border border-silver-lake-200 rounded-xl p-1 text-xs sm:text-sm">
+            <button className="px-3 sm:px-4 py-2 rounded-lg bg-gunmetal text-seasalt font-medium">
               Annual (Save 40%)
             </button>
-            <button className="px-4 py-2 rounded-lg text-gunmetal text-sm font-medium">
+            <button className="px-3 sm:px-4 py-2 rounded-lg text-gunmetal font-medium">
               Monthly
             </button>
           </div>
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-16">
           {plans.map((plan, index) => (
             <div
               key={index}
               className={`relative bg-seasalt border-2 rounded-2xl p-8 transition-all duration-300 ${
                 plan.popular
-                  ? 'border-gunmetal shadow-xl scale-105'
+                  ? 'border-gunmetal shadow-xl md:scale-105'
                   : 'border-silver-lake-200 hover:border-gunmetal/30 hover:shadow-lg'
               }`}
             >
               {plan.popular && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <div className="bg-gunmetal text-seasalt px-4 py-2 rounded-xl text-sm font-medium">
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <div className="bg-gunmetal text-seasalt px-3 py-1.5 rounded-xl text-xs font-medium">
                     Most Popular
                   </div>
                 </div>
               )}
 
               <div className="text-center mb-8">
-                <h3 className="text-2xl font-black text-gunmetal mb-2">
+                <h3 className="text-xl md:text-2xl font-black text-gunmetal mb-2">
                   {plan.name}
                 </h3>
-                <p className="text-yinmn-blue-600 mb-6">
+                <p className="text-sm md:text-base text-yinmn-blue-600 mb-4 md:mb-6">
                   {plan.description}
                 </p>
                 
                 <div className="mb-4">
-                  <span className="text-4xl font-black text-gunmetal">
+                  <span className="text-2xl md:text-4xl font-black text-gunmetal">
                     ₹{plan.price.toLocaleString()}
                   </span>
-                  <span className="text-yinmn-blue-600">/{plan.duration}</span>
+                  <span className="text-sm md:text-base text-yinmn-blue-600">/{plan.duration}</span>
                 </div>
                 
                 {plan.originalPrice && (
                   <div className="mb-2">
-                    <span className="text-lg text-yinmn-blue-500 line-through">
+                    <span className="text-sm md:text-lg text-yinmn-blue-500 line-through">
                       ₹{plan.originalPrice.toLocaleString()}
                     </span>
-                    <span className="ml-2 text-sm bg-red-100 text-red-800 px-2 py-1 rounded font-medium">
+                    <span className="ml-2 text-xs bg-red-100 text-red-800 px-2 py-1 rounded font-medium">
                       {plan.savings}
                     </span>
                   </div>
                 )}
                 
-                <p className="text-sm text-yinmn-blue-500">
+                <p className="text-xs md:text-sm text-yinmn-blue-500">
                   ₹{plan.monthlyPrice} per month, billed for {plan.duration}
                 </p>
               </div>
@@ -142,14 +142,14 @@ export default function PricingSection() {
               <ul className="space-y-4 mb-8">
                 {plan.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                    <span className="text-gunmetal">{feature}</span>
+                    <Check className="w-4 h-4 md:w-5 md:h-5 text-green-500 flex-shrink-0" />
+                    <span className="text-sm md:text-base text-gunmetal">{feature}</span>
                   </li>
                 ))}
               </ul>
 
               <button
-                className={`w-full py-4 rounded-xl font-medium transition-all duration-300 ${
+                className={`w-full py-3 md:py-4 rounded-xl font-medium transition-all duration-300 text-sm md:text-base ${
                   plan.popular
                     ? 'bg-gunmetal text-seasalt hover:bg-delft-blue'
                     : 'border-2 border-gunmetal text-gunmetal hover:bg-gunmetal hover:text-seasalt'
@@ -163,7 +163,7 @@ export default function PricingSection() {
 
         {/* Trust Indicators */}
         <div className="text-center">
-          <div className="flex flex-wrap justify-center items-center gap-8 text-yinmn-blue-600">
+          <div className="flex flex-wrap justify-center items-center gap-4 md:gap-8 text-xs md:text-sm text-yinmn-blue-600">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
               <span className="text-sm">No Commission</span>

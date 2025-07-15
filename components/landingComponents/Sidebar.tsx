@@ -19,7 +19,7 @@ const navigationItems = [
 
 export default function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
   return (
-    <div className="fixed left-0 top-0 h-screen w-64 bg-seasalt border-r border-silver-lake-300 z-50 flex flex-col">
+    <div className="fixed left-0 top-0 h-screen w-64 bg-seasalt border-r border-silver-lake-300 z-50 flex-col hidden md:flex">
       {/* Logo */}
       <div className="p-6 border-b border-silver-lake-300">
         <span className="text-3xl font-black text-gunmetal tracking-tight">Pugly</span>

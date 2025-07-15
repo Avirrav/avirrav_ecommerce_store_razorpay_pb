@@ -96,7 +96,7 @@ export default function MainContent({ activeSection }: MainContentProps) {
   };
 
   return (
-    <div className="ml-64 min-h-screen">
+    <div className="md:ml-64 min-h-screen pt-16 md:pt-0 pb-20 md:pb-0">
       {renderSection()}
     </div>
   );
