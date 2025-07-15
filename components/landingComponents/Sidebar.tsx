@@ -51,7 +51,7 @@ export default function Sidebar({ activeSection, onSectionChange }: SidebarProps
       {/* CTA Button */}
       <div className="p-4 border-t border-silver-lake-300">
         <button className="w-full bg-gunmetal text-seasalt px-4 py-3 rounded-xl hover:bg-delft-blue transition-all duration-300 font-medium text-sm tracking-wide">
-          Get Started
+          Start Trial
         </button>
       </div>
     </div>

@@ -5,26 +5,26 @@ import { Database, Zap, Settings, TrendingUp, ArrowRight } from 'lucide-react';
 const features = [
   {
     icon: Database,
-    title: "Connect Any Store via API",
-    description: "Integrate your Shopify, WooCommerce, or custom platform in minutes. One dashboard for all your stores.",
+    title: "Connect Custom Stores via API",
+    description: "Connect your custom-built stores via API integration. Manage multiple stores from one centralized dashboard.",
     color: "gunmetal"
   },
   {
     icon: Settings,
-    title: "Centralize Product & Order Management",
-    description: "Everything in one dashboard. Manage inventory, track orders, and sync data across all platforms seamlessly.",
+    title: "Product & Order Management",
+    description: "Manage products and orders efficiently. Intuitive dashboard interface with fast, responsive design.",
     color: "delft-blue"
   },
   {
     icon: Zap,
-    title: "Built for Speed",
-    description: "Lightning-fast interface with no fluff. Focus on what matters most - growing your business.",
+    title: "Fast & Responsive",
+    description: "Lightning-fast interface designed for speed. Built specifically for dropshipping operations and micro-brands.",
     color: "yinmn-blue"
   },
   {
     icon: TrendingUp,
-    title: "Automation Ready",
-    description: "Save hours every day with smart automation. Scale faster with intelligent workflows.",
+    title: "Analytics & Insights",
+    description: "Basic analytics included with advanced analytics coming soon. Track your business performance effectively.",
     color: "gunmetal"
   }
 ];
@@ -45,7 +45,7 @@ export default function StorySection() {
           </h2>
           
           <p className="text-lg text-yinmn-blue-600 max-w-2xl mx-auto leading-relaxed">
-            Powerful features designed specifically for dropshipping entrepreneurs who want to scale efficiently.
+            Core features of Pugly Dashboard - built for dropshipping businesses and e-commerce management.
           </p>
         </div>
 
@@ -85,10 +85,10 @@ export default function StorySection() {
           <div className="bg-gunmetal rounded-2xl p-8 text-seasalt">
             <h3 className="text-2xl font-bold mb-4">Ready to streamline your operations?</h3>
             <p className="text-silver-lake-300 mb-6">
-              Join thousands of entrepreneurs already using Pugly to scale their businesses.
+              Join dropshipping businesses already using Pugly to manage their operations efficiently.
             </p>
             <button className="bg-seasalt text-gunmetal px-8 py-4 rounded-xl hover:bg-silver-lake-100 transition-colors font-medium">
-              Start Free Trial
+              Start Trial
             </button>
           </div>
         </div>

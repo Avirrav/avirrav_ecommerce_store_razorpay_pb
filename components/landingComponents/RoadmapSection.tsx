@@ -1,56 +1,86 @@
 "use client"
 import React from 'react';
-import { Calendar, Database, Bot, Shield, Globe, Sparkles } from 'lucide-react';
+import { Calendar, Mail, Bell, Bot, Truck, CreditCard, Users, Image, BarChart3, Smartphone, Settings } from 'lucide-react';
 
 const roadmapItems = [
   {
     id: 1,
-    quarter: "Q1 2025",
-    title: "Advanced Analytics",
-    icon: Database,
+    quarter: "0-3 Months",
+    title: "Core Integrations",
+    icon: Mail,
     status: "in-progress",
-    description: "Real-time insights & performance tracking",
-    features: ["Revenue Analytics", "Customer Insights", "Performance Metrics"],
-    progress: 75
+    description: "Essential integrations for seamless operations",
+    features: ["Email Server Integration", "Dashboard Notifications", "Email Notifications", "Multiple Payment Gateways"],
+    progress: 25
   },
   {
     id: 2,
-    quarter: "Q2 2025",
-    title: "AI Automation",
+    quarter: "3-6 Months",
+    title: "AI & Automation",
     icon: Bot,
     status: "planned",
-    description: "Smart workflows & automated processes",
-    features: ["Auto Inventory", "Smart Pricing", "Order Processing"],
+    description: "AI-powered tools for product management and marketing",
+    features: ["AI Product Importer (Amazon, Flipkart, AliExpress)", "Auto Product Listings", "AI Marketing Assistant", "Email & Ad Generation"],
     progress: 0
   },
   {
     id: 3,
-    quarter: "Q3 2025",
-    title: "Security Suite",
-    icon: Shield,
+    quarter: "3-6 Months",
+    title: "Shipping & Fulfillment",
+    icon: Truck,
     status: "planned",
-    description: "Enhanced security & fraud protection",
-    features: ["2FA Security", "Fraud Detection", "Data Encryption"],
+    description: "Automated shipping and fulfillment solutions",
+    features: ["Shiprocket Integration", "Delhivery Integration", "Pickrr Integration", "Automated Fulfillment"],
     progress: 0
   },
   {
     id: 4,
-    quarter: "Q4 2025",
-    title: "Global Integration",
-    icon: Globe,
+    quarter: "3-6 Months",
+    title: "Enhanced Onboarding",
+    icon: Users,
     status: "planned",
-    description: "Multi-currency & international support",
-    features: ["Multi-Currency", "Global Shipping", "Tax Compliance"],
+    description: "Improved user experience and guidance",
+    features: ["Guided Walkthrough", "Product Demo Videos", "Interactive Tutorials", "Better UX Flow"],
     progress: 0
   },
   {
     id: 5,
-    quarter: "Q1 2026",
-    title: "Mobile App",
-    icon: Sparkles,
+    quarter: "6-12 Months",
+    title: "Content Tools",
+    icon: Image,
     status: "future",
-    description: "Native iOS & Android applications",
-    features: ["iOS App", "Android App", "Push Notifications"],
+    description: "Advanced content creation and management tools",
+    features: ["AI Image Editor", "Background Remover", "Product Catalog Export", "Excel/CSV Export"],
+    progress: 0
+  },
+  {
+    id: 6,
+    quarter: "12+ Months",
+    title: "Advanced Analytics",
+    icon: BarChart3,
+    status: "future",
+    description: "Comprehensive business intelligence and insights",
+    features: ["Revenue Analytics", "Profit Tracking", "Order Heatmaps", "Performance Logs"],
+    progress: 0
+  },
+  {
+    id: 7,
+    quarter: "12+ Months",
+    title: "Platform Expansion",
+    icon: Settings,
+    status: "future",
+    description: "Marketplace and team management features",
+    features: ["App Marketplace", "3rd-party Plugins", "Team Management", "Role-based Access"],
+    progress: 0
+  },
+  {
+    id: 8,
+    quarter: "12+ Months",
+    title: "Mobile Experience",
+    icon: Smartphone,
+    status: "future",
+    description: "Mobile applications for on-the-go management",
+    features: ["Progressive Web App (PWA)", "Native iOS App", "Native Android App", "Mobile Notifications"],
     progress: 0
   }
 ];
@@ -84,7 +114,7 @@ export default function RoadmapSection() {
 
   return (
     <section className="min-h-screen bg-seasalt flex items-center justify-center">
-      <div className="max-w-6xl mx-auto px-8 py-16">
+      <div className="max-w-7xl mx-auto px-8 py-16">
         {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-gunmetal/5 border border-gunmetal/10 rounded-full px-4 py-2 mb-6">
@@ -97,12 +127,37 @@ export default function RoadmapSection() {
           </h2>
           
           <p className="text-lg text-yinmn-blue-600 max-w-2xl mx-auto leading-relaxed">
-            Exciting new features and improvements planned to supercharge your e-commerce operations.
+            Exciting new features and improvements planned to supercharge your dropshipping operations and e-commerce management.
           </p>
         </div>
 
+        {/* Timeline Categories */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-gunmetal rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <Calendar className="w-8 h-8 text-seasalt" />
+            </div>
+            <h3 className="text-xl font-bold text-gunmetal mb-2">Short-Term</h3>
+            <p className="text-yinmn-blue-600 text-sm">0-6 months</p>
+          </div>
+          <div className="text-center">
+            <div className="w-16 h-16 bg-delft-blue rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <Settings className="w-8 h-8 text-seasalt" />
+            </div>
+            <h3 className="text-xl font-bold text-gunmetal mb-2">Mid-Term</h3>
+            <p className="text-yinmn-blue-600 text-sm">6-12 months</p>
+          </div>
+          <div className="text-center">
+            <div className="w-16 h-16 bg-yinmn-blue rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <BarChart3 className="w-8 h-8 text-seasalt" />
+            </div>
+            <h3 className="text-xl font-bold text-gunmetal mb-2">Long-Term</h3>
+            <p className="text-yinmn-blue-600 text-sm">12+ months</p>
+          </div>
+        </div>
+
         {/* Roadmap Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {roadmapItems.map((item, index) => {
             const Icon = item.icon;
             
@@ -129,7 +184,7 @@ export default function RoadmapSection() {
 
                 {/* Content */}
                 <div className="mb-4">
-                  <h3 className="text-xl font-bold text-gunmetal mb-2">
+                  <h3 className="text-lg font-bold text-gunmetal mb-2">
                     {item.title}
                   </h3>
                   <p className="text-yinmn-blue-600 text-sm leading-relaxed">
@@ -156,9 +211,9 @@ export default function RoadmapSection() {
                 {/* Features List */}
                 <div className="space-y-2">
                   {item.features.map((feature, featureIndex) => (
-                    <div key={featureIndex} className="flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 bg-delft-blue rounded-full flex-shrink-0" />
-                      <span className="text-sm text-gunmetal">{feature}</span>
+                    <div key={featureIndex} className="flex items-start gap-2">
+                      <div className="w-1.5 h-1.5 bg-delft-blue rounded-full flex-shrink-0 mt-2" />
+                      <span className="text-xs text-gunmetal leading-relaxed">{feature}</span>
                     </div>
                   ))}
                 </div>
@@ -174,11 +229,16 @@ export default function RoadmapSection() {
               Want to influence our roadmap?
             </h3>
             <p className="text-yinmn-blue-600 mb-6">
-              Join our community and help shape the future of Pugly Dashboard.
+              Join our community of dropshipping businesses and help shape Pugly's future with your feedback and suggestions.
             </p>
-            <button className="bg-gunmetal text-seasalt px-8 py-4 rounded-xl hover:bg-delft-blue transition-colors font-medium">
-              Join Community
-            </button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button className="bg-gunmetal text-seasalt px-8 py-4 rounded-xl hover:bg-delft-blue transition-colors font-medium">
+                Join Community
+              </button>
+              <button className="border-2 border-silver-lake-300 text-gunmetal px-8 py-4 rounded-xl hover:border-gunmetal transition-colors font-medium">
+                Request Feature
+              </button>
+            </div>
           </div>
         </div>
       </div>

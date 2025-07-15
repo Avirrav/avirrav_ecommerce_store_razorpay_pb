@@ -5,30 +5,30 @@ import { Users, Store, Code, Briefcase, CheckCircle } from 'lucide-react';
 const audiences = [
   {
     icon: Users,
-    title: "Dropshipping Solopreneurs",
-    description: "Perfect for individual entrepreneurs managing multiple stores and suppliers.",
-    benefits: ["Multi-store management", "Supplier integration", "Order automation"],
+    title: "Dropshipping Enthusiasts",
+    description: "Perfect for dropshipping enthusiasts and those already running dropshipping businesses.",
+    benefits: ["Multi-store management", "Product management", "Order tracking"],
     color: "gunmetal"
   },
   {
     icon: Store,
-    title: "Shopify/WooCommerce Owners",
-    description: "Seamlessly integrate with your existing e-commerce platforms.",
-    benefits: ["Platform integration", "Inventory sync", "Order tracking"],
+    title: "Small Businesses",
+    description: "Ideal for small businesses selling products who need centralized management.",
+    benefits: ["Product catalog", "Order management", "Business analytics"],
     color: "delft-blue"
   },
   {
     icon: Code,
-    title: "Indie Developers",
-    description: "Custom API support for developers building unique e-commerce solutions.",
-    benefits: ["Custom API support", "Flexible integration", "Developer tools"],
+    title: "Technical Users",
+    description: "Technical users needing dashboard functionality combined with API access.",
+    benefits: ["API integration", "Custom development", "Technical support"],
     color: "yinmn-blue"
   },
   {
     icon: Briefcase,
-    title: "Small Brand Founders",
-    description: "Scale your brand operations with professional-grade tools.",
-    benefits: ["Brand management", "Analytics dashboard", "Growth tools"],
+    title: "Micro-Brand Owners",
+    description: "Micro-brands and solopreneurs looking to scale their operations efficiently.",
+    benefits: ["Brand scaling", "Operational efficiency", "Growth analytics"],
     color: "gunmetal"
   }
 ];
@@ -49,7 +49,7 @@ export default function AudienceSection() {
           </h2>
           
           <p className="text-lg text-yinmn-blue-600 max-w-2xl mx-auto leading-relaxed">
-            Pugly Dashboard is designed for e-commerce entrepreneurs who need powerful tools without the complexity.
+            Pugly Dashboard is designed for dropshipping businesses, solopreneurs, and micro-brands who need powerful tools without complexity.
           </p>
         </div>
 

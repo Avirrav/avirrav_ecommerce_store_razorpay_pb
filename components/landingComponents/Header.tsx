@@ -49,7 +49,7 @@ export default function Header() {
           {/* CTA Button */}
           <div className="hidden md:flex">
             <button className="bg-gunmetal text-seasalt px-8 py-3 rounded-xl hover:bg-delft-blue transition-all duration-300 font-medium text-sm tracking-wide">
-              Get Started
+              Start Trial
             </button>
           </div>
 
@@ -81,7 +81,7 @@ export default function Header() {
                 Contact
               </a>
               <button className="w-full mt-4 bg-gunmetal text-seasalt px-8 py-3 rounded-xl hover:bg-delft-blue transition-all duration-300 font-medium text-sm tracking-wide">
-                Get Started
+                Start Trial
               </button>
             </div>
           </div>

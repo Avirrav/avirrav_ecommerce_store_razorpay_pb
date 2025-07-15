@@ -11,7 +11,7 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <div className="text-2xl font-black mb-4">Pugly</div>
             <p className="text-silver-lake-400 leading-relaxed text-sm mb-6">
-              The ultimate dashboard for dropshipping solopreneurs. Simple, powerful, and built for growth.
+              Modern e-commerce dashboard for dropshipping businesses. Centralized management with API integration.
             </p>
             <div className="flex space-x-3">
               <a href="#" className="text-silver-lake-500 hover:text-seasalt transition-colors p-2 bg-delft-blue rounded-lg hover:bg-yinmn-blue">

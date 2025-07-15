@@ -5,35 +5,35 @@ import { Plus, Minus, HelpCircle } from 'lucide-react';
 const faqs = [
   {
     question: "What is Pugly?",
-    answer: "Pugly is a unified dashboard for managing dropshipping stores, products, and orders with comprehensive API support. It's designed specifically for solopreneurs and small e-commerce businesses who need powerful tools without the complexity."
+    answer: "Pugly is a modern, user-friendly e-commerce dashboard designed primarily for dropshipping businesses. It offers a centralized platform where users can manage their products, orders, and connect custom stores via API integration."
   },
   {
     question: "Who is it for?",
-    answer: "Pugly is perfect for dropshipping solopreneurs, Shopify/WooCommerce store owners, indie developers using custom APIs, and small brand founders who want to streamline their e-commerce operations."
+    answer: "Pugly is perfect for dropshipping enthusiasts and those already running businesses, small businesses selling products, technical users needing dashboard + API access, and micro-brands looking to scale."
   },
   {
     question: "Can I connect custom-built stores?",
-    answer: "Absolutely! Pugly supports custom APIs and backend logic, making it easy to integrate with any e-commerce platform or custom-built solution. Our flexible API architecture adapts to your specific needs."
+    answer: "Yes! Pugly is specifically designed to connect custom-built stores via API integration. This is one of our core features - allowing you to manage multiple custom stores from one centralized dashboard."
   },
   {
-    question: "Is there a free trial?",
-    answer: "Yes, we offer a 30-day free trial so you can explore all features of the dashboard before committing to a paid plan. No credit card required to get started."
+    question: "What are the pricing plans?",
+    answer: "We offer three plans: Trial (₹30 for 6 months), Basic (₹3000 for 12 months), and Advanced (₹6000 for 12 months). All plans have 40% off currently, and there's no commission on transactions."
   },
   {
-    question: "How is Pugly different from other tools?",
-    answer: "Pugly is lightweight, API-first, affordable, and designed specifically for small e-commerce setups. Unlike bloated enterprise solutions, we focus on simplicity and speed while providing all the essential features you need."
+    question: "Do you charge commission on transactions?",
+    answer: "No! Unlike many other platforms, Pugly doesn't charge any commission on your transactions. You pay only the subscription fee and keep 100% of your profits."
   },
   {
     question: "Do you offer support?",
-    answer: "Yes! We provide community support for Starter plan users, email support for Pro users, and priority support with dedicated assistance for Premium users. Our team is committed to your success."
+    answer: "Yes! We provide email support for Trial users, priority support for Basic users, and dedicated support for Advanced users. Our team is committed to helping you succeed."
   },
   {
-    question: "What integrations do you support?",
-    answer: "We support Shopify, WooCommerce, custom APIs, and many other popular e-commerce platforms. Our flexible integration system can adapt to most existing setups."
+    question: "How does the API integration work?",
+    answer: "Our API integration allows you to connect your custom-built stores directly to the Pugly dashboard. You can manage products, orders, and get analytics all from one place, regardless of your store's technology stack."
   },
   {
-    question: "Is my data secure?",
-    answer: "Absolutely. We use enterprise-grade security measures including SSL encryption, secure data centers, and regular security audits to protect your business data."
+    question: "Can I manage multiple stores?",
+    answer: "Yes! With our Basic and Advanced plans, you can connect and manage unlimited stores from a single dashboard. The Trial plan allows 1 store connection for testing purposes."
   }
 ];
 

@@ -18,13 +18,13 @@ export default function Hero() {
               <h1 className="text-5xl lg:text-6xl font-black text-gunmetal leading-tight">
                 Everything You Need to Run Your
                 <span className="block text-delft-blue mt-2">
-                  Dropshipping Business
+                  E-commerce Dashboard
                 </span>
               </h1>
               
               <p className="text-lg text-yinmn-blue-600 leading-relaxed max-w-lg">
-                One unified dashboard to manage your stores, products, orders, and APIs. 
-                Built for speed, simplicity, and scale.
+                A modern, user-friendly e-commerce dashboard designed for dropshipping businesses. 
+                Centralized platform to manage products, orders, and connect custom stores via API.
               </p>
             </div>
 
@@ -47,7 +47,7 @@ export default function Hero() {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
               <button className="bg-gunmetal text-seasalt px-8 py-4 rounded-xl hover:bg-delft-blue transition-colors font-medium flex items-center justify-center gap-3">
-                Get Started for ₹5/month
+                Start Trial for ₹30
                 <ArrowRight size={16} />
               </button>
               
@@ -61,15 +61,15 @@ export default function Hero() {
             <div className="flex items-center gap-8 text-sm text-yinmn-blue-600">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span>No Setup Fees</span>
+                <span>No Commission</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span>30-Day Free Trial</span>
+                <span>6 Month Trial</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span>Cancel Anytime</span>
+                <span>API Access</span>
               </div>
             </div>
           </div>
@@ -99,16 +99,16 @@ export default function Hero() {
               <div className="space-y-4">
                 <div className="grid grid-cols-3 gap-4">
                   <div className="bg-silver-lake-50 rounded-lg p-4 text-center">
-                    <div className="text-2xl font-bold text-gunmetal">24</div>
+                    <div className="text-2xl font-bold text-gunmetal">∞</div>
+                    <div className="text-sm text-yinmn-blue-600">Stores</div>
+                  </div>
+                  <div className="bg-silver-lake-50 rounded-lg p-4 text-center">
+                    <div className="text-2xl font-bold text-delft-blue">∞</div>
                     <div className="text-sm text-yinmn-blue-600">Products</div>
                   </div>
                   <div className="bg-silver-lake-50 rounded-lg p-4 text-center">
-                    <div className="text-2xl font-bold text-delft-blue">12</div>
+                    <div className="text-2xl font-bold text-yinmn-blue">24</div>
                     <div className="text-sm text-yinmn-blue-600">Orders</div>
-                  </div>
-                  <div className="bg-silver-lake-50 rounded-lg p-4 text-center">
-                    <div className="text-2xl font-bold text-yinmn-blue">₹45K</div>
-                    <div className="text-sm text-yinmn-blue-600">Revenue</div>
                   </div>
                 </div>
 

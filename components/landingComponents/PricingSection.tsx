@@ -4,53 +4,58 @@ import { Check, Star } from 'lucide-react';
 
 const plans = [
   {
-    name: "Starter",
-    price: 600,
-    monthlyPrice: 50,
-    description: "Perfect for getting started",
+    name: "Trial",
+    price: 30,
+    originalPrice: 50,
+    monthlyPrice: 5,
+    duration: "6 months",
+    description: "Perfect for testing",
     features: [
       "1 Store Connection",
       "Up to 10 Products",
-      "API Access",
       "Basic Analytics",
-      "Community Support"
+      "Email Support",
+      "Mobile Responsive"
     ],
     popular: false,
-    cta: "Start Free Trial"
+    cta: "Start Trial",
+    savings: "40% OFF"
   },
   {
-    name: "Pro",
-    price: 6000,
-    monthlyPrice: 500,
-    description: "Most popular for growing businesses",
+    name: "Basic",
+    price: 3000,
+    originalPrice: 5000,
+    monthlyPrice: 250,
+    duration: "12 months",
+    description: "Most popular choice",
     features: [
       "Unlimited Stores",
       "Unlimited Products",
-      "Advanced API Access",
-      "Real-time Analytics",
-      "Email Support",
-      "Custom Integrations",
-      "Automation Tools"
+      "Advanced Analytics (Upcoming)",
+      "Priority Support",
+      "API Access"
     ],
     popular: true,
-    cta: "Start Free Trial"
+    cta: "Get Started",
+    savings: "40% OFF"
   },
   {
-    name: "Premium",
-    price: 12000,
-    monthlyPrice: 1000,
-    description: "Everything you need to scale",
+    name: "Advanced",
+    price: 6000,
+    originalPrice: 10000,
+    monthlyPrice: 500,
+    duration: "12 months",
+    description: "Enterprise-grade features",
     features: [
-      "Everything in Pro",
-      "Custom Branding",
-      "Reseller Rights",
-      "Advanced Analytics",
-      "Priority Support",
-      "White-label Solution",
-      "Custom Features"
+      "Everything in Basic",
+      "Custom Store Front",
+      "Custom Domain",
+      "Dedicated Support",
+      "Priority Updates"
     ],
     popular: false,
-    cta: "Contact Sales"
+    cta: "Contact Sales",
+    savings: "40% OFF"
   }
 ];
 
@@ -70,13 +75,13 @@ export default function PricingSection() {
           </h2>
           
           <p className="text-lg text-yinmn-blue-600 max-w-2xl mx-auto leading-relaxed mb-8">
-            Choose the perfect plan for your business. All plans include our core features with no hidden fees.
+            Choose the perfect plan for your business. No commission on transactions - just straightforward pricing.
           </p>
 
           {/* Billing Toggle */}
           <div className="inline-flex items-center bg-white border border-silver-lake-200 rounded-xl p-1">
             <button className="px-4 py-2 rounded-lg bg-gunmetal text-seasalt text-sm font-medium">
-              Annual (Save 17%)
+              Annual (Save 40%)
             </button>
             <button className="px-4 py-2 rounded-lg text-gunmetal text-sm font-medium">
               Monthly
@@ -115,11 +120,22 @@ export default function PricingSection() {
                   <span className="text-4xl font-black text-gunmetal">
                     ₹{plan.price.toLocaleString()}
                   </span>
-                  <span className="text-yinmn-blue-600">/year</span>
+                  <span className="text-yinmn-blue-600">/{plan.duration}</span>
                 </div>
                 
+                {plan.originalPrice && (
+                  <div className="mb-2">
+                    <span className="text-lg text-yinmn-blue-500 line-through">
+                      ₹{plan.originalPrice.toLocaleString()}
+                    </span>
+                    <span className="ml-2 text-sm bg-red-100 text-red-800 px-2 py-1 rounded font-medium">
+                      {plan.savings}
+                    </span>
+                  </div>
+                )}
+                
                 <p className="text-sm text-yinmn-blue-500">
-                  ₹{plan.monthlyPrice} per month, billed annually
+                  ₹{plan.monthlyPrice} per month, billed for {plan.duration}
                 </p>
               </div>
 
@@ -150,19 +166,19 @@ export default function PricingSection() {
           <div className="flex flex-wrap justify-center items-center gap-8 text-yinmn-blue-600">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span className="text-sm">No Setup Fees</span>
+              <span className="text-sm">No Commission</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span className="text-sm">Cancel Anytime</span>
+              <span className="text-sm">API Access</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span className="text-sm">30-Day Free Trial</span>
+              <span className="text-sm">6 Month Trial</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span className="text-sm">Money-back Guarantee</span>
+              <span className="text-sm">Fast & Responsive</span>
             </div>
           </div>
         </div>
