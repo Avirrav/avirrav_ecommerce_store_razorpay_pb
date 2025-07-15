@@ -25,16 +25,16 @@ export function Footer({ username }: FooterProps) {
   }, [username]);
 
   return (
-    <footer className="bg-silver-lake-900">
+    <footer className="bg-[#1a1a1a]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Thank you message and Powered by section */}
         <div className=" pt-8">
           <div className="text-center space-y-4">
-            <p className="text-lg font-bold text-seasalt">
+            <p className="text-lg font-bold text-white">
               © 2024 {store?.name || "Store"}. Thank you for shopping.
             </p>
-            <p className="text-sm text-silver-lake-300">
-              Powered by <span className="font-bold text-gunmetal">Pugly</span>
+            <p className="text-sm text-[#bfc7d1]">
+              Powered by <span className="font-bold text-[#7ed957]">Pugly</span>
             </p>
           </div>
 
@@ -44,7 +44,7 @@ export function Footer({ username }: FooterProps) {
                 <a
                   key={link}
                   href="#"
-                  className="text-silver-lake-300 hover:text-seasalt transition-colors duration-200 text-sm font-medium"
+                  className="text-[#bfc7d1] hover:text-[#7ed957] transition-colors duration-200 text-sm font-medium"
                 >
                   {link}
                 </a>
