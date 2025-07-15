@@ -1,83 +1,113 @@
 "use client"
 import React from 'react';
-import { Users, Store, Code, Briefcase } from 'lucide-react';
+import { Users, Store, Code, Briefcase, CheckCircle } from 'lucide-react';
 
 const audiences = [
   {
     icon: Users,
     title: "Dropshipping Solopreneurs",
     description: "Perfect for individual entrepreneurs managing multiple stores and suppliers.",
+    benefits: ["Multi-store management", "Supplier integration", "Order automation"],
     color: "gunmetal"
   },
   {
     icon: Store,
     title: "Shopify/WooCommerce Owners",
     description: "Seamlessly integrate with your existing e-commerce platforms.",
+    benefits: ["Platform integration", "Inventory sync", "Order tracking"],
     color: "delft-blue"
   },
   {
     icon: Code,
     title: "Indie Developers",
     description: "Custom API support for developers building unique e-commerce solutions.",
+    benefits: ["Custom API support", "Flexible integration", "Developer tools"],
     color: "yinmn-blue"
   },
   {
     icon: Briefcase,
     title: "Small Brand Founders",
     description: "Scale your brand operations with professional-grade tools.",
+    benefits: ["Brand management", "Analytics dashboard", "Growth tools"],
     color: "gunmetal"
   }
 ];
 
 export default function AudienceSection() {
   return (
-    <section className="py-32 bg-silver-lake-900">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-24">
-          <p className="text-xs font-medium text-yinmn-blue-600 tracking-[0.2em] uppercase mb-8">
-            Target Audience
-          </p>
+    <section className="min-h-screen bg-seasalt flex items-center justify-center">
+      <div className="max-w-7xl mx-auto px-8 py-16">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 bg-gunmetal/5 border border-gunmetal/10 rounded-full px-4 py-2 mb-6">
+            <Users className="w-4 h-4 text-gunmetal" />
+            <span className="text-sm font-medium text-gunmetal">Target Audience</span>
+          </div>
           
-          <h2 className="mb-8">
-            <span className="block text-5xl lg:text-6xl font-black text-gunmetal leading-tight mb-4">
-              Who It's
-            </span>
-            <span className="block text-lg font-light text-yinmn-blue-600 tracking-wide">
-              Built For
-            </span>
+          <h2 className="text-4xl lg:text-5xl font-black text-gunmetal mb-6">
+            Built for Modern Entrepreneurs
           </h2>
           
-          <div className="max-w-2xl mx-auto">
-            <p className="text-base text-yinmn-blue-600 leading-relaxed font-light">
-              Pugly Dashboard is designed for modern e-commerce entrepreneurs who need 
-              powerful tools without the complexity.
-            </p>
-          </div>
+          <p className="text-lg text-yinmn-blue-600 max-w-2xl mx-auto leading-relaxed">
+            Pugly Dashboard is designed for e-commerce entrepreneurs who need powerful tools without the complexity.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* Audience Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
           {audiences.map((audience, index) => {
             const Icon = audience.icon;
             
             return (
               <div
                 key={index}
-                className="bg-seasalt border border-silver-lake-300 rounded-2xl p-8 hover:border-gunmetal transition-all duration-300 group cursor-pointer hover:shadow-xl"
+                className="bg-white border border-silver-lake-200 rounded-2xl p-8 hover:shadow-lg hover:border-gunmetal/20 transition-all duration-300"
               >
-                <div className={`w-16 h-16 bg-${audience.color} flex items-center justify-center rounded-2xl mb-8 group-hover:bg-gunmetal transition-colors duration-300`}>
-                  <Icon size={24} className="text-seasalt" />
+                <div className="flex items-start gap-6">
+                  <div className={`w-16 h-16 bg-${audience.color} flex items-center justify-center rounded-2xl flex-shrink-0`}>
+                    <Icon size={24} className="text-seasalt" />
+                  </div>
+                  
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-gunmetal mb-3 leading-tight">
+                      {audience.title}
+                    </h3>
+                    
+                    <p className="text-yinmn-blue-600 leading-relaxed mb-4">
+                      {audience.description}
+                    </p>
+
+                    <div className="space-y-2">
+                      {audience.benefits.map((benefit, benefitIndex) => (
+                        <div key={benefitIndex} className="flex items-center gap-3">
+                          <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                          <span className="text-sm text-gunmetal">{benefit}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                
-                <h3 className="text-xl font-bold text-gunmetal mb-4 leading-tight">
-                  {audience.title}
-                </h3>
-                
-                <p className="text-sm text-yinmn-blue-600 leading-relaxed font-light">
-                  {audience.description}
-                </p>
               </div>
             );
           })}
+        </div>
+
+        {/* Stats Section */}
+        <div className="bg-silver-lake-50 rounded-2xl p-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <div>
+              <div className="text-3xl font-black text-gunmetal mb-2">1000+</div>
+              <div className="text-yinmn-blue-600">Active Users</div>
+            </div>
+            <div>
+              <div className="text-3xl font-black text-delft-blue mb-2">50+</div>
+              <div className="text-yinmn-blue-600">Integrations</div>
+            </div>
+            <div>
+              <div className="text-3xl font-black text-yinmn-blue mb-2">99.9%</div>
+              <div className="text-yinmn-blue-600">Uptime</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

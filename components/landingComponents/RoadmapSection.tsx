@@ -1,6 +1,6 @@
 "use client"
-import React, { useEffect, useRef, useState } from 'react';
-import { Calendar, Database, Bot, Shield, Globe, Sparkles, ArrowRight } from 'lucide-react';
+import React from 'react';
+import { Calendar, Database, Bot, Shield, Globe, Sparkles } from 'lucide-react';
 
 const roadmapItems = [
   {
@@ -56,41 +56,6 @@ const roadmapItems = [
 ];
 
 export default function RoadmapSection() {
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [visibleItems, setVisibleItems] = useState<number[]>([]);
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return;
-      
-      const rect = sectionRef.current.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      const sectionHeight = rect.height;
-      
-      const totalScrollDistance = sectionHeight - viewportHeight;
-      const progress = Math.max(0, Math.min(1, -rect.top / totalScrollDistance));
-      
-      setScrollProgress(progress);
-
-      const newVisibleItems: number[] = [];
-      itemRefs.current.forEach((ref, index) => {
-        if (ref) {
-          const itemRect = ref.getBoundingClientRect();
-          if (itemRect.top < viewportHeight * 0.8 && itemRect.bottom > viewportHeight * 0.2) {
-            newVisibleItems.push(index);
-          }
-        }
-      });
-      setVisibleItems(newVisibleItems);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'in-progress':
@@ -104,213 +69,116 @@ export default function RoadmapSection() {
     }
   };
 
-  const getProgressColor = (status: string) => {
+  const getStatusText = (status: string) => {
     switch (status) {
       case 'in-progress':
-        return 'bg-gunmetal';
+        return 'In Progress';
       case 'planned':
-        return 'bg-delft-blue';
+        return 'Planned';
       case 'future':
-        return 'bg-yinmn-blue';
+        return 'Future';
       default:
-        return 'bg-silver-lake-600';
+        return 'Unknown';
     }
   };
 
   return (
-    <section ref={sectionRef} className="py-20 bg-seasalt relative overflow-hidden">
-      <div className="max-w-5xl mx-auto px-6 lg:px-8 relative">
+    <section className="min-h-screen bg-seasalt flex items-center justify-center">
+      <div className="max-w-6xl mx-auto px-8 py-16">
         {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-gunmetal/5 border border-gunmetal/10 rounded-full px-4 py-2 mb-6">
             <Calendar className="w-4 h-4 text-gunmetal" />
-            <span className="text-xs font-medium text-gunmetal tracking-wide uppercase">Roadmap</span>
+            <span className="text-sm font-medium text-gunmetal">Product Roadmap</span>
           </div>
           
-          <h2 className="text-4xl lg:text-5xl font-black text-gunmetal mb-4">
+          <h2 className="text-4xl lg:text-5xl font-black text-gunmetal mb-6">
             What's Coming Next
           </h2>
           
-          <p className="text-yinmn-blue-600 leading-relaxed font-light max-w-xl mx-auto">
-            Exciting new features to supercharge your e-commerce operations
+          <p className="text-lg text-yinmn-blue-600 max-w-2xl mx-auto leading-relaxed">
+            Exciting new features and improvements planned to supercharge your e-commerce operations.
           </p>
         </div>
 
-        {/* Roadmap Timeline */}
-        <div className="relative">
-          {/* Curved Path SVG */}
-          <div className="absolute left-1/2 top-0 bottom-0 w-1 -translate-x-1/2 hidden lg:block">
-            <svg 
-              className="w-full h-full" 
-              viewBox="0 0 200 1000" 
-              preserveAspectRatio="none"
-              style={{ height: `${roadmapItems.length * 200}px` }}
-            >
-              <defs>
-                <linearGradient id="pathGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#212b36" stopOpacity="1" />
-                  <stop offset="50%" stopColor="#273654" stopOpacity="0.8" />
-                  <stop offset="100%" stopColor="#415a77" stopOpacity="0.6" />
-                </linearGradient>
-              </defs>
-              
-              {/* More pronounced curved path */}
-              <path
-                d={`M 100 0 
-                   Q 50 100 100 200
-                   Q 150 300 100 400
-                   Q 50 500 100 600
-                   Q 150 700 100 800
-                   Q 50 900 100 1000`}
-                stroke="url(#pathGradient)"
-                strokeWidth="4"
-                fill="none"
-                strokeDasharray="15,8"
-                className="animate-pulse"
-              />
-              
-              {/* Progress indicator */}
-              <circle
-                cx="100"
-                cy={scrollProgress * 1000}
-                r="8"
-                fill="#212b36"
-                className="drop-shadow-lg transition-all duration-500"
+        {/* Roadmap Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {roadmapItems.map((item, index) => {
+            const Icon = item.icon;
+            
+            return (
+              <div
+                key={item.id}
+                className="bg-white border border-silver-lake-200 rounded-2xl p-6 hover:shadow-lg hover:border-gunmetal/20 transition-all duration-300"
               >
-                <animate
-                  attributeName="r"
-                  values="8;12;8"
-                  dur="2s"
-                  repeatCount="indefinite"
-                />
-              </circle>
-            </svg>
-          </div>
+                {/* Header */}
+                <div className="flex items-start justify-between mb-4">
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${getStatusColor(item.status)}`}>
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  
+                  <div className="text-right">
+                    <div className="text-xs font-medium text-yinmn-blue-600 bg-silver-lake-100 px-2 py-1 rounded-full mb-1">
+                      {item.quarter}
+                    </div>
+                    <div className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(item.status)}`}>
+                      {getStatusText(item.status)}
+                    </div>
+                  </div>
+                </div>
 
-          {/* Roadmap Items */}
-          <div className="space-y-16">
-            {roadmapItems.map((item, index) => {
-              const Icon = item.icon;
-              const isVisible = visibleItems.includes(index);
-              const isLeft = index % 2 === 0;
-              
-              return (
-                <div
-                  key={item.id}
-                  ref={(el) => (itemRefs.current[index] = el)}
-                  className={`relative flex items-center ${
-                    isLeft ? 'lg:flex-row' : 'lg:flex-row-reverse'
-                  } flex-col gap-6 lg:gap-12`}
-                >
-                  {/* Timeline Node - Desktop */}
-                  <div className="hidden lg:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-                    <div 
-                      className={`w-12 h-12 rounded-full border-3 border-seasalt flex items-center justify-center transition-all duration-700 ${
-                        isVisible 
-                          ? `${getStatusColor(item.status)} scale-125 shadow-xl` 
-                          : 'bg-silver-lake-600 scale-100'
-                      }`}
-                    >
-                      <Icon 
-                        className={`w-5 h-5 transition-all duration-500 ${
-                          isVisible ? 'scale-110' : 'scale-100'
-                        }`} 
+                {/* Content */}
+                <div className="mb-4">
+                  <h3 className="text-xl font-bold text-gunmetal mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-yinmn-blue-600 text-sm leading-relaxed">
+                    {item.description}
+                  </p>
+                </div>
+
+                {/* Progress Bar (for in-progress items) */}
+                {item.status === 'in-progress' && (
+                  <div className="mb-4">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-xs font-medium text-gunmetal">Progress</span>
+                      <span className="text-xs font-medium text-gunmetal">{item.progress}%</span>
+                    </div>
+                    <div className="w-full bg-silver-lake-200 rounded-full h-2">
+                      <div 
+                        className="bg-gunmetal h-2 rounded-full transition-all duration-500"
+                        style={{ width: `${item.progress}%` }}
                       />
                     </div>
                   </div>
+                )}
 
-                  {/* Content Card */}
-                  <div className={`w-full lg:w-5/12 ${isLeft ? 'lg:pr-6' : 'lg:pl-6'}`}>
-                    <div 
-                      className={`bg-white border border-silver-lake-300 rounded-2xl p-5 transition-all duration-700 hover:shadow-xl hover:scale-105 hover:border-gunmetal/20 ${
-                        isVisible 
-                          ? 'opacity-100 translate-y-0 shadow-lg' 
-                          : 'opacity-60 translate-y-6'
-                      }`}
-                    >
-                      {/* Header Section */}
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          {/* Mobile Timeline Node */}
-                          <div className="lg:hidden">
-                            <div 
-                              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-500 ${
-                                isVisible 
-                                  ? `${getStatusColor(item.status)} scale-110` 
-                                  : 'bg-silver-lake-600 scale-100'
-                              }`}
-                            >
-                              <Icon className="w-4 h-4 text-seasalt" />
-                            </div>
-                          </div>
-                          
-                          <div>
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className="text-xs font-medium text-yinmn-blue-600 bg-silver-lake-100 px-2 py-1 rounded-full">
-                                {item.quarter}
-                              </span>
-                              <div 
-                                className={`inline-flex px-2 py-1 rounded-full text-xs font-medium transition-all duration-500 ${
-                                  getStatusColor(item.status)
-                                }`}
-                              >
-                                {item.status === 'in-progress' ? 'In Progress' : 
-                                 item.status === 'planned' ? 'Planned' : 'Future'}
-                              </div>
-                            </div>
-                            <h3 className="text-lg font-bold text-gunmetal leading-tight">
-                              {item.title}
-                            </h3>
-                          </div>
-                        </div>
-                        
-                        {/* Progress indicator for in-progress items */}
-                        {item.status === 'in-progress' && (
-                          <div className="text-right">
-                            <div className="text-xs font-medium text-gunmetal mb-1">{item.progress}%</div>
-                            <div className="w-12 h-1.5 bg-silver-lake-200 rounded-full overflow-hidden">
-                              <div 
-                                className={`h-full ${getProgressColor(item.status)} transition-all duration-1000`}
-                                style={{ width: `${item.progress}%` }}
-                              />
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Description */}
-                      <p className="text-sm text-yinmn-blue-600 mb-3 leading-relaxed">
-                        {item.description}
-                      </p>
-
-                      {/* Features List */}
-                      <div className="space-y-1.5">
-                        {item.features.map((feature, featureIndex) => (
-                          <div 
-                            key={featureIndex}
-                            className="flex items-center gap-2 text-xs text-gunmetal"
-                          >
-                            <div className="w-1 h-1 bg-delft-blue rounded-full flex-shrink-0" />
-                            <span className="font-medium">{feature}</span>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Learn More Link */}
-                      <div className="mt-4 pt-3 border-t border-silver-lake-200">
-                        <button className="flex items-center gap-1 text-xs font-medium text-delft-blue hover:text-gunmetal transition-colors group">
-                          <span>Learn more</span>
-                          <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-                        </button>
-                      </div>
+                {/* Features List */}
+                <div className="space-y-2">
+                  {item.features.map((feature, featureIndex) => (
+                    <div key={featureIndex} className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 bg-delft-blue rounded-full flex-shrink-0" />
+                      <span className="text-sm text-gunmetal">{feature}</span>
                     </div>
-                  </div>
-
-                  {/* Spacer for opposite side */}
-                  <div className="hidden lg:block w-5/12"></div>
+                  ))}
                 </div>
-              );
-            })}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="text-center mt-16">
+          <div className="bg-silver-lake-50 rounded-2xl p-8">
+            <h3 className="text-2xl font-bold text-gunmetal mb-4">
+              Want to influence our roadmap?
+            </h3>
+            <p className="text-yinmn-blue-600 mb-6">
+              Join our community and help shape the future of Pugly Dashboard.
+            </p>
+            <button className="bg-gunmetal text-seasalt px-8 py-4 rounded-xl hover:bg-delft-blue transition-colors font-medium">
+              Join Community
+            </button>
           </div>
         </div>
       </div>
