@@ -27,7 +27,14 @@ export default function Header() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <span className="text-3xl font-black text-gunmetal tracking-tight">Pugly</span>
+            <a
+              href="https://www.pugly.store"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-3xl font-black text-gunmetal tracking-tight hover:text-delft-blue transition-colors cursor-pointer select-none"
+            >
+              Pugly
+            </a>
           </div>
 
           {/* Desktop Navigation */}
@@ -80,9 +87,16 @@ export default function Header() {
               <a href="#contact" className="block text-sm font-medium text-yinmn-blue-600 hover:text-gunmetal tracking-wide">
                 Contact
               </a>
+              <a
+                    href="https://admin.pugly.store"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block"
+              >
               <button className="w-full mt-4 bg-gunmetal text-seasalt px-8 py-3 rounded-xl hover:bg-delft-blue transition-all duration-300 font-medium text-sm tracking-wide">
                 Start Trial
               </button>
+              </a>
             </div>
           </div>
         )}

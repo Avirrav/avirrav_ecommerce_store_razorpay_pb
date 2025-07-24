@@ -46,15 +46,20 @@ export default function Hero() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <button className="bg-gunmetal text-seasalt px-6 sm:px-8 py-3 sm:py-4 rounded-xl hover:bg-delft-blue transition-colors font-medium flex items-center justify-center gap-2 sm:gap-3 text-sm sm:text-base">
+              <a
+                href="https://admin.pugly.store"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gunmetal text-seasalt px-6 sm:px-8 py-3 sm:py-4 rounded-xl hover:bg-delft-blue transition-colors font-medium flex items-center justify-center gap-2 sm:gap-3 text-sm sm:text-base"
+              >
                 Start Trial for ₹30
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </a>
               
-              <button className="border-2 border-silver-lake-300 text-gunmetal px-6 sm:px-8 py-3 sm:py-4 rounded-xl hover:border-gunmetal transition-colors font-medium flex items-center justify-center gap-2 sm:gap-3 text-sm sm:text-base">
+              {/* <button className="border-2 border-silver-lake-300 text-gunmetal px-6 sm:px-8 py-3 sm:py-4 rounded-xl hover:border-gunmetal transition-colors font-medium flex items-center justify-center gap-2 sm:gap-3 text-sm sm:text-base">
                 <Play className="w-4 h-4" />
                 Watch Demo
-              </button>
+              </button> */}
             </div>
 
             {/* Trust Indicators */}

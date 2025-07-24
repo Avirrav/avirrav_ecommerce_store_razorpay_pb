@@ -232,12 +232,26 @@ export default function RoadmapSection() {
               Join our community of dropshipping businesses and help shape Pugly's future with your feedback and suggestions.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
-              <button className="bg-gunmetal text-seasalt px-6 md:px-8 py-3 md:py-4 rounded-xl hover:bg-delft-blue transition-colors font-medium text-sm md:text-base">
-                Join Community
-              </button>
-              <button className="border-2 border-silver-lake-300 text-gunmetal px-6 md:px-8 py-3 md:py-4 rounded-xl hover:border-gunmetal transition-colors font-medium text-sm md:text-base">
-                Request Feature
-              </button>
+              <a
+                href="https://www.instagram.com/pugly.store"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block"
+              >
+                <button className="bg-gunmetal text-seasalt px-6 md:px-8 py-3 md:py-4 rounded-xl hover:bg-delft-blue transition-colors font-medium text-sm md:text-base">
+                  Join Community
+                </button>
+              </a>
+              <a
+                href="https://www.instagram.com/pugly.store"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block"
+              >
+                <button className="border-2 border-silver-lake-300 text-gunmetal px-6 md:px-8 py-3 md:py-4 rounded-xl hover:border-gunmetal transition-colors font-medium text-sm md:text-base">
+                  Request Feature
+                </button>
+              </a>
             </div>
           </div>
         </div>

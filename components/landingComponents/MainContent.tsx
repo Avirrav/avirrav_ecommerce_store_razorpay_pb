@@ -72,9 +72,16 @@ export default function MainContent({ activeSection }: MainContentProps) {
                   <p className="text-yinmn-blue-600 mb-4 font-light">
                     Chat with our team for instant help and quick answers.
                   </p>
-                  <button className="text-gunmetal hover:text-delft-blue font-medium text-sm tracking-wide border-b border-gunmetal hover:border-delft-blue transition-colors">
-                    Start Chat
-                  </button>
+                  <a
+                    href="https://www.instagram.com/pugly.store"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block"
+                  >
+                    <button className="text-gunmetal hover:text-delft-blue font-medium text-sm tracking-wide border-b border-gunmetal hover:border-delft-blue transition-colors">
+                      Start Chat
+                    </button>
+                  </a>
                 </div>
               </div>
 
@@ -83,9 +90,16 @@ export default function MainContent({ activeSection }: MainContentProps) {
                 <p className="text-silver-lake-400 mb-8 font-light">
                   Join thousands of entrepreneurs already using Pugly to scale their businesses.
                 </p>
+                <a
+                    href="https://admin.pugly.store"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block"
+                >
                 <button className="bg-seasalt text-gunmetal px-8 py-4 rounded-xl hover:bg-silver-lake-200 transition-all duration-300 font-medium text-sm tracking-wide">
                   Start Free Trial
                 </button>
+                </a>
               </div>
             </div>
           </section>

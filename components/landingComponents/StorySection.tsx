@@ -70,11 +70,6 @@ export default function StorySection() {
                 <p className="text-sm md:text-base text-yinmn-blue-600 leading-relaxed mb-4 md:mb-6">
                   {feature.description}
                 </p>
-
-                <button className="flex items-center gap-2 text-gunmetal hover:text-delft-blue font-medium text-xs md:text-sm transition-colors group">
-                  Learn more
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
               </div>
             );
           })}
@@ -87,9 +82,16 @@ export default function StorySection() {
             <p className="text-sm md:text-base text-silver-lake-300 mb-4 md:mb-6">
               Join dropshipping businesses already using Pugly to manage their operations efficiently.
             </p>
-            <button className="bg-seasalt text-gunmetal px-6 md:px-8 py-3 md:py-4 rounded-xl hover:bg-silver-lake-100 transition-colors font-medium text-sm md:text-base">
-              Start Trial
-            </button>
+            <a
+              href="https://admin.pugly.store"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block"
+            >
+              <button className="bg-seasalt text-gunmetal px-6 md:px-8 py-3 md:py-4 rounded-xl hover:bg-silver-lake-100 hover:text-seasalt transition-colors font-medium text-sm md:text-base">
+                Start Trial
+              </button>
+            </a>
           </div>
         </div>
       </div>

@@ -56,7 +56,7 @@ const plans = [
     popular: false,
     cta: "Contact Sales",
     savings: "40% OFF"
-  }
+  },
 ];
 
 export default function PricingSection() {
@@ -182,7 +182,40 @@ export default function PricingSection() {
             </div>
           </div>
         </div>
+
+        {/* Custom Solution Dropdown */}
+        <div className="mt-12 max-w-2xl mx-auto">
+          <CustomSolutionDropdown />
+        </div>
       </div>
     </section>
+  );
+}
+
+function CustomSolutionDropdown() {
+  const [open, setOpen] = React.useState(false);
+  return (
+    <div className="border-2 border-gunmetal rounded-2xl bg-seasalt shadow-xl p-2 md:p-4 transition-all duration-300 w-full">
+      <button
+        className="w-full flex items-center justify-between px-6 py-3 text-lg md:text-xl font-extrabold text-gunmetal rounded-2xl focus:outline-none focus:ring-4 focus:ring-gunmetal/20 bg-silver-lake-50 hover:bg-gunmetal hover:text-seasalt transition-all group min-h-[3.5rem]"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        style={{ minHeight: '3.5rem' }}
+      >
+        <span className="flex items-center gap-3">
+          <svg className="w-6 h-6 text-gunmetal group-hover:text-seasalt transition-colors" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" /></svg>
+          Want full control on software?
+        </span>
+        <span className={`ml-2 text-2xl text-gunmetal group-hover:text-seasalt transition-colors transition-transform ${open ? 'rotate-180' : ''}`}>▼</span>
+      </button>
+      {open && (
+        <div className="px-6 pb-6 pt-3 text-base md:text-lg text-gunmetal/90 flex flex-col items-center gap-4 animate-fade-in">
+          <div className="text-center font-semibold">
+            For <span className="text-delft-blue font-bold">custom hosted dashboard</span>, <span className="text-delft-blue font-bold">custom features</span>, <span className="text-delft-blue font-bold">custom store</span> and fully control in your hand <br /> <span className="text-delft-blue font-bold">contact us</span>.
+          </div>
+          <a href="mailto:contact@pugly.in" className="inline-block px-8 py-3 rounded-full bg-gunmetal text-seasalt font-extrabold text-base md:text-lg shadow-lg hover:bg-delft-blue hover:text-seasalt transition-all">Contact Us</a>
+        </div>
+      )}
+    </div>
   );
 }

@@ -107,12 +107,26 @@ export default function FAQ() {
               Our support team is here to help you get the most out of Pugly Dashboard.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
-              <button className="bg-gunmetal text-seasalt px-4 md:px-6 py-2.5 md:py-3 rounded-xl hover:bg-delft-blue transition-colors font-medium text-sm md:text-base">
-                Contact Support
-              </button>
-              <button className="border-2 border-silver-lake-300 text-gunmetal px-4 md:px-6 py-2.5 md:py-3 rounded-xl hover:border-gunmetal transition-colors font-medium text-sm md:text-base">
-                Browse Documentation
-              </button>
+              <a
+                href="https://www.instagram.com/pugly.store"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block"
+              >
+                <button className="bg-gunmetal text-seasalt px-4 md:px-6 py-2.5 md:py-3 rounded-xl hover:bg-delft-blue transition-colors font-medium text-sm md:text-base">
+                  Contact Support
+                </button>
+              </a>
+              <a
+                href="https://www.instagram.com/pugly.store"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block"
+              >
+                <button className="border-2 border-silver-lake-300 text-gunmetal px-4 md:px-6 py-2.5 md:py-3 rounded-xl hover:border-gunmetal transition-colors font-medium text-sm md:text-base">
+                  Browse Documentation
+                </button>
+              </a>
             </div>
           </div>
         </div>
